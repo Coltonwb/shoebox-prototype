@@ -1,0 +1,2431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FreeTaxUSA 2025 — Your Income</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; color: inherit; }
+
+    html, body {
+      font-family: 'Lexend', sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      color: #212f45;
+      background: #f9f9f9;
+    }
+
+    /* ── GLOBAL HEADER ── */
+    .global-header {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e5e9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 64px;
+      font-family: 'Lexend', sans-serif;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .header-logo svg { height: 19px; width: auto; display: block; }
+    .header-logo-year {
+      font-size: 16px;
+      font-weight: 700;
+      color: #212f45;
+    }
+    .header-center {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      color: #212f45;
+    }
+    .header-refund-item { display: flex; align-items: center; gap: 4px; white-space: nowrap; }
+    .header-refund-item .amount--refund { font-weight: 700; color: #027932; }
+    .header-divider { color: #bec4cc; font-weight: 300; font-size: 18px; }
+    .header-right { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+    .header-nav-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: none; border: none; cursor: pointer;
+      font-family: 'Lexend', sans-serif; font-size: 14px; color: #212f45;
+      height: 40px; padding: 0 12px; border-radius: 20px; white-space: nowrap;
+    }
+    .header-nav-btn:hover { background: #f4f9ff; text-decoration: underline; }
+    .header-support-badge {
+      background: #016ee6; color: #fff;
+      border-radius: 50%; width: 18px; height: 18px;
+      font-size: 11px; font-weight: 600;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+
+    /* ── TAB NAV ── */
+    .tab-nav-wrapper { background: #f9f9f9; padding: 48px 0 16px; }
+    .tab-nav {
+      width: 1152px; margin: 0 auto;
+      display: flex; justify-content: space-between;
+      align-items: center; height: 36px;
+    }
+    .tab {
+      height: 36px; padding: 0 14px;
+      border: 1px solid #e2e5e9; border-radius: 20px;
+      background: #ffffff; font-family: 'Lexend', sans-serif;
+      font-size: 14px; color: #212f45;
+      display: flex; align-items: center; justify-content: center;
+      gap: 6px; cursor: pointer; white-space: nowrap;
+    }
+    .tab--active { background: #212f45; color: #ffffff; border-color: #212f45; }
+    .tab--complete { background: #ffffff; color: #212f45; border-color: transparent; }
+    .tab--disabled { background: none; border: none; color: #667285; pointer-events: none; cursor: default; }
+
+    /* ── PAGE ── */
+    .page-body { background: #f9f9f9; padding-bottom: 48px; }
+    .content-box {
+      width: 1152px; margin: 0 auto;
+      background: #ffffff; border: none; border-radius: 8px;
+      position: relative; padding: 40px 48px 0;
+    }
+    .page-actions {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 0; width: 100%;
+    }
+    .icon-btn {
+      width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+      background: none; border: none; cursor: pointer; border-radius: 50%;
+      color: #212f45; transition: background 0.15s, color 0.15s;
+    }
+    .icon-btn:hover { background: #f4f9ff; color: #016ee6; }
+    .icon-btn svg { width: 24px; height: 24px; }
+    /* Legacy back-btn / more-btn — kept for sub-screen modals that still use them */
+    .back-btn {
+      background: none; border: none; color: #016ee6;
+      cursor: pointer; padding: 4px; border-radius: 50%; display: flex; align-items: center;
+    }
+    .back-btn:hover { background: #f4f9ff; }
+    .more-btn {
+      background: none; border: none; color: #212f45;
+      cursor: pointer; padding: 4px; border-radius: 50%; display: flex; align-items: center;
+    }
+    .more-btn:hover { background: #f4f9ff; }
+
+    .content-inner { padding: 0 96px; }
+
+    /* ── PAGE HEADER ── */
+    .page-header { text-align: center; margin-bottom: 32px; padding-top: 16px; }
+    .page-header h1 {
+      font-size: 30px; font-weight: 600; line-height: 38px; color: #212f45;
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-bottom: 8px;
+    }
+    .page-header p {
+      font-size: 16px; font-weight: 500; line-height: 24px; color: #212f45;
+    }
+
+    /* ── FAQ ICON ── */
+    .faq-icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: #daebff; color: #016ee6;
+      font-size: 11px; font-weight: 700; cursor: pointer; flex-shrink: 0;
+      vertical-align: middle;
+    }
+    .faq-icon:hover { background: #bad9f7; }
+
+    /* ── ADDED INCOME TABLE ── */
+    .added-income-table {
+      border: 1px solid #e2e5e9; border-radius: 6px;
+      overflow: visible; margin-bottom: 0;
+    }
+    /* Grid: label | prev-year | current-year (highlighted) | actions */
+    .added-income-header {
+      display: grid; grid-template-columns: 1fr 152px 152px 152px;
+      border-bottom: 1px solid #e2e5e9;
+      border-radius: 6px 6px 0 0;
+      font-size: 14px; font-weight: 500; color: #667285;
+      overflow: hidden;
+    }
+    .added-income-header > div { padding: 10px 20px; }
+    .added-income-header .col-year,
+    .added-income-header .col-year--current { padding-left: 16px; padding-right: 16px; }
+    .added-income-header .col-year { text-align: center; color: #667285; }
+    .added-income-header .col-year--current {
+      text-align: center;
+      background: #f9f9f9;
+      color: #212f45;
+    }
+    /* No gray on actions column header */
+
+    .added-income-row:last-child { border-radius: 0 0 6px 6px; }
+
+    @keyframes rowHighlight {
+      0%   { box-shadow: 0 0 0 4px #DAEBFF; }
+      40%  { box-shadow: 0 0 0 4px #DAEBFF; }
+      100% { box-shadow: 0 0 0 4px transparent; }
+    }
+    .added-income-row--entering,
+    .added-income-row--completing {
+      animation: rowHighlight 2.8s ease-out forwards;
+      position: relative;
+      z-index: 1;
+    }
+
+    .added-income-row {
+      display: grid; grid-template-columns: 1fr 152px 152px 152px;
+      border-bottom: 1px solid #e2e5e9;
+      min-height: 80px;
+      /* stretch so gray column fills full row height with zero gaps */
+      align-items: stretch;
+    }
+    .added-income-row:last-child { border-bottom: none; }
+    /* All cells stretch to full row height; default layout */
+    .added-income-row > div {
+      padding: 16px 24px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    /* prev-year amount cell — right-align text */
+    .added-income-row .col-prev {
+      flex-direction: row; align-items: center; justify-content: center;
+      font-size: 16px; color: #667285; padding-left: 16px; padding-right: 16px;
+    }
+    /* current-year amount cell — gray bg, right-aligned */
+    .added-income-row .col-current {
+      background: #f9f9f9;
+      flex-direction: row; align-items: center; justify-content: center;
+      font-size: 16px; font-weight: 400; color: #212f45; padding-left: 16px; padding-right: 16px;
+    }
+    /* actions cell — white bg, right-aligned */
+    .added-income-row .col-actions {
+      flex-direction: row; align-items: center; justify-content: center; gap: 8px;
+    }
+    .added-income-label { font-size: 16px; line-height: 24px; font-weight: 500; color: #212f45; }
+    .added-income-sublabel { font-size: 14px; line-height: 20px; color: #667285; }
+    .added-income-sublabel a { color: #016ee6; text-decoration: none; }
+    .added-income-sublabel a:hover { text-decoration: underline; }
+    .added-income-amount { text-align: right; font-size: 16px; color: #212f45; }
+    .added-income-amount--current { text-align: right; font-size: 16px; font-weight: 600; color: #212f45; }
+    .added-income-actions { display: flex; justify-content: flex-end; align-items: center; gap: 8px; }
+
+    /* Light blue "Needs info" badge */
+    .needs-info-badge {
+      display: inline-flex; align-items: center;
+      font-size: 14px; line-height: 20px; font-weight: 400; color: #016ee6;
+      background: #eaf4ff;
+      border-radius: 100px; padding: 2px 10px;
+      white-space: nowrap;
+    }
+
+    /* Inline PDF link chip */
+    .pdf-link {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 14px; line-height: 20px; font-weight: 400; color: #016ee6; text-decoration: none;
+      background: #f4f9ff; border-radius: 100px; padding: 2px 10px;
+    }
+    .pdf-link:hover { background: #eaf4ff; text-decoration: underline; }
+    .pdf-link svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+    /* ── DIVIDER SECTION ── */
+    .section-divider {
+      text-align: center; margin: 64px 0 24px;
+      font-size: 20px; font-weight: 400; color: #212f45;
+    }
+
+    /* ── SEARCH BAR ── */
+    .search-wrapper {
+      position: relative; margin-bottom: 24px;
+      max-width: 480px; margin-left: auto; margin-right: auto;
+    }
+    .search-input {
+      width: 100%; height: 42px;
+      border: 1px solid #bec4cc; border-radius: 4px;
+      padding: 0 36px 0 40px;
+      font-family: 'Lexend', sans-serif; font-size: 14px; color: #212f45;
+      background: #fff; outline: none;
+    }
+    .search-input::placeholder { color: #8f99a7; }
+    .search-input:focus { border-color: #91c2f4; box-shadow: 0 0 0 4px #daebff; }
+    .search-icon {
+      position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+      color: #8f99a7; pointer-events: none; display: flex;
+    }
+    .search-clear {
+      position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+      display: none; align-items: center; justify-content: center;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: none; border: none; cursor: pointer; padding: 0;
+      line-height: 1;
+    }
+    .search-clear:hover svg path:first-child { fill: #ddeeff; }
+    .search-clear svg { display: block; }
+
+    /* ── INCOME CATEGORIES ── */
+    .income-categories {
+      display: flex; flex-direction: column;
+    }
+
+    .category-block {
+      border-bottom: 1px solid #e2e5e9;
+    }
+    .category-block:last-child { border-bottom: none; }
+
+    .category-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 32px 24px; cursor: pointer;
+      background: #f9f9f9; user-select: none;
+    }
+    .category-header-left { display: flex; flex-direction: column; gap: 4px; }
+    .category-header-top { display: flex; align-items: center; gap: 10px; }
+    .category-icon { color: #212f45; display: flex; align-items: center; flex-shrink: 0; }
+    .category-icon svg { width: 24px; height: 24px; }
+    .category-title { font-size: 16px; line-height: 24px; font-weight: 500; color: #212f45; }
+    .category-subtitle { font-size: 14px; line-height: 20px; color: #667285; }
+    /* Hide subtitle when the category is expanded */
+    .category-block:has(.category-items.open) .category-subtitle { display: none; }
+    .category-chevron {
+      color: #212F45; transition: transform 0.2s; display: flex; align-items: center;
+    }
+    .category-chevron.open { transform: rotate(180deg); }
+
+    .category-items {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.22s ease;
+      background: #fff;
+      /* border-top lives on the inner div so it doesn't flash */
+    }
+    .category-items.open {
+      grid-template-rows: 1fr;
+    }
+    .category-items-inner {
+      overflow: hidden;
+      border-top: 1px solid #e2e5e9;
+    }
+
+    .income-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 24px; border-bottom: 1px solid #f1f2f3;
+      min-height: 80px;
+    }
+    .income-item:last-child { border-bottom: none; }
+    .income-item-label { font-size: 14px; line-height: 20px; font-weight: 400; color: #212f45; }
+    .income-item-sublabel { font-size: 14px; line-height: 20px; color: #667285; }
+    .income-item.hidden { display: none; }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 4px; font-family: 'Lexend', sans-serif; font-weight: 400;
+      cursor: pointer; border: 1px solid transparent;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      white-space: nowrap;
+    }
+    .btn-sm { padding: 6px 14px; font-size: 14px; line-height: 20px; gap: 6px; }
+    .btn-md { padding: 10px 18px; font-size: 16px; line-height: 24px; gap: 8px; }
+
+    .btn-primary { background: #016ee6; border-color: #016ee6; color: #ffffff; }
+    .btn-primary:hover { background: #0850c4; border-color: #0850c4; }
+
+    .btn-tertiary { background: transparent; border-color: #e2e5e9; color: #465163; }
+    .btn-tertiary:hover { background: #f9f9f9; }
+
+    .btn-link-color { background: none; border: none; color: #016ee6; padding: 0; }
+    .btn-link-color:hover { color: #0850c4; }
+
+    .btn-add {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 6px 14px; font-size: 14px;
+      border: 1px solid #016ee6; border-radius: 4px;
+      background: #fff; color: #016ee6; cursor: pointer;
+      font-family: 'Lexend', sans-serif; font-weight: 400;
+      transition: background 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+    .btn-add:hover { background: #f4f9ff; border-color: #0850c4; color: #0850c4; }
+
+    .btn-edit-add {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: none; border: none;
+      color: #016ee6; font-size: 14px;
+      font-family: 'Lexend', sans-serif;
+      cursor: pointer; padding: 4px 0;
+    }
+    .btn-edit-add:hover { color: #0850c4; text-decoration: underline; }
+
+    .btn-start {
+      padding: 8px 18px; font-size: 14px;
+      background: #016ee6; border-color: #016ee6; color: #fff;
+      border-radius: 4px; border: 1px solid #016ee6;
+      font-family: 'Lexend', sans-serif; cursor: pointer;
+    }
+    .btn-start:hover { background: #0850c4; }
+
+    /* ── BUTTON ROW ── */
+    .button-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 24px 0; margin-top: 32px;
+      border-top: 1px solid #e2e5e9;
+    }
+    .btn-prev {
+      width: 216px; padding: 10px 20px; font-size: 14px;
+      border: 1px solid #016ee6; border-radius: 4px;
+      background: #fff; color: #016ee6;
+      font-family: 'Lexend', sans-serif; cursor: pointer;
+    }
+    .btn-prev:hover { background: #f4f9ff; }
+    .btn-continue {
+      width: 216px; padding: 10px 24px; font-size: 14px;
+      background: #016ee6; border: 1px solid #016ee6; border-radius: 4px;
+      color: #fff; font-family: 'Lexend', sans-serif; cursor: pointer;
+    }
+    .btn-continue:hover { background: #0850c4; }
+
+    /* ── SUB-SCREENS ── */
+    .sub-screen {
+      display: none; position: fixed; inset: 0; z-index: 400;
+      background: #f9f9f9; overflow-y: auto;
+    }
+    .sub-screen.active { display: block; }
+    .sub-screen-body { padding: 56px 0 0; font-size: 14px; color: #212f45; line-height: 1.6; }
+    .sub-screen-body h1 {
+      font-size: 26px; font-weight: 600; color: #212f45;
+      text-align: center; margin: 0 0 28px;
+    }
+    .sub-screen-body p { margin: 0 0 12px; }
+    .sub-screen-body ul { margin: 4px 0 24px 20px; padding: 0; }
+    .sub-screen-body ul li { margin-bottom: 6px; }
+    .sub-screen-add-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 22px; font-size: 14px; font-weight: 500;
+      color: #016ee6; border: 1px solid #016ee6; border-radius: 4px;
+      background: #fff; cursor: pointer; font-family: 'Lexend', sans-serif; margin-top: 12px;
+    }
+    .sub-screen-add-btn:hover { background: #eaf4ff; }
+    .sub-screen-helper-link {
+      display: block; margin-top: 14px; color: #016ee6;
+      font-size: 14px; text-decoration: none;
+    }
+    .sub-screen-helper-link:hover { text-decoration: underline; }
+    /* Congrats screen */
+    .congrats-body {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 64px 96px 40px; text-align: center;
+    }
+    .congrats-icon-wrap {
+      width: 100px; height: 100px; border-radius: 50%;
+      background: #eaecf0; display: flex; align-items: center; justify-content: center;
+    }
+    .congrats-title {
+      font-size: 22px; font-weight: 600; color: #212f45; margin: 16px 0 32px;
+    }
+    .congrats-divider { width: 100%; border: none; border-top: 1px solid #e2e5e9; margin: 0 0 28px; }
+
+    /* ── HELPER LINKS ── */
+    .helper-links { margin: 40px 0 8px; display: flex; flex-direction: column; gap: 10px; }
+    .helper-links a {
+      font-size: 14px; color: #016ee6; text-decoration: none; display: inline-block;
+    }
+    .helper-links a:hover { text-decoration: underline; }
+
+    /* ── FOOTER ── */
+    .footer {
+      width: 100%; background: #f9f9f9;
+      margin-top: 48px; padding: 16px 0 24px;
+    }
+    .footer-links {
+      display: flex; justify-content: center; gap: 24px; font-size: 12px;
+      color: #667285; padding: 8px 0;
+    }
+    .footer-links a { color: #667285; text-decoration: none; padding: 0; border-right: none; }
+    .footer-links a:hover { text-decoration: underline; }
+    .footer-copyright { text-align: center; font-size: 12px; color: #667285; padding: 4px 0; }
+
+    /* ── NO RESULTS ── */
+    .no-results {
+      display: none; flex-direction: column; align-items: center;
+      padding: 16px 20px 40px; gap: 12px; text-align: center;
+    }
+    .no-results-icon {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: #eaf4ff; display: flex; align-items: center; justify-content: center;
+      margin-bottom: 4px;
+    }
+    .no-results-title {
+      font-size: 16px; font-weight: 600; color: #212f45; margin: 0;
+    }
+    .no-results-sub {
+      font-size: 14px; color: #667285; margin: 0;
+    }
+    .no-results-clear {
+      margin-top: 8px; padding: 10px 20px; font-size: 14px;
+      color: #016ee6; background: #fff; border: 1px solid #016ee6;
+      border-radius: 4px; cursor: pointer; font-family: 'Lexend', sans-serif;
+    }
+    .no-results-clear:hover { background: #f4f9ff; }
+    .no-results-path {
+      display: none; margin: 4px 0 0;
+      font-size: 14px; color: #667285; line-height: 20px;
+    }
+    .no-results-illustration {
+      display: none;
+      margin-bottom: 4px;
+    }
+
+    /* ── MODAL OVERLAY ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(33,47,69,0.45); z-index: 200;
+      align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #fff; border-radius: 8px; width: 560px;
+      padding: 40px; position: relative;
+      box-shadow: 0 20px 60px rgba(33,47,69,0.2);
+    }
+    .modal-close {
+      position: absolute; top: 16px; right: 16px;
+      background: none; border: none; cursor: pointer; color: #8f99a7; padding: 4px;
+    }
+    .modal-close:hover { color: #212f45; }
+    .modal h2 { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+    .modal p { font-size: 14px; color: #667285; margin-bottom: 24px; line-height: 22px; }
+    .modal-form-row { margin-bottom: 16px; }
+    .modal-label { font-size: 14px; color: #465163; margin-bottom: 4px; display: block; }
+    .modal-input {
+      width: 100%; height: 42px; border: 1px solid #bec4cc; border-radius: 4px;
+      padding: 0 12px; font-family: 'Lexend', sans-serif; font-size: 14px; color: #212f45;
+      outline: none;
+    }
+    .modal-input:focus { border-color: #91c2f4; box-shadow: 0 0 0 4px #daebff; }
+    .dollar-input-wrapper {
+      display: flex; border: 1px solid #bec4cc; border-radius: 4px; overflow: hidden;
+      height: 42px;
+    }
+    .dollar-prefix {
+      background: #f9f9f9; border-right: 1px solid #bec4cc;
+      padding: 0 12px; display: flex; align-items: center;
+      font-size: 14px; color: #465163; flex-shrink: 0;
+    }
+    .dollar-input {
+      flex: 1; border: none; outline: none; padding: 0 12px;
+      font-family: 'Lexend', sans-serif; font-size: 14px; color: #212f45;
+    }
+    .dollar-input-wrapper:focus-within { border-color: #91c2f4; box-shadow: 0 0 0 4px #daebff; }
+    .modal-actions { display: flex; gap: 12px; margin-top: 24px; }
+    .modal-actions .btn-modal-save {
+      flex: 1; padding: 10px; font-size: 16px; line-height: 24px;
+      background: #016ee6; border: 1px solid #016ee6; border-radius: 4px;
+      color: #fff; font-family: 'Lexend', sans-serif; cursor: pointer;
+    }
+    .modal-actions .btn-modal-save:hover { background: #0850c4; }
+    .modal-actions .btn-modal-cancel {
+      flex: 1; padding: 10px; font-size: 16px; line-height: 24px;
+      background: #fff; border: 1px solid #e2e5e9; border-radius: 4px;
+      color: #465163; font-family: 'Lexend', sans-serif; cursor: pointer;
+    }
+    .modal-actions .btn-modal-cancel:hover { background: #f9f9f9; }
+
+    /* ── HIGHLIGHT (search match) ── */
+    mark { background: #fff2ba; color: #212f45; border-radius: 2px; }
+
+    /* ── ROLLOVER TAG ── */
+    .rollover-tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 11px; color: #667285; background: #f1f2f3;
+      border-radius: 12px; padding: 2px 8px; margin-left: 6px; vertical-align: middle;
+    }
+    /* ── MOBILE-ONLY ELEMENTS (hidden by default) ── */
+    .mobile-hamburger, .mobile-logo, .mobile-account, .mobile-refund-bar {
+      display: none;
+    }
+    .mobile-hamburger, .mobile-account {
+      background: none; border: none; cursor: pointer; padding: 4px;
+    }
+
+    /* ══════════════════════════════════════════════
+       W-2 INTRO SCREEN (wages list)
+       ══════════════════════════════════════════════ */
+    .w2-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+    .w2-card {
+      border: 1px solid #e2e5e9; border-radius: 6px;
+      padding: 16px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: #fff;
+    }
+    .w2-card-main {
+      display: flex; align-items: flex-start; gap: 64px;
+    }
+    .w2-card-cell { display: flex; flex-direction: column; gap: 4px; }
+    .w2-card-label {
+      font-size: 14px; color: #667285; font-weight: 400; line-height: 20px;
+    }
+    .w2-card-employer {
+      font-size: 16px; font-weight: 400; color: #212f45; line-height: 24px;
+      text-transform: uppercase;
+    }
+    .w2-card-amount {
+      font-size: 16px; color: #212f45; font-weight: 400; line-height: 24px;
+      white-space: nowrap;
+    }
+    .w2-card-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+    .w2-card-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: none; border: none; color: #016ee6;
+      font-family: 'Lexend', sans-serif; font-size: 14px; font-weight: 500;
+      padding: 6px 10px; border-radius: 4px; cursor: pointer;
+      transition: color 0.15s ease;
+    }
+    .w2-card-btn:hover { color: #0850c4; }
+    .w2-card-btn svg { width: 16px; height: 16px; }
+
+    .w2-add-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 22px; font-size: 14px; font-weight: 500;
+      color: #016ee6; border: 1px solid #016ee6; border-radius: 4px;
+      background: #fff; cursor: pointer; font-family: 'Lexend', sans-serif;
+      margin-bottom: 28px;
+    }
+    .w2-add-btn:hover { background: #eaf4ff; }
+    .w2-add-btn svg { width: 16px; height: 16px; }
+
+    .w2-body-text {
+      font-size: 14px; color: #212f45; line-height: 22px;
+      margin-bottom: 14px;
+    }
+    .w2-body-text:last-of-type { margin-bottom: 32px; }
+
+    /* Screen toggles */
+    .screen-hidden { display: none !important; }
+
+    /* ══════════════════════════════════════════════
+       RESPONSIVE — TABLET (≤1200px)
+       ══════════════════════════════════════════════ */
+    @media (max-width: 1200px) {
+      .tab-nav { width: auto; margin: 0 24px; overflow-x: auto; gap: 8px; justify-content: flex-start; }
+      .content-box { width: auto; margin: 0 24px; }
+    }
+
+    /* ══════════════════════════════════════════════
+       RESPONSIVE — MOBILE (≤768px)
+       ══════════════════════════════════════════════ */
+    @media (max-width: 768px) {
+      /* ── HEADER: show mobile elements, hide desktop ── */
+      .mobile-hamburger, .mobile-logo, .mobile-account { display: flex; align-items: center; }
+      .header-logo, .header-center, .header-right { display: none !important; }
+      .global-header { padding: 0 16px; height: 56px; }
+      .mobile-logo { text-decoration: none; gap: 8px; }
+      .mobile-logo .header-logo-year { font-size: 16px; font-weight: 700; color: #212f45; }
+
+      /* ── MOBILE REFUND BAR ── */
+      .mobile-refund-bar {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 8px 16px; background: #fff; border-bottom: 1px solid #e2e5e9;
+        position: sticky; top: 56px; z-index: 99;
+      }
+      .mobile-refund-bar .back-btn { position: static; }
+      .mobile-refund-pill {
+        display: flex; align-items: center; gap: 4px;
+        background: #f4f5f7; border-radius: 100px; padding: 6px 16px;
+        font-size: 14px; color: #212f45; font-weight: 500;
+      }
+
+      /* ── TAB NAV: hidden on mobile ── */
+      .tab-nav-wrapper { display: none; }
+
+      /* ── CONTENT BOX ── */
+      .content-box { margin: 0 8px; padding: 24px 16px 0; border-radius: 8px; }
+      .content-inner { padding: 0; }
+      .page-header { padding-top: 8px; margin-bottom: 20px; }
+      .page-header h1 { font-size: 20px; line-height: 28px; }
+
+      /* ── BACK / BOOKMARK buttons (main page) ── */
+      .content-box > .back-btn,
+      .content-box > .more-btn { display: none; }
+
+      /* ── SEARCH ── */
+      .search-wrapper { margin-bottom: 20px; }
+
+      /* ── INCOME TABLE ── */
+      .added-income-table { margin-bottom: 24px; }
+      .added-income-header { grid-template-columns: 1fr 96px 96px 96px; font-size: 12px; }
+      .added-income-header > div { padding: 8px 10px; }
+      .added-income-header .col-year,
+      .added-income-header .col-year--current { padding-left: 8px; padding-right: 8px; }
+      .added-income-row { grid-template-columns: 1fr 96px 96px 96px; min-height: 64px; }
+      .added-income-row > div { padding: 12px 10px; }
+      .added-income-row .col-prev,
+      .added-income-row .col-current { padding-left: 8px; padding-right: 8px; font-size: 13px; }
+      .added-income-label { font-size: 14px; line-height: 20px; }
+      .added-income-sublabel { font-size: 12px; line-height: 18px; }
+      .btn-edit-add { font-size: 0; gap: 0; }
+      .btn-edit-add svg { width: 20px; height: 20px; }
+      .btn-start { padding: 6px 12px; font-size: 13px; }
+      .needs-info-badge { font-size: 11px; line-height: 16px; padding: 2px 6px; }
+
+      /* ── CATEGORY HEADERS ── */
+      .category-header { padding: 20px 16px; }
+      .category-icon svg { width: 20px; height: 20px; }
+      .category-title { font-size: 15px; }
+      .category-subtitle { font-size: 13px; }
+      .income-item { padding: 14px 16px; min-height: 56px; }
+      .income-item-label { font-size: 14px; line-height: 20px; }
+      .income-item-sublabel { font-size: 13px; line-height: 18px; }
+
+      /* ── BUTTONS ROW ── */
+      .button-row { flex-direction: column; gap: 12px; padding: 20px 0; }
+      .btn-prev, .btn-continue { width: 100%; }
+
+      /* ── SUB-SCREENS ── */
+      .sub-screen .global-header { padding: 0 16px; }
+      .sub-screen .content-box { margin: 0 8px; padding: 24px 16px 0; }
+      .sub-screen .content-inner { padding: 0; }
+      .sub-screen .back-btn { display: flex; position: absolute; top: 16px; left: 12px; }
+      .sub-screen .more-btn { display: flex; position: absolute; top: 16px; right: 12px; }
+      .sub-screen-body { padding: 40px 0 0; }
+      .sub-screen-body h1 { font-size: 20px; margin: 0 0 20px; }
+      .congrats-body { padding: 40px 16px 24px; }
+      .congrats-title { font-size: 18px; }
+
+      /* ── MODAL ── */
+      .modal { width: calc(100% - 32px); padding: 24px; }
+
+      /* ── FOOTER ── */
+      .footer { padding: 16px 0; }
+      .footer-links { flex-wrap: wrap; }
+      .footer-copy { font-size: 11px; padding: 0 16px; }
+
+      /* ── HELPER LINKS ── */
+      .helper-links { margin: 24px 0 8px; }
+    }
+
+    /* ══════════════════════════════════════════════
+       RESPONSIVE — SMALL MOBILE (≤480px)
+       ══════════════════════════════════════════════ */
+    @media (max-width: 480px) {
+      .content-box { margin: 0 0; border-radius: 0; }
+      .added-income-header { grid-template-columns: 1fr 80px 80px 80px; }
+      .added-income-row { grid-template-columns: 1fr 80px 80px 80px; }
+      .added-income-header > div { padding: 8px 6px; font-size: 11px; }
+      .added-income-row > div { padding: 10px 6px; }
+      .added-income-row .col-prev,
+      .added-income-row .col-current { padding-left: 4px; padding-right: 4px; font-size: 12px; }
+      .sub-screen .content-box { margin: 0; border-radius: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ GLOBAL HEADER ═══ -->
+<header class="global-header">
+  <a class="header-logo" href="welcome.html">
+    <!-- FreeTaxUSA Wordmark -->
+    <svg width="166" height="19" viewBox="0 0 212 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2.13833 2.02319H0V23.6797H4.64346V15.0795H13.3373V11.0916H4.64346V6.20621H14.6328V2.02319H4.64346H2.13833Z" fill="#212352"/>
+      <path d="M24.9847 6.97888C24.1575 6.97888 23.3693 7.17399 22.6201 7.56419C21.8709 7.9544 21.2153 8.50069 20.6534 9.18745C20.4505 9.43718 20.271 9.70252 20.115 9.97567L20.0369 7.31446H15.7993V23.6797H20.2242V15.2044C20.2242 14.6894 20.3101 14.2133 20.4896 13.7841C20.6612 13.3549 20.9032 12.9725 21.2153 12.6525C21.5275 12.3325 21.8943 12.0828 22.3157 11.9111C22.7371 11.7394 23.1976 11.6458 23.6893 11.6458C24.0638 11.6458 24.4228 11.6926 24.774 11.7862C25.1252 11.8799 25.4218 11.9891 25.6715 12.114L26.8499 7.29105C26.6236 7.2052 26.3427 7.13496 26.0149 7.07253C25.6871 7.0101 25.3437 6.97888 24.9925 6.97888H24.9847Z" fill="#212352"/>
+      <path d="M40.8423 9.2811C40.1477 8.54751 39.3283 7.98562 38.384 7.5798C37.4319 7.17399 36.4017 6.97888 35.2935 6.97888C34.0995 6.97888 32.9913 7.18959 31.969 7.61102C30.9466 8.03244 30.0648 8.63336 29.3234 9.40597C28.582 10.1786 28.0045 11.0917 27.5908 12.1452C27.1772 13.1988 26.9743 14.3538 26.9743 15.6103C26.9743 17.2413 27.3489 18.6851 28.0903 19.9415C28.8317 21.198 29.8618 22.1891 31.1807 22.9149C32.4996 23.6329 34.0449 23.9997 35.8242 23.9997C36.5656 23.9997 37.3226 23.906 38.0796 23.7188C38.8444 23.5315 39.5858 23.2583 40.3038 22.8993C41.0218 22.5403 41.6851 22.0877 42.286 21.5492L40.1789 18.607C39.5 19.1611 38.86 19.5591 38.2591 19.7855C37.6582 20.0118 37.0026 20.1288 36.2768 20.1288C35.2233 20.1288 34.3102 19.9259 33.5376 19.5279C32.765 19.1299 32.1641 18.568 31.7426 17.8422C31.5007 17.4364 31.3368 16.976 31.2354 16.4843H42.8948L42.926 15.1264C42.965 13.948 42.8011 12.8632 42.4343 11.8799C42.0597 10.8888 41.529 10.0303 40.8423 9.29671V9.2811ZM33.0459 11.2477C33.6781 10.8966 34.4429 10.7249 35.3482 10.7249C35.9647 10.7249 36.5266 10.8497 37.0182 11.0995C37.5099 11.3492 37.9235 11.7004 38.2435 12.153C38.5635 12.6057 38.743 13.1129 38.782 13.667V13.7919H31.2666C31.3446 13.4329 31.4539 13.1051 31.6022 12.8008C31.9299 12.1218 32.4138 11.6067 33.0381 11.2555L33.0459 11.2477Z" fill="#212352"/>
+      <path d="M58.5613 9.2811C57.8667 8.54751 57.0473 7.98562 56.103 7.5798C55.1509 7.17399 54.1207 6.97888 53.0125 6.97888C51.8185 6.97888 50.7103 7.18959 49.688 7.61102C48.6656 8.03244 47.7837 8.63336 47.0424 9.40597C46.301 10.1786 45.7235 11.0917 45.3098 12.1452C44.8962 13.1988 44.6933 14.3538 44.6933 15.6103C44.6933 17.2413 45.0679 18.6851 45.8093 19.9415C46.5507 21.198 47.5808 22.1891 48.8997 22.9149C50.2186 23.6329 51.7639 23.9997 53.5432 23.9997C54.2846 23.9997 55.0416 23.906 55.7986 23.7188C56.5634 23.5315 57.3048 23.2583 58.0228 22.8993C58.7408 22.5403 59.4041 22.0877 60.005 21.5492L57.8979 18.607C57.219 19.1611 56.579 19.5591 55.9781 19.7855C55.3772 20.0118 54.7216 20.1288 53.9958 20.1288C52.9423 20.1288 52.0292 19.9259 51.2566 19.5279C50.484 19.1299 49.8831 18.568 49.4616 17.8422C49.2197 17.4364 49.0558 16.976 48.9544 16.4843H60.6137L60.645 15.1264C60.684 13.948 60.5201 12.8632 60.1533 11.8799C59.7787 10.8888 59.248 10.0303 58.5613 9.29671V9.2811ZM50.7649 11.2477C51.3971 10.8966 52.1619 10.7249 53.0671 10.7249C53.6837 10.7249 54.2456 10.8497 54.7372 11.0995C55.2289 11.3492 55.6425 11.7004 55.9625 12.153C56.2825 12.6057 56.4619 13.1129 56.501 13.667V13.7919H48.9856C49.0636 13.4329 49.1729 13.1051 49.3212 12.8008C49.6489 12.1218 50.1328 11.6067 50.7571 11.2555L50.7649 11.2477Z" fill="#212352"/>
+      <path d="M76.2998 2.02319H58.8497V6.20621H65.1633V23.6797H69.8068V6.20621H76.2998V2.02319Z" fill="#212352"/>
+      <path d="M86.1597 9.49211C85.8475 9.05508 85.4885 8.65707 85.0593 8.30588C84.552 7.89226 83.9667 7.57229 83.2956 7.33036C82.6244 7.09624 81.8908 6.97137 81.087 6.97137C79.6666 6.97137 78.3946 7.33817 77.2786 8.07176C76.1626 8.80535 75.2807 9.80428 74.633 11.0763C73.9852 12.3484 73.6574 13.8078 73.6574 15.4545C73.6574 17.1011 73.9774 18.5683 74.6174 19.8482C75.2573 21.1281 76.1236 22.1348 77.2161 22.884C78.3087 23.6254 79.534 24 80.8997 24C81.6645 24 82.3825 23.8829 83.0614 23.641C83.7404 23.4069 84.3569 23.0869 84.9032 22.6811C85.3714 22.3377 85.7539 21.9475 86.0972 21.5261V23.6878H90.5222V7.31476H86.1597V9.48431V9.49211ZM84.2711 19.5985C83.6545 19.9887 82.9288 20.1838 82.1093 20.1838C81.2899 20.1838 80.5953 19.9887 79.9866 19.5985C79.3779 19.2083 78.9018 18.6542 78.5506 17.944C78.1995 17.2338 78.0278 16.3988 78.0278 15.4545C78.0278 14.5102 78.1995 13.7141 78.5506 13.0118C78.9018 12.3094 79.3779 11.7553 79.9866 11.3573C80.5953 10.9515 81.3055 10.7564 82.1093 10.7564C82.9131 10.7564 83.6545 10.9593 84.2711 11.3573C84.8876 11.7553 85.3714 12.3094 85.707 13.0118C86.0504 13.7141 86.2143 14.5258 86.2143 15.4545C86.2143 16.3832 86.0426 17.2338 85.707 17.944C85.3636 18.6542 84.8876 19.2083 84.2711 19.5985Z" fill="#212352"/>
+      <path d="M109.068 7.3147H103.902L101.1 12.2313L97.627 7.3147H92.3046L98.3216 15.3608L92.2422 23.68H97.4085L100.608 18.537L104.214 23.68H109.474L103.402 15.3998L109.068 7.3147Z" fill="#212352"/>
+      <path d="M124.469 15.0798C124.469 15.946 124.266 16.7265 123.868 17.4132C123.47 18.1 122.916 18.6541 122.229 19.0677C121.535 19.4813 120.77 19.6842 119.927 19.6842C119.084 19.6842 118.351 19.4813 117.687 19.0677C117.016 18.6541 116.486 18.1078 116.095 17.4132C115.705 16.7187 115.51 15.946 115.51 15.0798V2.00006H110.835V15.3685C110.835 16.9996 111.226 18.459 112.014 19.7467C112.794 21.0343 113.879 22.0489 115.245 22.7825C116.618 23.5161 118.179 23.8829 119.935 23.8829C121.691 23.8829 123.221 23.5161 124.594 22.7825C125.968 22.0489 127.045 21.0421 127.825 19.7467C128.605 18.459 129.003 16.9996 129.003 15.3685V2.00006H124.485V15.0876L124.469 15.0798Z" fill="#212352"/>
+      <path d="M147.054 14.6661C146.703 13.9559 146.203 13.3394 145.556 12.8087C144.908 12.278 144.127 11.8332 143.222 11.4664C142.317 11.0918 141.295 10.7953 140.155 10.5689C139.554 10.4441 139.008 10.3036 138.516 10.1397C138.025 9.97582 137.595 9.78071 137.244 9.57C136.893 9.35929 136.628 9.10175 136.44 8.813C136.253 8.52425 136.159 8.19648 136.159 7.82188C136.159 7.34582 136.3 6.94781 136.581 6.61224C136.862 6.28446 137.244 6.02693 137.744 5.85523C138.235 5.68354 138.828 5.58989 139.507 5.58989C140.124 5.58989 140.733 5.69135 141.318 5.88645C141.903 6.08155 142.45 6.37811 142.957 6.76832C143.464 7.15852 143.932 7.64238 144.362 8.21989L147.304 5.37138C146.812 4.56755 146.196 3.88859 145.462 3.3267C144.728 2.7726 143.87 2.34337 142.879 2.03901C141.888 1.74246 140.733 1.59418 139.414 1.59418C138.345 1.59418 137.322 1.75026 136.37 2.05462C135.41 2.36679 134.567 2.81162 133.834 3.38913C133.1 3.96663 132.53 4.6534 132.117 5.44942C131.703 6.24544 131.5 7.1039 131.5 8.03259C131.5 8.96128 131.641 9.7573 131.922 10.4753C132.203 11.2011 132.624 11.841 133.209 12.4107C133.787 12.9804 134.505 13.4565 135.371 13.8311C136.237 14.2135 137.244 14.5412 138.399 14.8066C138.938 14.8924 139.429 14.9939 139.882 15.1344C140.335 15.267 140.748 15.4231 141.123 15.5948C141.497 15.7743 141.817 15.9694 142.083 16.1801C142.348 16.3908 142.559 16.6405 142.699 16.9215C142.84 17.2024 142.918 17.5068 142.918 17.8346C142.918 18.2872 142.769 18.6774 142.489 19.013C142.2 19.3408 141.802 19.5983 141.294 19.77C140.787 19.9417 140.218 20.0353 139.578 20.0353C138.399 20.0353 137.314 19.7856 136.315 19.2783C135.317 18.7711 134.31 17.819 133.303 16.4142L130.392 19.7232C131.071 20.6285 131.844 21.4089 132.694 22.041C133.553 22.681 134.528 23.1648 135.636 23.4926C136.737 23.8204 137.962 23.9842 139.304 23.9842C140.951 23.9842 142.395 23.7111 143.636 23.1648C144.877 22.6185 145.844 21.8303 146.547 20.8002C147.249 19.77 147.6 18.5213 147.6 17.0542C147.6 16.1645 147.421 15.3685 147.077 14.6583L147.054 14.6661Z" fill="#212352"/>
+      <path d="M163.661 23.6797H168.422L159.986 2.02319H155.842L147.366 23.6797H151.947L153.664 19.1299H161.976L163.677 23.6797H163.661ZM155.069 15.3917L156.302 12.1139C156.466 11.6379 156.645 11.154 156.825 10.6624C157.012 10.1707 157.184 9.65564 157.348 9.13276C157.512 8.60988 157.668 8.09481 157.824 7.59535C157.98 8.0792 158.136 8.58647 158.308 9.11715C158.495 9.69466 158.674 10.2409 158.846 10.756C159.018 11.2711 159.174 11.6925 159.291 12.0281L160.555 15.3995H155.053L155.069 15.3917Z" fill="#212352"/>
+      <path d="M206.305 6.1558H166.592L164.952 1.98059H206.305V6.1558Z" fill="#D11911"/>
+      <path d="M206.304 14.8887H170.002L168.397 10.7057L206.304 10.7057V14.8887Z" fill="#D11911"/>
+      <path d="M206.304 23.6214L173.426 23.6213L171.763 19.4071L206.304 19.4384V23.6214Z" fill="#D11911"/>
+      <path d="M210.219 3.63351C209.988 3.63594 209.76 3.59101 209.547 3.50151C209.341 3.41386 209.155 3.28695 208.997 3.12788C208.838 2.962 208.711 2.76772 208.623 2.55512C208.441 2.07974 208.441 1.55388 208.623 1.07849C208.711 0.865892 208.838 0.671616 208.997 0.505736C209.156 0.343372 209.347 0.21489 209.557 0.128002C209.768 0.0411131 209.993 -0.0023906 210.221 0.000101305C210.451 -2.54542e-05 210.679 0.0448149 210.892 0.132103C211.099 0.218622 211.287 0.34565 211.445 0.505736C211.605 0.670867 211.732 0.865333 211.818 1.07849C212.003 1.55332 212.003 2.0803 211.818 2.55512C211.732 2.76828 211.605 2.96275 211.445 3.12788C211.287 3.28797 211.099 3.41499 210.892 3.50151C210.679 3.59011 210.45 3.635 210.219 3.63351ZM210.219 3.29344C210.404 3.29434 210.587 3.25781 210.758 3.18605C210.927 3.11993 211.08 3.0176 211.205 2.88625C211.332 2.75175 211.431 2.59361 211.496 2.42088C211.568 2.22769 211.604 2.02292 211.601 1.81681C211.603 1.61366 211.567 1.41192 211.496 1.22168C211.43 1.04814 211.331 0.888724 211.205 0.751841C211.08 0.61878 210.928 0.512827 210.76 0.440493C210.592 0.36816 210.411 0.330976 210.228 0.331225C210.04 0.328436 209.855 0.366617 209.684 0.443091C209.519 0.51368 209.372 0.619002 209.252 0.751841C209.129 0.889504 209.031 1.04878 208.966 1.22168C208.893 1.41148 208.856 1.61343 208.858 1.81681C208.856 2.02315 208.892 2.22813 208.966 2.42088C209.03 2.59295 209.128 2.75095 209.252 2.88625C209.371 3.01678 209.518 3.11919 209.682 3.18605C209.852 3.25799 210.034 3.29454 210.219 3.29344ZM209.547 2.72963V0.856996H210.248C210.426 0.851921 210.603 0.898533 210.756 0.991235C210.831 1.04171 210.892 1.11151 210.931 1.19336C210.97 1.27521 210.987 1.36611 210.979 1.4566C210.98 1.56626 210.948 1.6736 210.888 1.76535C210.83 1.85863 210.741 1.92897 210.637 1.96447L211.062 2.72963H210.637L210.315 2.08305H209.923V2.72963H209.547ZM209.923 1.78996H210.163C210.427 1.78996 210.561 1.6848 210.561 1.4745C210.563 1.43336 210.556 1.39227 210.542 1.35378C210.527 1.31529 210.505 1.28022 210.476 1.25076C210.391 1.18718 210.286 1.15765 210.181 1.16798H209.923V1.78996Z" fill="#212352"/>
+    </svg>
+    <span class="header-logo-year">2025</span>
+  </a>
+
+  <div class="header-center"></div>
+
+  <div class="header-right">
+    <button class="header-nav-btn">
+      <!-- Search icon -->
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      Search
+    </button>
+    <button class="header-nav-btn">
+      Support
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <button class="header-nav-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+      </svg>
+      Account
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ═══ TAB NAV ═══ -->
+<div class="tab-nav-wrapper">
+  <nav class="tab-nav">
+    <!-- Completed -->
+    <button class="tab tab--complete">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#15aa51" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      Personal
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <!-- Active -->
+    <button class="tab tab--active">
+      Income
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <!-- Disabled -->
+    <button class="tab tab--disabled" disabled>
+      Deductions / Credits
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <button class="tab tab--disabled" disabled>
+      Misc
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <button class="tab tab--disabled" disabled>
+      Summary
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <button class="tab tab--disabled" disabled>
+      State
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <button class="tab tab--disabled" disabled>
+      Final Steps
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+  </nav>
+</div>
+
+<!-- ═══ MAIN CONTENT ═══ -->
+<div class="page-body">
+
+  <!-- ─── SCREEN 1: YOUR WAGES (W-2) INTRO ─── -->
+  <div class="content-box screen-hidden" id="screen-wages">
+
+    <!-- Back & More buttons -->
+    <button class="back-btn" aria-label="Go back">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+    </button>
+    <button class="more-btn" aria-label="More options">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 7.8C5 6.11984 5 5.27976 5.32698 4.63803C5.6146 4.07354 6.07354 3.6146 6.63803 3.32698C7.27976 3 8.11984 3 9.8 3H14.2C15.8802 3 16.7202 3 17.362 3.32698C17.9265 3.6146 18.3854 4.07354 18.673 4.63803C19 5.27976 19 6.11984 19 7.8V21L12 17L5 21V7.8Z" stroke="#212F45" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+
+    <div class="content-inner">
+      <div class="page-header">
+        <h1>
+          Your Wages (Form W-2)
+          <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Learn more about Form W-2">?</span>
+        </h1>
+      </div>
+
+      <div class="w2-list">
+        <div class="w2-card">
+          <div class="w2-card-main">
+            <div class="w2-card-cell">
+              <div class="w2-card-label">Employer</div>
+              <div class="w2-card-employer">Acme Corporation</div>
+            </div>
+            <div class="w2-card-cell">
+              <div class="w2-card-label">Wages</div>
+              <div class="w2-card-amount">$68,500.00</div>
+            </div>
+          </div>
+          <div class="w2-card-actions">
+            <button class="w2-card-btn" onclick="return false;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              Edit
+            </button>
+            <button class="w2-card-btn" onclick="return false;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              Delete
+            </button>
+          </div>
+        </div>
+
+        <div class="w2-card">
+          <div class="w2-card-main">
+            <div class="w2-card-cell">
+              <div class="w2-card-label">Employer</div>
+              <div class="w2-card-employer">Lumen Logistics LLC</div>
+            </div>
+            <div class="w2-card-cell">
+              <div class="w2-card-label">Wages</div>
+              <div class="w2-card-amount">$14,260.00</div>
+            </div>
+          </div>
+          <div class="w2-card-actions">
+            <button class="w2-card-btn" onclick="return false;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              Edit
+            </button>
+            <button class="w2-card-btn" onclick="return false;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <button class="w2-add-btn" onclick="return false;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add a W-2
+      </button>
+
+      <p class="w2-body-text">
+        If you have any more W-2s for wages and salaries, add them here. You can come back and enter them later if you don't have them now.
+      </p>
+      <p class="w2-body-text">
+        If you have a 1099 form, we'll work on that later.
+      </p>
+    </div><!-- /content-inner -->
+
+    <!-- Button row — outside content-inner -->
+    <div class="button-row">
+      <button class="btn-prev" onclick="window.location.href='income-import-complete.html'">Previous Page</button>
+      <button class="btn-continue" onclick="goToIncomeScreen()">Continue</button>
+    </div>
+
+  </div><!-- /content-box #screen-wages -->
+
+
+  <!-- ─── SCREEN 2: YOUR INCOME (hidden until Continue is clicked) ─── -->
+  <div class="content-box" id="screen-income">
+
+    <!-- Page actions -->
+    <div class="page-actions">
+      <button class="icon-btn" onclick="window.location.href='income-import-complete.html'" title="Go back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m0 0 7 7m-7-7 7-7"/></svg>
+      </button>
+      <button class="icon-btn" title="Bookmark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7.8c0-1.68 0-2.52.327-3.162a3 3 0 0 1 1.311-1.311C7.28 3 8.12 3 9.8 3h4.4c1.68 0 2.52 0 3.162.327a3 3 0 0 1 1.311 1.311C19 5.28 19 6.12 19 7.8V21l-7-4-7 4V7.8Z"/></svg>
+      </button>
+    </div>
+
+    <div class="content-inner">
+      <!-- Page Header -->
+      <div class="page-header">
+        <h1>
+          Your income
+          <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Learn more about income types">?</span>
+        </h1>
+        <p>Click on any income items that may apply to you.</p>
+      </div>
+
+      <!-- ── ADDED INCOME TABLE ── -->
+      <div class="added-income-table" id="addedIncomeTable">
+        <div class="added-income-header">
+          <div></div>
+          <div class="col-year">2024</div>
+          <div class="col-year col-year--current">2025</div>
+          <div class="col-actions"></div>
+        </div>
+
+        <!-- Wages — already completed -->
+        <div class="added-income-row" id="row-wages">
+          <div>
+            <div class="added-income-label">Wages and Salaries
+              <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="About W-2 wages">?</span>
+            </div>
+            <div class="added-income-sublabel">Form W-2</div>
+          </div>
+          <div class="added-income-amount col-prev">$43,964</div>
+          <div class="col-current">
+            <span class="needs-info-badge">Needs review</span>
+          </div>
+          <div class="col-actions">
+            <button class="btn-start" onclick="goBackToWages()">Start</button>
+          </div>
+        </div>
+
+        <!-- Investments — rollover, needs info -->
+        <div class="added-income-row" id="row-investments">
+          <div>
+            <div class="added-income-label">Investments and Savings
+              <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="About investment income">?</span>
+            </div>
+            <div class="added-income-sublabel">
+              1099-INT, 1099-DIV, 1099-B, consolidated 1099, 1099-DA
+              <a href="#" class="pdf-link" id="investments-pdf-link" style="display:none">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                View PDF
+              </a>
+            </div>
+          </div>
+          <div class="added-income-amount col-prev">$46</div>
+          <div class="col-current">
+            <span class="needs-info-badge">Needs review</span>
+          </div>
+          <div class="col-actions">
+            <button class="btn-start" onclick="showInvestmentsScreen()">Start</button>
+          </div>
+        </div>
+
+        <!-- Retirement — imported -->
+        <div class="added-income-row" id="row-retirement">
+          <div>
+            <div class="added-income-label">Retirement Income
+              <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="About retirement income">?</span>
+            </div>
+            <div class="added-income-sublabel">Form 1099-R</div>
+          </div>
+          <div class="added-income-amount col-prev">$623</div>
+          <div class="col-current">
+            <span class="needs-info-badge">Needs review</span>
+          </div>
+          <div class="col-actions">
+            <button class="btn-start" onclick="showGenericScreen('retirement')">Start</button>
+          </div>
+        </div>
+
+<!-- Dynamically added rows will go here -->
+      </div>
+
+      <!-- ── ADD MORE INCOME ── -->
+      <div class="section-divider">Add more income</div>
+
+      <!-- Search -->
+      <div class="search-wrapper">
+        <div class="search-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </div>
+        <input
+          type="text"
+          class="search-input"
+          id="incomeSearch"
+          placeholder="Search forms or kinds of income..."
+          oninput="filterIncome(this.value)"
+          autocomplete="off"
+        />
+        <button class="search-clear" id="searchClear" onclick="clearSearch()" aria-label="Clear search">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 11C0 4.92487 4.92487 0 11 0C17.0751 0 22 4.92487 22 11C22 17.0751 17.0751 22 11 22C4.92487 22 0 17.0751 0 11Z" fill="#F4F9FF"/>
+            <path d="M14 8L8 14M8 8L14 14" stroke="#016EE6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- No results empty state -->
+      <div class="no-results" id="noResults">
+        <div class="no-results-illustration" id="noResultsIllustration">
+          <svg width="162" height="104" viewBox="0 0 162 104" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect y="5.09" width="156.53" height="98.37" fill="#016EE6"/>
+            <rect x="5.09" width="156.53" height="98.37" fill="#E1EFFF"/>
+            <text id="noResultsFormText" x="83" y="46" text-anchor="middle" font-family="Lexend, sans-serif" font-size="24" font-weight="600" fill="#0850C4"></text>
+            <path d="M22.45 75.006L145.148 74.298M22.327 59.476L145.025 58.768" stroke="#59B7FF" stroke-width="3.48" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="no-results-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#016ee6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </div>
+        <p class="no-results-title" id="noResultsTitle">No results found</p>
+        <p class="no-results-sub" id="noResultsSub">Try searching for a form number, income type, or source.</p>
+        <div class="no-results-path" id="noResultsPath"></div>
+        <button class="no-results-clear" onclick="clearSearch()">Clear search</button>
+      </div>
+
+      <!-- ── CATEGORIES ── -->
+      <div class="income-categories" id="categoriesContainer">
+
+        <!-- COMMON INCOME (expanded by default) -->
+        <div class="category-block" data-category="common">
+          <div class="category-header" onclick="toggleCategory(this)">
+            <div class="category-header-left">
+              <div class="category-header-top">
+                <div class="category-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.101 4C11.3636 2.76281 13.0927 2 15 2C18.866 2 22 5.13401 22 9C22 10.9073 21.2372 12.6365 19.9999 13.899M16 15C16 18.866 12.866 22 9 22C5.13401 22 2 18.866 2 15C2 11.134 5.13401 8 9 8C12.866 8 16 11.134 16 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="category-title">Common income
+                  <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Common income types">?</span>
+                </div>
+              </div>
+              <div class="category-subtitle">Wages (W-2), Retirement, Interest, Stocks, Unemployment, etc.</div>
+            </div>
+            <div class="category-chevron open">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+          <div class="category-items open" id="items-common"><div class="category-items-inner">
+
+            <div class="income-item" data-label="Wages and Salaries" data-forms="Form W-2 W2">
+              <div>
+                <div class="income-item-label">Wages and Salaries</div>
+                <div class="income-item-sublabel">Form W-2</div>
+              </div>
+              <button class="btn-edit-add" onclick="openModal('wages')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                Edit/Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="Investments and Savings" data-forms="1099-INT 1099-DIV 1099-B consolidated 1099 1099-DA" id="cat-investments">
+              <div>
+                <div class="income-item-label">Investments and Savings</div>
+                <div class="income-item-sublabel">1099-INT, 1099-DIV, 1099-B, consolidated 1099, 1099-DA</div>
+              </div>
+              <button class="btn-add" onclick="showInvestmentsScreen()" id="cat-investments-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="Unemployment Compensation" data-forms="Form 1099-G 1099G unemployment">
+              <div>
+                <div class="income-item-label">Unemployment Compensation</div>
+                <div class="income-item-sublabel">Form 1099-G</div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('unemployment')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="Social Security Benefits" data-forms="SSA-1099 RRB-1099 social security">
+              <div>
+                <div class="income-item-label">Social Security Benefits</div>
+                <div class="income-item-sublabel">Form SSA-1099 and RRB-1099</div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('social-security')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="Retirement Income" data-forms="1099-R CSA-1099-R CSF-1099-R RRB-1099-R retirement pension">
+              <div>
+                <div class="income-item-label">Retirement Income</div>
+                <div class="income-item-sublabel">Includes Form 1099-R, CSA-1099-R, CSF-1099-R, and RRB-1099-R</div>
+              </div>
+              <button class="btn-edit-add" onclick="openModal('retirement')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                Edit/Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="Taxable State Refund" data-forms="Form 1099-G state refund">
+              <div>
+                <div class="income-item-label">Taxable State Refund</div>
+                <div class="income-item-sublabel">Form 1099-G</div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('state-refund')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="Capital Loss Carryovers" data-forms="capital loss carryover">
+              <div>
+                <div class="income-item-label">Capital Loss Carryovers</div>
+                <div class="income-item-sublabel"></div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('capital-loss')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+          </div></div>
+        </div>
+
+        <!-- BUSINESS & RENTAL (collapsed) -->
+        <div class="category-block" data-category="business">
+          <div class="category-header" onclick="toggleCategory(this)">
+            <div class="category-header-left">
+              <div class="category-header-top">
+                <div class="category-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 21V15.6C15 15.0399 15 14.7599 14.891 14.546C14.7951 14.3578 14.6422 14.2049 14.454 14.109C14.2401 14 13.9601 14 13.4 14H10.6C10.0399 14 9.75992 14 9.54601 14.109C9.35785 14.2049 9.20487 14.3578 9.10899 14.546C9 14.7599 9 15.0399 9 15.6V21M3 7C3 8.65685 4.34315 10 6 10C7.65685 10 9 8.65685 9 7C9 8.65685 10.3431 10 12 10C13.6569 10 15 8.65685 15 7C15 8.65685 16.3431 10 18 10C19.6569 10 21 8.65685 21 7M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V6.2C21 5.0799 21 4.51984 20.782 4.09202C20.5903 3.71569 20.2843 3.40973 19.908 3.21799C19.4802 3 18.9201 3 17.8 3H6.2C5.0799 3 4.51984 3 4.09202 3.21799C3.71569 3.40973 3.40973 3.71569 3.21799 4.09202C3 4.51984 3 5.07989 3 6.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="category-title">Business and rental income
+                  <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Business income types">?</span>
+                </div>
+              </div>
+              <div class="category-subtitle">1099-NEC, 1099-MISC, 1099-K, Schedule C, Rental, Partnership and S-Corporation K-1s, etc.</div>
+            </div>
+            <div class="category-chevron">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+          <div class="category-items" id="items-business"><div class="category-items-inner">
+
+            <div class="income-item" data-label="Form 1099-NEC and Form 1099-MISC Income" data-forms="1099-NEC 1099-MISC nonemployee compensation miscellaneous">
+              <div>
+                <div class="income-item-label">Form 1099-NEC and Form 1099-MISC Income</div>
+              </div>
+              <button class="btn-add" onclick="showNecScreen()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="Form 1099-K Income" data-forms="1099-K payment card third party network">
+              <div>
+                <div class="income-item-label">Form 1099-K Income</div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('1099k')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="Business Income" data-forms="Schedule C consulting freelancing contracting self employment">
+              <div>
+                <div class="income-item-label">Business Income</div>
+                <div class="income-item-sublabel">Schedule C, including consulting, freelancing, or contracting income</div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('business')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="Partnership Income" data-forms="Schedule K-1 partnership">
+              <div>
+                <div class="income-item-label">Partnership Income</div>
+                <div class="income-item-sublabel">Schedule K-1</div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('partnership')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="S Corporation Income" data-forms="Schedule K-1 S-corp S corporation">
+              <div>
+                <div class="income-item-label">S Corporation Income</div>
+                <div class="income-item-sublabel">Schedule K-1</div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('s-corp')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="Rental Income" data-forms="Schedule E rental property landlord">
+              <div>
+                <div class="income-item-label">Rental Income</div>
+                <div class="income-item-sublabel">Schedule E</div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('rental')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="Farm Income" data-forms="Schedule F farm farming agriculture">
+              <div>
+                <div class="income-item-label">Farm Income</div>
+                <div class="income-item-sublabel">Schedule F</div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('farm')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="Farm Rental Income" data-forms="Form 4835 farm rental">
+              <div>
+                <div class="income-item-label">Farm Rental Income</div>
+                <div class="income-item-sublabel">Form 4835</div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('farm-rental')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="Sale of Business Assets" data-forms="business assets depreciation sale">
+              <div>
+                <div class="income-item-label">Sale of Business Assets</div>
+                <div class="income-item-sublabel" style="color:#8898aa;">Less common</div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('business-assets')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+          </div></div>
+        </div>
+
+        <!-- UNCOMMON INCOME (collapsed) -->
+        <div class="category-block" data-category="uncommon">
+          <div class="category-header" onclick="toggleCategory(this)">
+            <div class="category-header-left">
+              <div class="category-header-top">
+                <div class="category-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 15C8.68629 15 6 12.3137 6 9V3.44444C6 3.0306 6 2.82367 6.06031 2.65798C6.16141 2.38021 6.38021 2.16141 6.65798 2.06031C6.82367 2 7.0306 2 7.44444 2H16.5556C16.9694 2 17.1763 2 17.342 2.06031C17.6198 2.16141 17.8386 2.38021 17.9397 2.65798C18 2.82367 18 3.0306 18 3.44444V9C18 12.3137 15.3137 15 12 15ZM12 15V18M18 4H20.5C20.9659 4 21.1989 4 21.3827 4.07612C21.6277 4.17761 21.8224 4.37229 21.9239 4.61732C22 4.80109 22 5.03406 22 5.5V6C22 6.92997 22 7.39496 21.8978 7.77646C21.6204 8.81173 20.8117 9.62038 19.7765 9.89778C19.395 10 18.93 10 18 10M6 4H3.5C3.03406 4 2.80109 4 2.61732 4.07612C2.37229 4.17761 2.17761 4.37229 2.07612 4.61732C2 4.80109 2 5.03406 2 5.5V6C2 6.92997 2 7.39496 2.10222 7.77646C2.37962 8.81173 3.18827 9.62038 4.22354 9.89778C4.60504 10 5.07003 10 6 10M7.44444 22H16.5556C16.801 22 17 21.801 17 21.5556C17 19.5919 15.4081 18 13.4444 18H10.5556C8.59188 18 7 19.5919 7 21.5556C7 21.801 7.19898 22 7.44444 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="category-title">Uncommon income
+                  <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Uncommon income types">?</span>
+                </div>
+              </div>
+              <div class="category-subtitle">Taxable scholarships, gambling income, canceled debt, estate K-1s, other income</div>
+            </div>
+            <div class="category-chevron">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+          <div class="category-items" id="items-uncommon"><div class="category-items-inner">
+
+            <div class="income-item" data-label="Gambling Income" data-forms="W-2G gambling winnings casino">
+              <div>
+                <div class="income-item-label">Gambling Income</div>
+                <div class="income-item-sublabel">Form W-2G</div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('gambling')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="Original Issue Discount Income" data-forms="1099-OID original issue discount bond">
+              <div>
+                <div class="income-item-label">Original Issue Discount Income</div>
+                <div class="income-item-sublabel">Form 1099-OID</div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('oid')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="Estate or Trust Income" data-forms="K-1 estate trust 1041">
+              <div>
+                <div class="income-item-label">Estate or Trust Income</div>
+                <div class="income-item-sublabel">Schedule K-1</div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('estate')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="Seller-Financed Loans" data-forms="seller financed loan mortgage interest">
+              <div>
+                <div class="income-item-label">Seller-Financed Loans</div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('seller-loans')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="Royalty Income" data-forms="royalties oil gas mineral rights">
+              <div>
+                <div class="income-item-label">Royalty Income</div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('royalty')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="Unreported or Allocated Tips" data-forms="tips allocated unreported wages">
+              <div>
+                <div class="income-item-label">Unreported or Allocated Tips</div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('tips')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="Sale of Home" data-forms="sale home residence capital gain exclusion">
+              <div>
+                <div class="income-item-label">Sale of Home</div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('sale-home')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="Installment Sales" data-forms="installment sale form 6252 deferred gain">
+              <div>
+                <div class="income-item-label">Installment Sales</div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('installment')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="Canceled Debt" data-forms="1099-C canceled debt forgiven">
+              <div>
+                <div class="income-item-label">Canceled Debt</div>
+                <div class="income-item-sublabel">Form 1099-C</div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('canceled-debt')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="Qualified Tuition Program Distributions" data-forms="1099-Q 529 plan tuition distribution">
+              <div>
+                <div class="income-item-label">Qualified Tuition Program Distributions</div>
+                <div class="income-item-sublabel">Form 1099-Q</div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('tuition-dist')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="Long-Term Care Insurance Payments" data-forms="1099-LTC long term care insurance">
+              <div>
+                <div class="income-item-label">Long-Term Care Insurance Payments</div>
+                <div class="income-item-sublabel">Form 1099-LTC</div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('ltc')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="ABLE Account Distributions" data-forms="1099-QA ABLE account disability">
+              <div>
+                <div class="income-item-label">ABLE Account Distributions</div>
+                <div class="income-item-sublabel">Form 1099-QA</div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('able')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="Child with Investment Income Over $1,350" data-forms="8814 kiddie tax child investment income">
+              <div>
+                <div class="income-item-label">Child with Investment Income Over $1,350</div>
+                <div class="income-item-sublabel">Form 8814</div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('child-invest')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="Undistributed Long-Term Capital Gains" data-forms="2439 undistributed capital gains mutual fund">
+              <div>
+                <div class="income-item-label">Undistributed Long-Term Capital Gains</div>
+                <div class="income-item-sublabel">Form 2439</div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('undist-gains')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="Contracts and Straddles" data-forms="contracts straddles options futures section 1256">
+              <div>
+                <div class="income-item-label">Contracts and Straddles</div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('contracts')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="income-item" data-label="Other Income" data-forms="other miscellaneous income scholarship household employee">
+              <div>
+                <div class="income-item-label">Other Income</div>
+                <div class="income-item-sublabel">Includes taxable scholarship income, household employee wages, and other miscellaneous income</div>
+              </div>
+              <button class="btn-add" onclick="showGenericScreen('other')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+
+          </div></div>
+        </div>
+
+      </div><!-- /income-categories -->
+
+      <!-- Helper links -->
+      <div class="helper-links">
+        <a href="#" onclick="openInfoModal('nontaxable'); return false;">What types of income are NOT taxable?</a>
+        <a href="#" onclick="openInfoModal('taxchanges'); return false;">How do the recent tax changes affect my 2025 taxes?</a>
+      </div>
+
+    </div><!-- /content-inner -->
+
+    <!-- Button row — outside content-inner -->
+    <div class="button-row">
+      <button class="btn-prev" onclick="window.location.href='income-import-complete.html'">Previous Page</button>
+      <button class="btn-continue">Continue</button>
+    </div>
+
+  </div><!-- /content-box -->
+</div><!-- /page-body -->
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="#">Privacy</a>
+    <a href="#">Security</a>
+    <a href="#">Accessibility</a>
+  </div>
+  <div class="footer-copyright">© 2002-2025 FreeTaxUSA, a TaxHawk, Inc. owned and operated website - All Rights Reserved</div>
+</footer>
+
+<!-- ═══ INFO MODALS ═══ -->
+<div class="modal-overlay" id="infoModalOverlay" onclick="if(event.target===this)closeInfoModal()">
+  <div class="modal" id="infoModal" style="max-height:80vh;overflow-y:auto;">
+    <button class="modal-close" onclick="closeInfoModal()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <h2 id="infoModalTitle" style="margin-bottom:16px;"></h2>
+    <div id="infoModalBody" style="font-size:14px;color:#212f45;line-height:22px;"></div>
+  </div>
+</div>
+
+<!-- ═══ MODAL (placeholder flow) ═══ -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModal()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <h2 id="modalTitle">Income Form</h2>
+    <p id="modalDesc" style="color:#667285;font-size:14px;margin:12px 0 28px;line-height:22px;"></p>
+    <div class="modal-actions">
+      <button class="btn-modal-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-modal-save" onclick="saveIncome()">Save &amp; Return</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SCREEN: ADD INVESTMENTS ═══ -->
+<div id="screen-investments" class="sub-screen">
+  <header class="global-header">
+    <a class="header-logo" href="#">
+      <svg width="166" height="19" viewBox="0 0 212 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.13833 2.02319H0V23.6797H4.64346V15.0795H13.3373V11.0916H4.64346V6.20621H14.6328V2.02319H4.64346H2.13833Z" fill="#212352"/><path d="M24.9847 6.97888C24.1575 6.97888 23.3693 7.17399 22.6201 7.56419C21.8709 7.9544 21.2153 8.50069 20.6534 9.18745C20.4505 9.43718 20.271 9.70252 20.115 9.97567L20.0369 7.31446H15.7993V23.6797H20.2242V15.2044C20.2242 14.6894 20.3101 14.2133 20.4896 13.7841C20.6612 13.3549 20.9032 12.9725 21.2153 12.6525C21.5275 12.3325 21.8943 12.0828 22.3157 11.9111C22.7371 11.7394 23.1976 11.6458 23.6893 11.6458C24.0638 11.6458 24.4228 11.6926 24.774 11.7862C25.1252 11.8799 25.4218 11.9891 25.6715 12.114L26.8499 7.29105C26.6236 7.2052 26.3427 7.13496 26.0149 7.07253C25.6871 7.0101 25.3437 6.97888 24.9925 6.97888H24.9847Z" fill="#212352"/><path d="M40.8423 9.2811C40.1477 8.54751 39.3283 7.98562 38.384 7.5798C37.4319 7.17399 36.4017 6.97888 35.2935 6.97888C34.0995 6.97888 32.9913 7.18959 31.969 7.61102C30.9466 8.03244 30.0648 8.63336 29.3234 9.40597C28.582 10.1786 28.0045 11.0917 27.5908 12.1452C27.1772 13.1988 26.9743 14.3538 26.9743 15.6103C26.9743 17.2413 27.3489 18.6851 28.0903 19.9415C28.8317 21.198 29.8618 22.1891 31.1807 22.9149C32.4996 23.6329 34.0449 23.9997 35.8242 23.9997C36.5656 23.9997 37.3226 23.906 38.0796 23.7188C38.8444 23.5315 39.5858 23.2583 40.3038 22.8993C41.0218 22.5403 41.6851 22.0877 42.286 21.5492L40.1789 18.607C39.5 19.1611 38.86 19.5591 38.2591 19.7855C37.6582 20.0118 37.0026 20.1288 36.2768 20.1288C35.2233 20.1288 34.3102 19.9259 33.5376 19.5279C32.765 19.1299 32.1641 18.568 31.7426 17.8422C31.5007 17.4364 31.3368 16.976 31.2354 16.4843H42.8948L42.926 15.1264C42.965 13.948 42.8011 12.8632 42.4343 11.8799C42.0597 10.8888 41.529 10.0303 40.8423 9.29671V9.2811ZM33.0459 11.2477C33.6781 10.8966 34.4429 10.7249 35.3482 10.7249C35.9647 10.7249 36.5266 10.8497 37.0182 11.0995C37.5099 11.3492 37.9235 11.7004 38.2435 12.153C38.5635 12.6057 38.743 13.1129 38.782 13.667V13.7919H31.2666C31.3446 13.4329 31.4539 13.1051 31.6022 12.8008C31.9299 12.1218 32.4138 11.6067 33.0381 11.2555L33.0459 11.2477Z" fill="#212352"/><path d="M58.5613 9.2811C57.8667 8.54751 57.0473 7.98562 56.103 7.5798C55.1509 7.17399 54.1207 6.97888 53.0125 6.97888C51.8185 6.97888 50.7103 7.18959 49.688 7.61102C48.6656 8.03244 47.7837 8.63336 47.0424 9.40597C46.301 10.1786 45.7235 11.0917 45.3098 12.1452C44.8962 13.1988 44.6933 14.3538 44.6933 15.6103C44.6933 17.2413 45.0679 18.6851 45.8093 19.9415C46.5507 21.198 47.5808 22.1891 48.8997 22.9149C50.2186 23.6329 51.7639 23.9997 53.5432 23.9997C54.2846 23.9997 55.0416 23.906 55.7986 23.7188C56.5634 23.5315 57.3048 23.2583 58.0228 22.8993C58.7408 22.5403 59.4041 22.0877 60.005 21.5492L57.8979 18.607C57.219 19.1611 56.579 19.5591 55.9781 19.7855C55.3772 20.0118 54.7216 20.1288 53.9958 20.1288C52.9423 20.1288 52.0292 19.9259 51.2566 19.5279C50.484 19.1299 49.8831 18.568 49.4616 17.8422C49.2197 17.4364 49.0558 16.976 48.9544 16.4843H60.6137L60.645 15.1264C60.684 13.948 60.5201 12.8632 60.1533 11.8799C59.7787 10.8888 59.248 10.0303 58.5613 9.29671V9.2811ZM50.7649 11.2477C51.3971 10.8966 52.1619 10.7249 53.0671 10.7249C53.6837 10.7249 54.2456 10.8497 54.7372 11.0995C55.2289 11.3492 55.6425 11.7004 55.9625 12.153C56.2825 12.6057 56.4619 13.1129 56.501 13.667V13.7919H48.9856C49.0636 13.4329 49.1729 13.1051 49.3212 12.8008C49.6489 12.1218 50.1328 11.6067 50.7571 11.2555L50.7649 11.2477Z" fill="#212352"/><path d="M76.2998 2.02319H58.8497V6.20621H65.1633V23.6797H69.8068V6.20621H76.2998V2.02319Z" fill="#212352"/><path d="M86.1597 9.49211C85.8475 9.05508 85.4885 8.65707 85.0593 8.30588C84.552 7.89226 83.9667 7.57229 83.2956 7.33036C82.6244 7.09624 81.8908 6.97137 81.087 6.97137C79.6666 6.97137 78.3946 7.33817 77.2786 8.07176C76.1626 8.80535 75.2807 9.80428 74.633 11.0763C73.9852 12.3484 73.6574 13.8078 73.6574 15.4545C73.6574 17.1011 73.9774 18.5683 74.6174 19.8482C75.2573 21.1281 76.1236 22.1348 77.2161 22.884C78.3087 23.6254 79.534 24 80.8997 24C81.6645 24 82.3825 23.8829 83.0614 23.641C83.7404 23.4069 84.3569 23.0869 84.9032 22.6811C85.3714 22.3377 85.7539 21.9475 86.0972 21.5261V23.6878H90.5222V7.31476H86.1597V9.48431V9.49211ZM84.2711 19.5985C83.6545 19.9887 82.9288 20.1838 82.1093 20.1838C81.2899 20.1838 80.5953 19.9887 79.9866 19.5985C79.3779 19.2083 78.9018 18.6542 78.5506 17.944C78.1995 17.2338 78.0278 16.3988 78.0278 15.4545C78.0278 14.5102 78.1995 13.7141 78.5506 13.0118C78.9018 12.3094 79.3779 11.7553 79.9866 11.3573C80.5953 10.9515 81.3055 10.7564 82.1093 10.7564C82.9131 10.7564 83.6545 10.9593 84.2711 11.3573C84.8876 11.7553 85.3714 12.3094 85.707 13.0118C86.0504 13.7141 86.2143 14.5258 86.2143 15.4545C86.2143 16.3832 86.0426 17.2338 85.707 17.944C85.3636 18.6542 84.8876 19.2083 84.2711 19.5985Z" fill="#212352"/><path d="M109.068 7.3147H103.902L101.1 12.2313L97.627 7.3147H92.3046L98.3216 15.3608L92.2422 23.68H97.4085L100.608 18.537L104.214 23.68H109.474L103.402 15.3998L109.068 7.3147Z" fill="#212352"/><path d="M124.469 15.0798C124.469 15.946 124.266 16.7265 123.868 17.4132C123.47 18.1 122.916 18.6541 122.229 19.0677C121.535 19.4813 120.77 19.6842 119.927 19.6842C119.084 19.6842 118.351 19.4813 117.687 19.0677C117.016 18.6541 116.486 18.1078 116.095 17.4132C115.705 16.7187 115.51 15.946 115.51 15.0798V2.00006H110.835V15.3685C110.835 16.9996 111.226 18.459 112.014 19.7467C112.794 21.0343 113.879 22.0489 115.245 22.7825C116.618 23.5161 118.179 23.8829 119.935 23.8829C121.691 23.8829 123.221 23.5161 124.594 22.7825C125.968 22.0489 127.045 21.0421 127.825 19.7467C128.605 18.459 129.003 16.9996 129.003 15.3685V2.00006H124.485V15.0876L124.469 15.0798Z" fill="#212352"/><path d="M147.054 14.6661C146.703 13.9559 146.203 13.3394 145.556 12.8087C144.908 12.278 144.127 11.8332 143.222 11.4664C142.317 11.0918 141.295 10.7953 140.155 10.5689C139.554 10.4441 139.008 10.3036 138.516 10.1397C138.025 9.97582 137.595 9.78071 137.244 9.57C136.893 9.35929 136.628 9.10175 136.44 8.813C136.253 8.52425 136.159 8.19648 136.159 7.82188C136.159 7.34582 136.3 6.94781 136.581 6.61224C136.862 6.28446 137.244 6.02693 137.744 5.85523C138.235 5.68354 138.828 5.58989 139.507 5.58989C140.124 5.58989 140.733 5.69135 141.318 5.88645C141.903 6.08155 142.45 6.37811 142.957 6.76832C143.464 7.15852 143.932 7.64238 144.362 8.21989L147.304 5.37138C146.812 4.56755 146.196 3.88859 145.462 3.3267C144.728 2.7726 143.87 2.34337 142.879 2.03901C141.888 1.74246 140.733 1.59418 139.414 1.59418C138.345 1.59418 137.322 1.75026 136.37 2.05462C135.41 2.36679 134.567 2.81162 133.834 3.38913C133.1 3.96663 132.53 4.6534 132.117 5.44942C131.703 6.24544 131.5 7.1039 131.5 8.03259C131.5 8.96128 131.641 9.7573 131.922 10.4753C132.203 11.2011 132.624 11.841 133.209 12.4107C133.787 12.9804 134.505 13.4565 135.371 13.8311C136.237 14.2135 137.244 14.5412 138.399 14.8066C138.938 14.8924 139.429 14.9939 139.882 15.1344C140.335 15.267 140.748 15.4231 141.123 15.5948C141.497 15.7743 141.817 15.9694 142.083 16.1801C142.348 16.3908 142.559 16.6405 142.699 16.9215C142.84 17.2024 142.918 17.5068 142.918 17.8346C142.918 18.2872 142.769 18.6774 142.489 19.013C142.2 19.3408 141.802 19.5983 141.294 19.77C140.787 19.9417 140.218 20.0353 139.578 20.0353C138.399 20.0353 137.314 19.7856 136.315 19.2783C135.317 18.7711 134.31 17.819 133.303 16.4142L130.392 19.7232C131.071 20.6285 131.844 21.4089 132.694 22.041C133.553 22.681 134.528 23.1648 135.636 23.4926C136.737 23.8204 137.962 23.9842 139.304 23.9842C140.951 23.9842 142.395 23.7111 143.636 23.1648C144.877 22.6185 145.844 21.8303 146.547 20.8002C147.249 19.77 147.6 18.5213 147.6 17.0542C147.6 16.1645 147.421 15.3685 147.077 14.6583L147.054 14.6661Z" fill="#212352"/><path d="M163.661 23.6797H168.422L159.986 2.02319H155.842L147.366 23.6797H151.947L153.664 19.1299H161.976L163.677 23.6797H163.661ZM155.069 15.3917L156.302 12.1139C156.466 11.6379 156.645 11.154 156.825 10.6624C157.012 10.1707 157.184 9.65564 157.348 9.13276C157.512 8.60988 157.668 8.09481 157.824 7.59535C157.98 8.0792 158.136 8.58647 158.308 9.11715C158.495 9.69466 158.674 10.2409 158.846 10.756C159.018 11.2711 159.174 11.6925 159.291 12.0281L160.555 15.3995H155.053L155.069 15.3917Z" fill="#212352"/><path d="M206.305 6.1558H166.592L164.952 1.98059H206.305V6.1558Z" fill="#D11911"/><path d="M206.304 14.8887H170.002L168.397 10.7057L206.304 10.7057V14.8887Z" fill="#D11911"/><path d="M206.304 23.6214L173.426 23.6213L171.763 19.4071L206.304 19.4384V23.6214Z" fill="#D11911"/></svg>
+      <span class="header-logo-year">2025</span>
+    </a>
+    <div class="header-center">
+      <div class="header-refund-item">Federal Refund: <span class="amount--refund">$413</span></div>
+    </div>
+    <div class="header-right">
+      <button class="header-nav-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search</button>
+      <button class="header-nav-btn">Support <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="header-nav-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Account <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+    </div>
+  </header>
+  <div class="tab-nav-wrapper">
+    <nav class="tab-nav">
+      <button class="tab" style="border:none;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#027932" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Personal <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="tab tab--active">Income <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="tab tab--disabled" disabled>Deductions / Credits <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="tab tab--disabled" disabled>Misc <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="tab tab--disabled" disabled>Summary <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="tab tab--disabled" disabled>State <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="tab tab--disabled" disabled>Final Steps <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+    </nav>
+  </div>
+  <div class="page-body">
+    <div class="content-box">
+      <button class="back-btn" onclick="hideInvestmentsScreen()" aria-label="Go back">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button class="more-btn" aria-label="More options">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 7.8C5 6.11984 5 5.27976 5.32698 4.63803C5.6146 4.07354 6.07354 3.6146 6.63803 3.32698C7.27976 3 8.11984 3 9.8 3H14.2C15.8802 3 16.7202 3 17.362 3.32698C17.9265 3.6146 18.3854 4.07354 18.673 4.63803C19 5.27976 19 6.11984 19 7.8V21L12 17L5 21V7.8Z" stroke="#212F45" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="content-inner sub-screen-body">
+        <h1>Your Investment and Savings Accounts</h1>
+        <p>Investment income includes:</p>
+        <ul>
+          <li>Interest (1099-INT)</li>
+          <li>Dividends (1099-DIV)</li>
+          <li>Sales of stocks, bonds, mutual funds, etc. (1099-B)</li>
+          <li>Crypto and NFT sales, exchanges, or currency use</li>
+          <li>Personal items sold for a gain (1099-K)</li>
+          <li>Other investment sales (vacation home, land, etc.)</li>
+        </ul>
+        <p><strong>Do you need to enter any investment income for 2025?</strong></p>
+        <button class="sub-screen-add-btn" onclick="showCongratsScreen('Nice job! You filled out your 1099-INT.', 'investments')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add an Investment
+        </button>
+        <a href="#" class="sub-screen-helper-link" onclick="return false;">Where do I enter my 1099-K?</a>
+      </div>
+      <div class="button-row">
+        <button class="btn-prev" onclick="hideInvestmentsScreen()">Previous Page</button>
+        <button class="btn-continue" onclick="showCongratsScreen('Nice job! You filled out your 1099-INT.', 'investments')">Continue</button>
+      </div>
+    </div>
+  </div>
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="#">Privacy</a><a href="#">Security</a><a href="#">Accessibility</a>
+    </div>
+    <div class="footer-copy">© 2002–2025 FreeTaxUSA, a TaxHawk, Inc. owned and operated website – All Rights Reserved</div>
+  </footer>
+</div>
+
+<!-- ═══ SCREEN: ADD 1099-NEC ═══ -->
+<div id="screen-nec" class="sub-screen">
+  <header class="global-header">
+    <a class="header-logo" href="#">
+      <svg width="166" height="19" viewBox="0 0 212 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.13833 2.02319H0V23.6797H4.64346V15.0795H13.3373V11.0916H4.64346V6.20621H14.6328V2.02319H4.64346H2.13833Z" fill="#212352"/><path d="M24.9847 6.97888C24.1575 6.97888 23.3693 7.17399 22.6201 7.56419C21.8709 7.9544 21.2153 8.50069 20.6534 9.18745C20.4505 9.43718 20.271 9.70252 20.115 9.97567L20.0369 7.31446H15.7993V23.6797H20.2242V15.2044C20.2242 14.6894 20.3101 14.2133 20.4896 13.7841C20.6612 13.3549 20.9032 12.9725 21.2153 12.6525C21.5275 12.3325 21.8943 12.0828 22.3157 11.9111C22.7371 11.7394 23.1976 11.6458 23.6893 11.6458C24.0638 11.6458 24.4228 11.6926 24.774 11.7862C25.1252 11.8799 25.4218 11.9891 25.6715 12.114L26.8499 7.29105C26.6236 7.2052 26.3427 7.13496 26.0149 7.07253C25.6871 7.0101 25.3437 6.97888 24.9925 6.97888H24.9847Z" fill="#212352"/><path d="M40.8423 9.2811C40.1477 8.54751 39.3283 7.98562 38.384 7.5798C37.4319 7.17399 36.4017 6.97888 35.2935 6.97888C34.0995 6.97888 32.9913 7.18959 31.969 7.61102C30.9466 8.03244 30.0648 8.63336 29.3234 9.40597C28.582 10.1786 28.0045 11.0917 27.5908 12.1452C27.1772 13.1988 26.9743 14.3538 26.9743 15.6103C26.9743 17.2413 27.3489 18.6851 28.0903 19.9415C28.8317 21.198 29.8618 22.1891 31.1807 22.9149C32.4996 23.6329 34.0449 23.9997 35.8242 23.9997C36.5656 23.9997 37.3226 23.906 38.0796 23.7188C38.8444 23.5315 39.5858 23.2583 40.3038 22.8993C41.0218 22.5403 41.6851 22.0877 42.286 21.5492L40.1789 18.607C39.5 19.1611 38.86 19.5591 38.2591 19.7855C37.6582 20.0118 37.0026 20.1288 36.2768 20.1288C35.2233 20.1288 34.3102 19.9259 33.5376 19.5279C32.765 19.1299 32.1641 18.568 31.7426 17.8422C31.5007 17.4364 31.3368 16.976 31.2354 16.4843H42.8948L42.926 15.1264C42.965 13.948 42.8011 12.8632 42.4343 11.8799C42.0597 10.8888 41.529 10.0303 40.8423 9.29671V9.2811ZM33.0459 11.2477C33.6781 10.8966 34.4429 10.7249 35.3482 10.7249C35.9647 10.7249 36.5266 10.8497 37.0182 11.0995C37.5099 11.3492 37.9235 11.7004 38.2435 12.153C38.5635 12.6057 38.743 13.1129 38.782 13.667V13.7919H31.2666C31.3446 13.4329 31.4539 13.1051 31.6022 12.8008C31.9299 12.1218 32.4138 11.6067 33.0381 11.2555L33.0459 11.2477Z" fill="#212352"/><path d="M58.5613 9.2811C57.8667 8.54751 57.0473 7.98562 56.103 7.5798C55.1509 7.17399 54.1207 6.97888 53.0125 6.97888C51.8185 6.97888 50.7103 7.18959 49.688 7.61102C48.6656 8.03244 47.7837 8.63336 47.0424 9.40597C46.301 10.1786 45.7235 11.0917 45.3098 12.1452C44.8962 13.1988 44.6933 14.3538 44.6933 15.6103C44.6933 17.2413 45.0679 18.6851 45.8093 19.9415C46.5507 21.198 47.5808 22.1891 48.8997 22.9149C50.2186 23.6329 51.7639 23.9997 53.5432 23.9997C54.2846 23.9997 55.0416 23.906 55.7986 23.7188C56.5634 23.5315 57.3048 23.2583 58.0228 22.8993C58.7408 22.5403 59.4041 22.0877 60.005 21.5492L57.8979 18.607C57.219 19.1611 56.579 19.5591 55.9781 19.7855C55.3772 20.0118 54.7216 20.1288 53.9958 20.1288C52.9423 20.1288 52.0292 19.9259 51.2566 19.5279C50.484 19.1299 49.8831 18.568 49.4616 17.8422C49.2197 17.4364 49.0558 16.976 48.9544 16.4843H60.6137L60.645 15.1264C60.684 13.948 60.5201 12.8632 60.1533 11.8799C59.7787 10.8888 59.248 10.0303 58.5613 9.29671V9.2811ZM50.7649 11.2477C51.3971 10.8966 52.1619 10.7249 53.0671 10.7249C53.6837 10.7249 54.2456 10.8497 54.7372 11.0995C55.2289 11.3492 55.6425 11.7004 55.9625 12.153C56.2825 12.6057 56.4619 13.1129 56.501 13.667V13.7919H48.9856C49.0636 13.4329 49.1729 13.1051 49.3212 12.8008C49.6489 12.1218 50.1328 11.6067 50.7571 11.2555L50.7649 11.2477Z" fill="#212352"/><path d="M76.2998 2.02319H58.8497V6.20621H65.1633V23.6797H69.8068V6.20621H76.2998V2.02319Z" fill="#212352"/><path d="M86.1597 9.49211C85.8475 9.05508 85.4885 8.65707 85.0593 8.30588C84.552 7.89226 83.9667 7.57229 83.2956 7.33036C82.6244 7.09624 81.8908 6.97137 81.087 6.97137C79.6666 6.97137 78.3946 7.33817 77.2786 8.07176C76.1626 8.80535 75.2807 9.80428 74.633 11.0763C73.9852 12.3484 73.6574 13.8078 73.6574 15.4545C73.6574 17.1011 73.9774 18.5683 74.6174 19.8482C75.2573 21.1281 76.1236 22.1348 77.2161 22.884C78.3087 23.6254 79.534 24 80.8997 24C81.6645 24 82.3825 23.8829 83.0614 23.641C83.7404 23.4069 84.3569 23.0869 84.9032 22.6811C85.3714 22.3377 85.7539 21.9475 86.0972 21.5261V23.6878H90.5222V7.31476H86.1597V9.48431V9.49211ZM84.2711 19.5985C83.6545 19.9887 82.9288 20.1838 82.1093 20.1838C81.2899 20.1838 80.5953 19.9887 79.9866 19.5985C79.3779 19.2083 78.9018 18.6542 78.5506 17.944C78.1995 17.2338 78.0278 16.3988 78.0278 15.4545C78.0278 14.5102 78.1995 13.7141 78.5506 13.0118C78.9018 12.3094 79.3779 11.7553 79.9866 11.3573C80.5953 10.9515 81.3055 10.7564 82.1093 10.7564C82.9131 10.7564 83.6545 10.9593 84.2711 11.3573C84.8876 11.7553 85.3714 12.3094 85.707 13.0118C86.0504 13.7141 86.2143 14.5258 86.2143 15.4545C86.2143 16.3832 86.0426 17.2338 85.707 17.944C85.3636 18.6542 84.8876 19.2083 84.2711 19.5985Z" fill="#212352"/><path d="M109.068 7.3147H103.902L101.1 12.2313L97.627 7.3147H92.3046L98.3216 15.3608L92.2422 23.68H97.4085L100.608 18.537L104.214 23.68H109.474L103.402 15.3998L109.068 7.3147Z" fill="#212352"/><path d="M124.469 15.0798C124.469 15.946 124.266 16.7265 123.868 17.4132C123.47 18.1 122.916 18.6541 122.229 19.0677C121.535 19.4813 120.77 19.6842 119.927 19.6842C119.084 19.6842 118.351 19.4813 117.687 19.0677C117.016 18.6541 116.486 18.1078 116.095 17.4132C115.705 16.7187 115.51 15.946 115.51 15.0798V2.00006H110.835V15.3685C110.835 16.9996 111.226 18.459 112.014 19.7467C112.794 21.0343 113.879 22.0489 115.245 22.7825C116.618 23.5161 118.179 23.8829 119.935 23.8829C121.691 23.8829 123.221 23.5161 124.594 22.7825C125.968 22.0489 127.045 21.0421 127.825 19.7467C128.605 18.459 129.003 16.9996 129.003 15.3685V2.00006H124.485V15.0876L124.469 15.0798Z" fill="#212352"/><path d="M147.054 14.6661C146.703 13.9559 146.203 13.3394 145.556 12.8087C144.908 12.278 144.127 11.8332 143.222 11.4664C142.317 11.0918 141.295 10.7953 140.155 10.5689C139.554 10.4441 139.008 10.3036 138.516 10.1397C138.025 9.97582 137.595 9.78071 137.244 9.57C136.893 9.35929 136.628 9.10175 136.44 8.813C136.253 8.52425 136.159 8.19648 136.159 7.82188C136.159 7.34582 136.3 6.94781 136.581 6.61224C136.862 6.28446 137.244 6.02693 137.744 5.85523C138.235 5.68354 138.828 5.58989 139.507 5.58989C140.124 5.58989 140.733 5.69135 141.318 5.88645C141.903 6.08155 142.45 6.37811 142.957 6.76832C143.464 7.15852 143.932 7.64238 144.362 8.21989L147.304 5.37138C146.812 4.56755 146.196 3.88859 145.462 3.3267C144.728 2.7726 143.87 2.34337 142.879 2.03901C141.888 1.74246 140.733 1.59418 139.414 1.59418C138.345 1.59418 137.322 1.75026 136.37 2.05462C135.41 2.36679 134.567 2.81162 133.834 3.38913C133.1 3.96663 132.53 4.6534 132.117 5.44942C131.703 6.24544 131.5 7.1039 131.5 8.03259C131.5 8.96128 131.641 9.7573 131.922 10.4753C132.203 11.2011 132.624 11.841 133.209 12.4107C133.787 12.9804 134.505 13.4565 135.371 13.8311C136.237 14.2135 137.244 14.5412 138.399 14.8066C138.938 14.8924 139.429 14.9939 139.882 15.1344C140.335 15.267 140.748 15.4231 141.123 15.5948C141.497 15.7743 141.817 15.9694 142.083 16.1801C142.348 16.3908 142.559 16.6405 142.699 16.9215C142.84 17.2024 142.918 17.5068 142.918 17.8346C142.918 18.2872 142.769 18.6774 142.489 19.013C142.2 19.3408 141.802 19.5983 141.294 19.77C140.787 19.9417 140.218 20.0353 139.578 20.0353C138.399 20.0353 137.314 19.7856 136.315 19.2783C135.317 18.7711 134.31 17.819 133.303 16.4142L130.392 19.7232C131.071 20.6285 131.844 21.4089 132.694 22.041C133.553 22.681 134.528 23.1648 135.636 23.4926C136.737 23.8204 137.962 23.9842 139.304 23.9842C140.951 23.9842 142.395 23.7111 143.636 23.1648C144.877 22.6185 145.844 21.8303 146.547 20.8002C147.249 19.77 147.6 18.5213 147.6 17.0542C147.6 16.1645 147.421 15.3685 147.077 14.6583L147.054 14.6661Z" fill="#212352"/><path d="M163.661 23.6797H168.422L159.986 2.02319H155.842L147.366 23.6797H151.947L153.664 19.1299H161.976L163.677 23.6797H163.661ZM155.069 15.3917L156.302 12.1139C156.466 11.6379 156.645 11.154 156.825 10.6624C157.012 10.1707 157.184 9.65564 157.348 9.13276C157.512 8.60988 157.668 8.09481 157.824 7.59535C157.98 8.0792 158.136 8.58647 158.308 9.11715C158.495 9.69466 158.674 10.2409 158.846 10.756C159.018 11.2711 159.174 11.6925 159.291 12.0281L160.555 15.3995H155.053L155.069 15.3917Z" fill="#212352"/><path d="M206.305 6.1558H166.592L164.952 1.98059H206.305V6.1558Z" fill="#D11911"/><path d="M206.304 14.8887H170.002L168.397 10.7057L206.304 10.7057V14.8887Z" fill="#D11911"/><path d="M206.304 23.6214L173.426 23.6213L171.763 19.4071L206.304 19.4384V23.6214Z" fill="#D11911"/></svg>
+      <span class="header-logo-year">2025</span>
+    </a>
+    <div class="header-center"><div class="header-refund-item">Federal Refund: <span class="amount--refund">$413</span></div></div>
+    <div class="header-right">
+      <button class="header-nav-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search</button>
+      <button class="header-nav-btn">Support <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="header-nav-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Account <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+    </div>
+  </header>
+  <div class="tab-nav-wrapper">
+    <nav class="tab-nav">
+      <button class="tab" style="border:none;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#027932" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Personal <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="tab tab--active">Income <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="tab tab--disabled" disabled>Deductions / Credits <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="tab tab--disabled" disabled>Misc <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="tab tab--disabled" disabled>Summary <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="tab tab--disabled" disabled>State <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="tab tab--disabled" disabled>Final Steps <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+    </nav>
+  </div>
+  <div class="page-body">
+    <div class="content-box">
+      <button class="back-btn" onclick="hideNecScreen()" aria-label="Go back">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button class="more-btn" aria-label="More options">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 7.8C5 6.11984 5 5.27976 5.32698 4.63803C5.6146 4.07354 6.07354 3.6146 6.63803 3.32698C7.27976 3 8.11984 3 9.8 3H14.2C15.8802 3 16.7202 3 17.362 3.32698C17.9265 3.6146 18.3854 4.07354 18.673 4.63803C19 5.27976 19 6.11984 19 7.8V21L12 17L5 21V7.8Z" stroke="#212F45" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="content-inner sub-screen-body">
+        <h1>Your 1099-NEC or 1099-MISC Income</h1>
+        <p><strong>Do you need to enter any 1099-NEC or 1099-MISC forms?</strong></p>
+        <button class="sub-screen-add-btn" onclick="showCongratsScreen('Nice job! You filled out your 1099-NEC.', 'nec')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add a 1099-NEC / 1099-MISC
+        </button>
+        <a href="#" class="sub-screen-helper-link" onclick="return false;">Where do I enter my 1099-K?</a>
+      </div>
+      <div class="button-row">
+        <button class="btn-prev" onclick="hideNecScreen()">Previous Page</button>
+        <button class="btn-continue" onclick="showCongratsScreen('Nice job! You filled out your 1099-NEC.', 'nec')">Continue</button>
+      </div>
+    </div>
+  </div>
+  <footer class="footer">
+    <div class="footer-links"><a href="#">Privacy</a><a href="#">Security</a><a href="#">Accessibility</a></div>
+    <div class="footer-copy">© 2002–2025 FreeTaxUSA, a TaxHawk, Inc. owned and operated website – All Rights Reserved</div>
+  </footer>
+</div>
+
+<!-- ═══ SCREEN: CONGRATS ═══ -->
+<div id="screen-congrats" class="sub-screen">
+  <header class="global-header">
+    <a class="header-logo" href="#">
+      <svg width="166" height="19" viewBox="0 0 212 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.13833 2.02319H0V23.6797H4.64346V15.0795H13.3373V11.0916H4.64346V6.20621H14.6328V2.02319H4.64346H2.13833Z" fill="#212352"/><path d="M24.9847 6.97888C24.1575 6.97888 23.3693 7.17399 22.6201 7.56419C21.8709 7.9544 21.2153 8.50069 20.6534 9.18745C20.4505 9.43718 20.271 9.70252 20.115 9.97567L20.0369 7.31446H15.7993V23.6797H20.2242V15.2044C20.2242 14.6894 20.3101 14.2133 20.4896 13.7841C20.6612 13.3549 20.9032 12.9725 21.2153 12.6525C21.5275 12.3325 21.8943 12.0828 22.3157 11.9111C22.7371 11.7394 23.1976 11.6458 23.6893 11.6458C24.0638 11.6458 24.4228 11.6926 24.774 11.7862C25.1252 11.8799 25.4218 11.9891 25.6715 12.114L26.8499 7.29105C26.6236 7.2052 26.3427 7.13496 26.0149 7.07253C25.6871 7.0101 25.3437 6.97888 24.9925 6.97888H24.9847Z" fill="#212352"/><path d="M40.8423 9.2811C40.1477 8.54751 39.3283 7.98562 38.384 7.5798C37.4319 7.17399 36.4017 6.97888 35.2935 6.97888C34.0995 6.97888 32.9913 7.18959 31.969 7.61102C30.9466 8.03244 30.0648 8.63336 29.3234 9.40597C28.582 10.1786 28.0045 11.0917 27.5908 12.1452C27.1772 13.1988 26.9743 14.3538 26.9743 15.6103C26.9743 17.2413 27.3489 18.6851 28.0903 19.9415C28.8317 21.198 29.8618 22.1891 31.1807 22.9149C32.4996 23.6329 34.0449 23.9997 35.8242 23.9997C36.5656 23.9997 37.3226 23.906 38.0796 23.7188C38.8444 23.5315 39.5858 23.2583 40.3038 22.8993C41.0218 22.5403 41.6851 22.0877 42.286 21.5492L40.1789 18.607C39.5 19.1611 38.86 19.5591 38.2591 19.7855C37.6582 20.0118 37.0026 20.1288 36.2768 20.1288C35.2233 20.1288 34.3102 19.9259 33.5376 19.5279C32.765 19.1299 32.1641 18.568 31.7426 17.8422C31.5007 17.4364 31.3368 16.976 31.2354 16.4843H42.8948L42.926 15.1264C42.965 13.948 42.8011 12.8632 42.4343 11.8799C42.0597 10.8888 41.529 10.0303 40.8423 9.29671V9.2811ZM33.0459 11.2477C33.6781 10.8966 34.4429 10.7249 35.3482 10.7249C35.9647 10.7249 36.5266 10.8497 37.0182 11.0995C37.5099 11.3492 37.9235 11.7004 38.2435 12.153C38.5635 12.6057 38.743 13.1129 38.782 13.667V13.7919H31.2666C31.3446 13.4329 31.4539 13.1051 31.6022 12.8008C31.9299 12.1218 32.4138 11.6067 33.0381 11.2555L33.0459 11.2477Z" fill="#212352"/><path d="M58.5613 9.2811C57.8667 8.54751 57.0473 7.98562 56.103 7.5798C55.1509 7.17399 54.1207 6.97888 53.0125 6.97888C51.8185 6.97888 50.7103 7.18959 49.688 7.61102C48.6656 8.03244 47.7837 8.63336 47.0424 9.40597C46.301 10.1786 45.7235 11.0917 45.3098 12.1452C44.8962 13.1988 44.6933 14.3538 44.6933 15.6103C44.6933 17.2413 45.0679 18.6851 45.8093 19.9415C46.5507 21.198 47.5808 22.1891 48.8997 22.9149C50.2186 23.6329 51.7639 23.9997 53.5432 23.9997C54.2846 23.9997 55.0416 23.906 55.7986 23.7188C56.5634 23.5315 57.3048 23.2583 58.0228 22.8993C58.7408 22.5403 59.4041 22.0877 60.005 21.5492L57.8979 18.607C57.219 19.1611 56.579 19.5591 55.9781 19.7855C55.3772 20.0118 54.7216 20.1288 53.9958 20.1288C52.9423 20.1288 52.0292 19.9259 51.2566 19.5279C50.484 19.1299 49.8831 18.568 49.4616 17.8422C49.2197 17.4364 49.0558 16.976 48.9544 16.4843H60.6137L60.645 15.1264C60.684 13.948 60.5201 12.8632 60.1533 11.8799C59.7787 10.8888 59.248 10.0303 58.5613 9.29671V9.2811ZM50.7649 11.2477C51.3971 10.8966 52.1619 10.7249 53.0671 10.7249C53.6837 10.7249 54.2456 10.8497 54.7372 11.0995C55.2289 11.3492 55.6425 11.7004 55.9625 12.153C56.2825 12.6057 56.4619 13.1129 56.501 13.667V13.7919H48.9856C49.0636 13.4329 49.1729 13.1051 49.3212 12.8008C49.6489 12.1218 50.1328 11.6067 50.7571 11.2555L50.7649 11.2477Z" fill="#212352"/><path d="M76.2998 2.02319H58.8497V6.20621H65.1633V23.6797H69.8068V6.20621H76.2998V2.02319Z" fill="#212352"/><path d="M86.1597 9.49211C85.8475 9.05508 85.4885 8.65707 85.0593 8.30588C84.552 7.89226 83.9667 7.57229 83.2956 7.33036C82.6244 7.09624 81.8908 6.97137 81.087 6.97137C79.6666 6.97137 78.3946 7.33817 77.2786 8.07176C76.1626 8.80535 75.2807 9.80428 74.633 11.0763C73.9852 12.3484 73.6574 13.8078 73.6574 15.4545C73.6574 17.1011 73.9774 18.5683 74.6174 19.8482C75.2573 21.1281 76.1236 22.1348 77.2161 22.884C78.3087 23.6254 79.534 24 80.8997 24C81.6645 24 82.3825 23.8829 83.0614 23.641C83.7404 23.4069 84.3569 23.0869 84.9032 22.6811C85.3714 22.3377 85.7539 21.9475 86.0972 21.5261V23.6878H90.5222V7.31476H86.1597V9.48431V9.49211ZM84.2711 19.5985C83.6545 19.9887 82.9288 20.1838 82.1093 20.1838C81.2899 20.1838 80.5953 19.9887 79.9866 19.5985C79.3779 19.2083 78.9018 18.6542 78.5506 17.944C78.1995 17.2338 78.0278 16.3988 78.0278 15.4545C78.0278 14.5102 78.1995 13.7141 78.5506 13.0118C78.9018 12.3094 79.3779 11.7553 79.9866 11.3573C80.5953 10.9515 81.3055 10.7564 82.1093 10.7564C82.9131 10.7564 83.6545 10.9593 84.2711 11.3573C84.8876 11.7553 85.3714 12.3094 85.707 13.0118C86.0504 13.7141 86.2143 14.5258 86.2143 15.4545C86.2143 16.3832 86.0426 17.2338 85.707 17.944C85.3636 18.6542 84.8876 19.2083 84.2711 19.5985Z" fill="#212352"/><path d="M109.068 7.3147H103.902L101.1 12.2313L97.627 7.3147H92.3046L98.3216 15.3608L92.2422 23.68H97.4085L100.608 18.537L104.214 23.68H109.474L103.402 15.3998L109.068 7.3147Z" fill="#212352"/><path d="M124.469 15.0798C124.469 15.946 124.266 16.7265 123.868 17.4132C123.47 18.1 122.916 18.6541 122.229 19.0677C121.535 19.4813 120.77 19.6842 119.927 19.6842C119.084 19.6842 118.351 19.4813 117.687 19.0677C117.016 18.6541 116.486 18.1078 116.095 17.4132C115.705 16.7187 115.51 15.946 115.51 15.0798V2.00006H110.835V15.3685C110.835 16.9996 111.226 18.459 112.014 19.7467C112.794 21.0343 113.879 22.0489 115.245 22.7825C116.618 23.5161 118.179 23.8829 119.935 23.8829C121.691 23.8829 123.221 23.5161 124.594 22.7825C125.968 22.0489 127.045 21.0421 127.825 19.7467C128.605 18.459 129.003 16.9996 129.003 15.3685V2.00006H124.485V15.0876L124.469 15.0798Z" fill="#212352"/><path d="M147.054 14.6661C146.703 13.9559 146.203 13.3394 145.556 12.8087C144.908 12.278 144.127 11.8332 143.222 11.4664C142.317 11.0918 141.295 10.7953 140.155 10.5689C139.554 10.4441 139.008 10.3036 138.516 10.1397C138.025 9.97582 137.595 9.78071 137.244 9.57C136.893 9.35929 136.628 9.10175 136.44 8.813C136.253 8.52425 136.159 8.19648 136.159 7.82188C136.159 7.34582 136.3 6.94781 136.581 6.61224C136.862 6.28446 137.244 6.02693 137.744 5.85523C138.235 5.68354 138.828 5.58989 139.507 5.58989C140.124 5.58989 140.733 5.69135 141.318 5.88645C141.903 6.08155 142.45 6.37811 142.957 6.76832C143.464 7.15852 143.932 7.64238 144.362 8.21989L147.304 5.37138C146.812 4.56755 146.196 3.88859 145.462 3.3267C144.728 2.7726 143.87 2.34337 142.879 2.03901C141.888 1.74246 140.733 1.59418 139.414 1.59418C138.345 1.59418 137.322 1.75026 136.37 2.05462C135.41 2.36679 134.567 2.81162 133.834 3.38913C133.1 3.96663 132.53 4.6534 132.117 5.44942C131.703 6.24544 131.5 7.1039 131.5 8.03259C131.5 8.96128 131.641 9.7573 131.922 10.4753C132.203 11.2011 132.624 11.841 133.209 12.4107C133.787 12.9804 134.505 13.4565 135.371 13.8311C136.237 14.2135 137.244 14.5412 138.399 14.8066C138.938 14.8924 139.429 14.9939 139.882 15.1344C140.335 15.267 140.748 15.4231 141.123 15.5948C141.497 15.7743 141.817 15.9694 142.083 16.1801C142.348 16.3908 142.559 16.6405 142.699 16.9215C142.84 17.2024 142.918 17.5068 142.918 17.8346C142.918 18.2872 142.769 18.6774 142.489 19.013C142.2 19.3408 141.802 19.5983 141.294 19.77C140.787 19.9417 140.218 20.0353 139.578 20.0353C138.399 20.0353 137.314 19.7856 136.315 19.2783C135.317 18.7711 134.31 17.819 133.303 16.4142L130.392 19.7232C131.071 20.6285 131.844 21.4089 132.694 22.041C133.553 22.681 134.528 23.1648 135.636 23.4926C136.737 23.8204 137.962 23.9842 139.304 23.9842C140.951 23.9842 142.395 23.7111 143.636 23.1648C144.877 22.6185 145.844 21.8303 146.547 20.8002C147.249 19.77 147.6 18.5213 147.6 17.0542C147.6 16.1645 147.421 15.3685 147.077 14.6583L147.054 14.6661Z" fill="#212352"/><path d="M163.661 23.6797H168.422L159.986 2.02319H155.842L147.366 23.6797H151.947L153.664 19.1299H161.976L163.677 23.6797H163.661ZM155.069 15.3917L156.302 12.1139C156.466 11.6379 156.645 11.154 156.825 10.6624C157.012 10.1707 157.184 9.65564 157.348 9.13276C157.512 8.60988 157.668 8.09481 157.824 7.59535C157.98 8.0792 158.136 8.58647 158.308 9.11715C158.495 9.69466 158.674 10.2409 158.846 10.756C159.018 11.2711 159.174 11.6925 159.291 12.0281L160.555 15.3995H155.053L155.069 15.3917Z" fill="#212352"/><path d="M206.305 6.1558H166.592L164.952 1.98059H206.305V6.1558Z" fill="#D11911"/><path d="M206.304 14.8887H170.002L168.397 10.7057L206.304 10.7057V14.8887Z" fill="#D11911"/><path d="M206.304 23.6214L173.426 23.6213L171.763 19.4071L206.304 19.4384V23.6214Z" fill="#D11911"/></svg>
+      <span class="header-logo-year">2025</span>
+    </a>
+    <div class="header-center">
+      <div class="header-refund-item">Federal Refund: <span class="amount--refund">$413</span></div>
+    </div>
+    <div class="header-right">
+      <button class="header-nav-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search</button>
+      <button class="header-nav-btn">Support <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="header-nav-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Account <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+    </div>
+  </header>
+  <div class="tab-nav-wrapper">
+    <nav class="tab-nav">
+      <button class="tab" style="border:none;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#027932" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Personal <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="tab tab--active">Income <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="tab tab--disabled" disabled>Deductions / Credits <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="tab tab--disabled" disabled>Misc <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="tab tab--disabled" disabled>Summary <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="tab tab--disabled" disabled>State <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="tab tab--disabled" disabled>Final Steps <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+    </nav>
+  </div>
+  <div class="page-body">
+    <div class="content-box">
+      <button class="back-btn" onclick="backToInvestments()" aria-label="Go back">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button class="more-btn" aria-label="More options">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 7.8C5 6.11984 5 5.27976 5.32698 4.63803C5.6146 4.07354 6.07354 3.6146 6.63803 3.32698C7.27976 3 8.11984 3 9.8 3H14.2C15.8802 3 16.7202 3 17.362 3.32698C17.9265 3.6146 18.3854 4.07354 18.673 4.63803C19 5.27976 19 6.11984 19 7.8V21L12 17L5 21V7.8Z" stroke="#212F45" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="congrats-body">
+        <svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="160" height="160" rx="80" fill="#F9F9F9"/><path d="M85.1619 71.3783H82.1619C82.1619 73.0351 83.5051 74.3783 85.1619 74.3783V71.3783ZM85.1619 63.0751H88.1619H85.1619ZM78.9345 56.8477V53.8477C77.749 53.8477 76.6746 54.5459 76.1931 55.6292L78.9345 56.8477ZM70.6313 75.5299L67.8899 74.3114C67.7194 74.695 67.6313 75.1101 67.6313 75.5299H70.6313ZM70.6313 98.3637H67.6313C67.6313 100.021 68.9745 101.364 70.6313 101.364V98.3637ZM94.0464 98.3637L94.0803 95.3638C94.069 95.3637 94.0577 95.3637 94.0464 95.3637V98.3637ZM98.198 94.8348L95.2326 94.3801L95.2319 94.385L98.198 94.8348ZM101.063 76.1526L104.028 76.6073L104.029 76.6028L101.063 76.1526ZM96.911 71.3783V74.3783C96.9223 74.3783 96.9336 74.3782 96.9449 74.3781L96.911 71.3783ZM70.6314 101.364C72.2883 101.364 73.6314 100.021 73.6314 98.3641C73.6314 96.7072 72.2883 95.3641 70.6314 95.3641V101.364ZM70.6314 78.5303C72.2883 78.5303 73.6314 77.1871 73.6314 75.5303C73.6314 73.8734 72.2883 72.5303 70.6314 72.5303V78.5303ZM88.1619 71.3783V63.0751H82.1619V71.3783H88.1619ZM88.1619 63.0751C88.1619 57.9789 84.0307 53.8477 78.9345 53.8477V59.8477C80.717 59.8477 82.1619 61.2926 82.1619 63.0751H88.1619ZM76.1931 55.6292L67.8899 74.3114L73.3728 76.7483L81.676 58.0661L76.1931 55.6292ZM67.6313 75.5299V98.3637H73.6313V75.5299H67.6313ZM70.6313 101.364H94.0464V95.3637H70.6313V101.364ZM94.0124 101.363C97.5785 101.404 100.629 98.8106 101.164 95.2846L95.2319 94.385C95.1458 94.9528 94.6545 95.3703 94.0803 95.3638L94.0124 101.363ZM101.163 95.2895L104.028 76.6073L98.0972 75.6979L95.2326 94.3801L101.163 95.2895ZM104.029 76.6028C104.343 74.5283 103.731 72.4202 102.355 70.8369L97.827 74.7739C98.0487 75.0289 98.1472 75.3684 98.0965 75.7024L104.029 76.6028ZM102.355 70.8369C100.978 69.2535 98.9751 68.3547 96.877 68.3784L96.9449 74.3781C97.2828 74.3742 97.6053 74.519 97.827 74.7739L102.355 70.8369ZM96.911 68.3783H85.1619V74.3783H96.911V68.3783ZM70.6314 95.3641H64.404V101.364H70.6314V95.3641ZM64.404 95.3641C63.768 95.3641 63.2524 94.8485 63.2524 94.2125H57.2524C57.2524 98.1622 60.4543 101.364 64.404 101.364V95.3641ZM63.2524 94.2125V79.6819H57.2524V94.2125H63.2524ZM63.2524 79.6819C63.2524 79.0459 63.768 78.5303 64.404 78.5303V72.5303C60.4543 72.5303 57.2524 75.7322 57.2524 79.6819H63.2524ZM64.404 78.5303H70.6314V72.5303H64.404V78.5303Z" fill="#212F45"/><path d="M79.9999 32.333V43.2282" stroke="#212F45" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="M80 116.771V127.667" stroke="#212F45" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="M32.3333 79.9995H43.2285" stroke="#212F45" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="M116.771 79.9995H127.667" stroke="#212F45" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="M40.0028 40.0032L50.8128 50.8134" stroke="#212F45" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="M109.187 109.187L119.997 119.997" stroke="#212F45" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="M40.0028 119.997L50.8129 109.187" stroke="#212F45" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="M109.187 50.8132L119.997 40.003" stroke="#212F45" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h2 class="congrats-title" id="congrats-title-text">Nice job! You filled out your 1099-INT.</h2>
+      </div>
+      <div class="button-row" style="justify-content: flex-end;">
+        <button class="btn-continue" onclick="finishCurrentFlow()">Continue</button>
+      </div>
+    </div>
+  </div>
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="#">Privacy</a><a href="#">Security</a><a href="#">Accessibility</a>
+    </div>
+    <div class="footer-copy">© 2002–2025 FreeTaxUSA, a TaxHawk, Inc. owned and operated website – All Rights Reserved</div>
+  </footer>
+</div>
+
+<!-- ═══ SCREEN: GENERIC INCOME ENTRY ═══ -->
+<div id="screen-generic" class="sub-screen">
+  <header class="global-header">
+    <a class="header-logo" href="#">
+      <svg width="166" height="19" viewBox="0 0 212 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.13833 2.02319H0V23.6797H4.64346V15.0795H13.3373V11.0916H4.64346V6.20621H14.6328V2.02319H4.64346H2.13833Z" fill="#212352"/><path d="M24.9847 6.97888C24.1575 6.97888 23.3693 7.17399 22.6201 7.56419C21.8709 7.9544 21.2153 8.50069 20.6534 9.18745C20.4505 9.43718 20.271 9.70252 20.115 9.97567L20.0369 7.31446H15.7993V23.6797H20.2242V15.2044C20.2242 14.6894 20.3101 14.2133 20.4896 13.7841C20.6612 13.3549 20.9032 12.9725 21.2153 12.6525C21.5275 12.3325 21.8943 12.0828 22.3157 11.9111C22.7371 11.7394 23.1976 11.6458 23.6893 11.6458C24.0638 11.6458 24.4228 11.6926 24.774 11.7862C25.1252 11.8799 25.4218 11.9891 25.6715 12.114L26.8499 7.29105C26.6236 7.2052 26.3427 7.13496 26.0149 7.07253C25.6871 7.0101 25.3437 6.97888 24.9925 6.97888H24.9847Z" fill="#212352"/><path d="M40.8423 9.2811C40.1477 8.54751 39.3283 7.98562 38.384 7.5798C37.4319 7.17399 36.4017 6.97888 35.2935 6.97888C34.0995 6.97888 32.9913 7.18959 31.969 7.61102C30.9466 8.03244 30.0648 8.63336 29.3234 9.40597C28.582 10.1786 28.0045 11.0917 27.5908 12.1452C27.1772 13.1988 26.9743 14.3538 26.9743 15.6103C26.9743 17.2413 27.3489 18.6851 28.0903 19.9415C28.8317 21.198 29.8618 22.1891 31.1807 22.9149C32.4996 23.6329 34.0449 23.9997 35.8242 23.9997C36.5656 23.9997 37.3226 23.906 38.0796 23.7188C38.8444 23.5315 39.5858 23.2583 40.3038 22.8993C41.0218 22.5403 41.6851 22.0877 42.286 21.5492L40.1789 18.607C39.5 19.1611 38.86 19.5591 38.2591 19.7855C37.6582 20.0118 37.0026 20.1288 36.2768 20.1288C35.2233 20.1288 34.3102 19.9259 33.5376 19.5279C32.765 19.1299 32.1641 18.568 31.7426 17.8422C31.5007 17.4364 31.3368 16.976 31.2354 16.4843H42.8948L42.926 15.1264C42.965 13.948 42.8011 12.8632 42.4343 11.8799C42.0597 10.8888 41.529 10.0303 40.8423 9.29671V9.2811ZM33.0459 11.2477C33.6781 10.8966 34.4429 10.7249 35.3482 10.7249C35.9647 10.7249 36.5266 10.8497 37.0182 11.0995C37.5099 11.3492 37.9235 11.7004 38.2435 12.153C38.5635 12.6057 38.743 13.1129 38.782 13.667V13.7919H31.2666C31.3446 13.4329 31.4539 13.1051 31.6022 12.8008C31.9299 12.1218 32.4138 11.6067 33.0381 11.2555L33.0459 11.2477Z" fill="#212352"/><path d="M58.5613 9.2811C57.8667 8.54751 57.0473 7.98562 56.103 7.5798C55.1509 7.17399 54.1207 6.97888 53.0125 6.97888C51.8185 6.97888 50.7103 7.18959 49.688 7.61102C48.6656 8.03244 47.7837 8.63336 47.0424 9.40597C46.301 10.1786 45.7235 11.0917 45.3098 12.1452C44.8962 13.1988 44.6933 14.3538 44.6933 15.6103C44.6933 17.2413 45.0679 18.6851 45.8093 19.9415C46.5507 21.198 47.5808 22.1891 48.8997 22.9149C50.2186 23.6329 51.7639 23.9997 53.5432 23.9997C54.2846 23.9997 55.0416 23.906 55.7986 23.7188C56.5634 23.5315 57.3048 23.2583 58.0228 22.8993C58.7408 22.5403 59.4041 22.0877 60.005 21.5492L57.8979 18.607C57.219 19.1611 56.579 19.5591 55.9781 19.7855C55.3772 20.0118 54.7216 20.1288 53.9958 20.1288C52.9423 20.1288 52.0292 19.9259 51.2566 19.5279C50.484 19.1299 49.8831 18.568 49.4616 17.8422C49.2197 17.4364 49.0558 16.976 48.9544 16.4843H60.6137L60.645 15.1264C60.684 13.948 60.5201 12.8632 60.1533 11.8799C59.7787 10.8888 59.248 10.0303 58.5613 9.29671V9.2811ZM50.7649 11.2477C51.3971 10.8966 52.1619 10.7249 53.0671 10.7249C53.6837 10.7249 54.2456 10.8497 54.7372 11.0995C55.2289 11.3492 55.6425 11.7004 55.9625 12.153C56.2825 12.6057 56.4619 13.1129 56.501 13.667V13.7919H48.9856C49.0636 13.4329 49.1729 13.1051 49.3212 12.8008C49.6489 12.1218 50.1328 11.6067 50.7571 11.2555L50.7649 11.2477Z" fill="#212352"/><path d="M76.2998 2.02319H58.8497V6.20621H65.1633V23.6797H69.8068V6.20621H76.2998V2.02319Z" fill="#212352"/><path d="M86.1597 9.49211C85.8475 9.05508 85.4885 8.65707 85.0593 8.30588C84.552 7.89226 83.9667 7.57229 83.2956 7.33036C82.6244 7.09624 81.8908 6.97137 81.087 6.97137C79.6666 6.97137 78.3946 7.33817 77.2786 8.07176C76.1626 8.80535 75.2807 9.80428 74.633 11.0763C73.9852 12.3484 73.6574 13.8078 73.6574 15.4545C73.6574 17.1011 73.9774 18.5683 74.6174 19.8482C75.2573 21.1281 76.1236 22.1348 77.2161 22.884C78.3087 23.6254 79.534 24 80.8997 24C81.6645 24 82.3825 23.8829 83.0614 23.641C83.7404 23.4069 84.3569 23.0869 84.9032 22.6811C85.3714 22.3377 85.7539 21.9475 86.0972 21.5261V23.6878H90.5222V7.31476H86.1597V9.48431V9.49211ZM84.2711 19.5985C83.6545 19.9887 82.9288 20.1838 82.1093 20.1838C81.2899 20.1838 80.5953 19.9887 79.9866 19.5985C79.3779 19.2083 78.9018 18.6542 78.5506 17.944C78.1995 17.2338 78.0278 16.3988 78.0278 15.4545C78.0278 14.5102 78.1995 13.7141 78.5506 13.0118C78.9018 12.3094 79.3779 11.7553 79.9866 11.3573C80.5953 10.9515 81.3055 10.7564 82.1093 10.7564C82.9131 10.7564 83.6545 10.9593 84.2711 11.3573C84.8876 11.7553 85.3714 12.3094 85.707 13.0118C86.0504 13.7141 86.2143 14.5258 86.2143 15.4545C86.2143 16.3832 86.0426 17.2338 85.707 17.944C85.3636 18.6542 84.8876 19.2083 84.2711 19.5985Z" fill="#212352"/><path d="M109.068 7.3147H103.902L101.1 12.2313L97.627 7.3147H92.3046L98.3216 15.3608L92.2422 23.68H97.4085L100.608 18.537L104.214 23.68H109.474L103.402 15.3998L109.068 7.3147Z" fill="#212352"/><path d="M124.469 15.0798C124.469 15.946 124.266 16.7265 123.868 17.4132C123.47 18.1 122.916 18.6541 122.229 19.0677C121.535 19.4813 120.77 19.6842 119.927 19.6842C119.084 19.6842 118.351 19.4813 117.687 19.0677C117.016 18.6541 116.486 18.1078 116.095 17.4132C115.705 16.7187 115.51 15.946 115.51 15.0798V2.00006H110.835V15.3685C110.835 16.9996 111.226 18.459 112.014 19.7467C112.794 21.0343 113.879 22.0489 115.245 22.7825C116.618 23.5161 118.179 23.8829 119.935 23.8829C121.691 23.8829 123.221 23.5161 124.594 22.7825C125.968 22.0489 127.045 21.0421 127.825 19.7467C128.605 18.459 129.003 16.9996 129.003 15.3685V2.00006H124.485V15.0876L124.469 15.0798Z" fill="#212352"/><path d="M147.054 14.6661C146.703 13.9559 146.203 13.3394 145.556 12.8087C144.908 12.278 144.127 11.8332 143.222 11.4664C142.317 11.0918 141.295 10.7953 140.155 10.5689C139.554 10.4441 139.008 10.3036 138.516 10.1397C138.025 9.97582 137.595 9.78071 137.244 9.57C136.893 9.35929 136.628 9.10175 136.44 8.813C136.253 8.52425 136.159 8.19648 136.159 7.82188C136.159 7.34582 136.3 6.94781 136.581 6.61224C136.862 6.28446 137.244 6.02693 137.744 5.85523C138.235 5.68354 138.828 5.58989 139.507 5.58989C140.124 5.58989 140.733 5.69135 141.318 5.88645C141.903 6.08155 142.45 6.37811 142.957 6.76832C143.464 7.15852 143.932 7.64238 144.362 8.21989L147.304 5.37138C146.812 4.56755 146.196 3.88859 145.462 3.3267C144.728 2.7726 143.87 2.34337 142.879 2.03901C141.888 1.74246 140.733 1.59418 139.414 1.59418C138.345 1.59418 137.322 1.75026 136.37 2.05462C135.41 2.36679 134.567 2.81162 133.834 3.38913C133.1 3.96663 132.53 4.6534 132.117 5.44942C131.703 6.24544 131.5 7.1039 131.5 8.03259C131.5 8.96128 131.641 9.7573 131.922 10.4753C132.203 11.2011 132.624 11.841 133.209 12.4107C133.787 12.9804 134.505 13.4565 135.371 13.8311C136.237 14.2135 137.244 14.5412 138.399 14.8066C138.938 14.8924 139.429 14.9939 139.882 15.1344C140.335 15.267 140.748 15.4231 141.123 15.5948C141.497 15.7743 141.817 15.9694 142.083 16.1801C142.348 16.3908 142.559 16.6405 142.699 16.9215C142.84 17.2024 142.918 17.5068 142.918 17.8346C142.918 18.2872 142.769 18.6774 142.489 19.013C142.2 19.3408 141.802 19.5983 141.294 19.77C140.787 19.9417 140.218 20.0353 139.578 20.0353C138.399 20.0353 137.314 19.7856 136.315 19.2783C135.317 18.7711 134.31 17.819 133.303 16.4142L130.392 19.7232C131.071 20.6285 131.844 21.4089 132.694 22.041C133.553 22.681 134.528 23.1648 135.636 23.4926C136.737 23.8204 137.962 23.9842 139.304 23.9842C140.951 23.9842 142.395 23.7111 143.636 23.1648C144.877 22.6185 145.844 21.8303 146.547 20.8002C147.249 19.77 147.6 18.5213 147.6 17.0542C147.6 16.1645 147.421 15.3685 147.077 14.6583L147.054 14.6661Z" fill="#212352"/><path d="M163.661 23.6797H168.422L159.986 2.02319H155.842L147.366 23.6797H151.947L153.664 19.1299H161.976L163.677 23.6797H163.661ZM155.069 15.3917L156.302 12.1139C156.466 11.6379 156.645 11.154 156.825 10.6624C157.012 10.1707 157.184 9.65564 157.348 9.13276C157.512 8.60988 157.668 8.09481 157.824 7.59535C157.98 8.0792 158.136 8.58647 158.308 9.11715C158.495 9.69466 158.674 10.2409 158.846 10.756C159.018 11.2711 159.174 11.6925 159.291 12.0281L160.555 15.3995H155.053L155.069 15.3917Z" fill="#212352"/><path d="M206.305 6.1558H166.592L164.952 1.98059H206.305V6.1558Z" fill="#D11911"/><path d="M206.304 14.8887H170.002L168.397 10.7057L206.304 10.7057V14.8887Z" fill="#D11911"/><path d="M206.304 23.6214L173.426 23.6213L171.763 19.4071L206.304 19.4384V23.6214Z" fill="#D11911"/></svg>
+      <span class="header-logo-year">2025</span>
+    </a>
+    <div class="header-center">
+      <div class="header-refund-item">Federal Refund: <span class="amount--refund">$413</span></div>
+    </div>
+    <div class="header-right">
+      <button class="header-nav-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search</button>
+      <button class="header-nav-btn">Support <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="header-nav-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Account <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+    </div>
+  </header>
+  <div class="tab-nav-wrapper">
+    <nav class="tab-nav">
+      <button class="tab" style="border:none;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#027932" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Personal <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="tab tab--active">Income <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="tab tab--disabled" disabled>Deductions / Credits <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="tab tab--disabled" disabled>Misc <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="tab tab--disabled" disabled>Summary <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="tab tab--disabled" disabled>State <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="tab tab--disabled" disabled>Final Steps <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+    </nav>
+  </div>
+  <div class="page-body">
+    <div class="content-box">
+      <button class="back-btn" onclick="hideGenericScreen()" aria-label="Go back">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button class="more-btn" aria-label="More options">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 7.8C5 6.11984 5 5.27976 5.32698 4.63803C5.6146 4.07354 6.07354 3.6146 6.63803 3.32698C7.27976 3 8.11984 3 9.8 3H14.2C15.8802 3 16.7202 3 17.362 3.32698C17.9265 3.6146 18.3854 4.07354 18.673 4.63803C19 5.27976 19 6.11984 19 7.8V21L12 17L5 21V7.8Z" stroke="#212F45" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="content-inner sub-screen-body">
+        <h1 id="generic-screen-title"></h1>
+        <p id="generic-screen-desc"></p>
+        <p><strong id="generic-screen-question"></strong></p>
+        <button class="sub-screen-add-btn" id="generic-add-btn" onclick="triggerGenericCongrats()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span id="generic-add-label"></span>
+        </button>
+        <a href="#" class="sub-screen-helper-link" id="generic-helper-link" style="display:none;" onclick="return false;"></a>
+      </div>
+      <div class="button-row">
+        <button class="btn-prev" onclick="hideGenericScreen()">Previous Page</button>
+        <button class="btn-continue" onclick="triggerGenericCongrats()">Continue</button>
+      </div>
+    </div>
+  </div>
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="#">Privacy</a><a href="#">Security</a><a href="#">Accessibility</a>
+    </div>
+    <div class="footer-copy">© 2002–2025 FreeTaxUSA, a TaxHawk, Inc. owned and operated website – All Rights Reserved</div>
+  </footer>
+</div>
+
+<script>
+  // ── SCREEN TOGGLE (W-2 intro ↔ Income page) ──
+  function goToIncomeScreen() {
+    document.getElementById('screen-wages').classList.add('screen-hidden');
+    document.getElementById('screen-income').classList.remove('screen-hidden');
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+  function goBackToWages() {
+    document.getElementById('screen-income').classList.add('screen-hidden');
+    document.getElementById('screen-wages').classList.remove('screen-hidden');
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+
+  // ── STATE ──
+  const addedKeys = new Set(['wages', 'retirement']);
+  const rolloverKeys = new Set(['investments']);
+  let currentKey = null;
+
+  const incomeLabels = {
+    wages:             { title: 'Wages and Salaries',          form: 'Form W-2',                  prevAmount: '$43,964' },
+    investments:       { title: 'Investments and Savings',     form: '1099-INT, 1099-DIV, 1099-B', prevAmount: '$46'    },
+    retirement:        { title: 'Retirement Income',           form: 'Form 1099-R',                prevAmount: '$623'   },
+    unemployment:      { title: 'Unemployment Compensation',   form: 'Form 1099-G',                prevAmount: '—'      },
+    'social-security': { title: 'Social Security Benefits',    form: 'Form SSA-1099',              prevAmount: '—'      },
+    'state-refund':    { title: 'Taxable State Refund',        form: 'Form 1099-G',                prevAmount: '—'      },
+    'capital-loss':    { title: 'Capital Loss Carryovers',     form: '',                           prevAmount: '—'      },
+    'nec-misc':         { title: 'Form 1099-NEC and Form 1099-MISC Income', form: 'Form 1099-NEC / 1099-MISC', prevAmount: '—' },
+    '1099k':           { title: 'Form 1099-K Income',          form: 'Form 1099-K',                prevAmount: '—'      },
+    business:          { title: 'Business Income',             form: 'Schedule C',                 prevAmount: '—'      },
+    partnership:       { title: 'Partnership Income',          form: 'Schedule K-1',               prevAmount: '—'      },
+    's-corp':          { title: 'S Corporation Income',        form: 'Schedule K-1',               prevAmount: '—'      },
+    rental:            { title: 'Rental Income',               form: 'Schedule E',                 prevAmount: '—'      },
+    farm:              { title: 'Farm Income',                 form: 'Schedule F',                 prevAmount: '—'      },
+    'farm-rental':     { title: 'Farm Rental Income',          form: 'Form 4835',                  prevAmount: '—'      },
+    'business-assets': { title: 'Sale of Business Assets',    form: '',                           prevAmount: '—'      },
+    gambling:          { title: 'Gambling Income',                            form: 'Form W-2G',      prevAmount: '—' },
+    oid:               { title: 'Original Issue Discount Income',             form: 'Form 1099-OID',  prevAmount: '—' },
+    estate:            { title: 'Estate or Trust Income',                     form: 'Schedule K-1',   prevAmount: '—' },
+    'seller-loans':    { title: 'Seller-Financed Loans',                      form: '',               prevAmount: '—' },
+    royalty:           { title: 'Royalty Income',                             form: '',               prevAmount: '—' },
+    tips:              { title: 'Unreported or Allocated Tips',                form: '',               prevAmount: '—' },
+    'sale-home':       { title: 'Sale of Home',                               form: '',               prevAmount: '—' },
+    installment:       { title: 'Installment Sales',                          form: '',               prevAmount: '—' },
+    'canceled-debt':   { title: 'Canceled Debt',                              form: 'Form 1099-C',    prevAmount: '—' },
+    'tuition-dist':    { title: 'Qualified Tuition Program Distributions',    form: 'Form 1099-Q',    prevAmount: '—' },
+    ltc:               { title: 'Long-Term Care Insurance Payments',          form: 'Form 1099-LTC',  prevAmount: '—' },
+    able:              { title: 'ABLE Account Distributions',                 form: 'Form 1099-QA',   prevAmount: '—' },
+    'child-invest':    { title: 'Child with Investment Income Over $1,350',   form: 'Form 8814',      prevAmount: '—' },
+    'undist-gains':    { title: 'Undistributed Long-Term Capital Gains',      form: 'Form 2439',      prevAmount: '—' },
+    contracts:         { title: 'Contracts and Straddles',                    form: '',               prevAmount: '—' },
+    other:             { title: 'Other Income',                               form: '',               prevAmount: '—' },
+  };
+
+  const mockAmounts = {
+    unemployment: '$4,800', 'social-security': '$18,240', 'state-refund': '$312',
+    'capital-loss': '$2,500', 'nec-misc': '$12,400', '1099k': '$8,750',
+    business: '$34,600', partnership: '$8,900', 's-corp': '$22,300',
+    rental: '$14,400', farm: '$18,600', 'farm-rental': '$9,200', 'business-assets': '$5,800',
+    gambling: '$750',
+    scholarship: '$3,200', 'canceled-debt': '$5,000', estate: '$12,500', other: '$800',
+  };
+
+  // ── OPEN MODAL ──
+  function openModal(key) {
+    currentKey = key;
+    const info = incomeLabels[key] || { title: 'Income', form: '' };
+    const isExisting = addedKeys.has(key);
+    const isRollover = rolloverKeys.has(key);
+    const formStr = info.form ? ` (${info.form})` : '';
+
+    document.getElementById('modalTitle').textContent = info.title;
+    let desc;
+    if (isExisting) {
+      desc = `Pretend you went through the process of editing your ${info.title}${formStr}. Click "Save & Return" to go back.`;
+    } else if (isRollover) {
+      desc = `Pretend you went through the process of entering your ${info.title}${formStr} carried over from last year. Click "Save & Return" to complete this item.`;
+    } else {
+      desc = `Pretend you went through the process of adding your ${info.title}${formStr}. Click "Save & Return" to add it to your income summary.`;
+    }
+    document.getElementById('modalDesc').textContent = desc;
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    currentKey = null;
+  }
+
+  function handleOverlayClick(e) {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  }
+
+  // ── SAVE INCOME ──
+  function saveIncome() {
+    const key = currentKey;
+    if (!key) { closeModal(); return; }
+    const info = incomeLabels[key] || { title: key, form: '', prevAmount: '—' };
+    const editBtn = `<button class="btn-edit-add" onclick="openModal('${key}')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit/Add</button>`;
+
+    if (addedKeys.has(key)) {
+      // Already in the table — close and re-highlight the existing row
+      closeModal();
+      const row = document.getElementById(`row-${key}`);
+      if (row) {
+        row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => {
+          row.classList.remove('added-income-row--completing');
+          void row.offsetWidth; // force reflow so animation restarts
+          row.classList.add('added-income-row--completing');
+          row.addEventListener('animationend', () => row.classList.remove('added-income-row--completing'), { once: true });
+        }, 80);
+      }
+      return;
+    }
+
+    if (rolloverKeys.has(key)) {
+      const row = document.getElementById(`row-${key}`);
+      if (row) {
+        const currentCell = row.querySelector('.col-current');
+        if (currentCell) {
+          currentCell.innerHTML = `$1,240`;
+        }
+        const actionsCell = row.querySelector('.col-actions');
+        if (actionsCell) actionsCell.innerHTML = editBtn;
+      }
+      rolloverKeys.delete(key); addedKeys.add(key);
+      if (row) {
+        row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => {
+          row.classList.add('added-income-row--completing');
+          row.addEventListener('animationend', () => row.classList.remove('added-income-row--completing'), { once: true });
+        }, 80);
+      }
+      closeModal(); return;
+    }
+
+    // New income — add row to top table
+    const amount = mockAmounts[key] || '$2,400';
+    const table = document.getElementById('addedIncomeTable');
+    const row = document.createElement('div');
+    row.className = 'added-income-row added-income-row--entering'; row.id = `row-${key}`;
+    row.innerHTML = `
+      <div>
+        <div class="added-income-label">${info.title}</div>
+        ${info.form ? `<div class="added-income-sublabel">${info.form}</div>` : ''}
+      </div>
+      <div class="added-income-amount col-prev">${info.prevAmount}</div>
+      <div class="col-current">${amount}</div>
+      <div class="col-actions">${editBtn}</div>`;
+    table.appendChild(row);
+    // Scroll to center the new row, then highlight once scroll has landed
+    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(() => row.classList.add('added-income-row--entering'), 650);
+    addedKeys.add(key);
+
+    // Flip matching bottom-list button from +Add to Edit/Add
+    document.querySelectorAll('.income-item').forEach(item => {
+      const lbl = (item.getAttribute('data-label') || '').toLowerCase();
+      const ttl = info.title.toLowerCase();
+      if (lbl && ttl.includes(lbl.split(' ').slice(0,2).join(' '))) {
+        const btn = item.querySelector('.btn-add');
+        if (btn) {
+          const nb = document.createElement('button');
+          nb.className = 'btn-edit-add';
+          nb.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit/Add`;
+          nb.onclick = () => openModal(key);
+          btn.replaceWith(nb);
+        }
+      }
+    });
+
+    closeModal();
+  }
+
+  // ── CATEGORY TOGGLE ──
+  function toggleCategory(headerEl) {
+    const block = headerEl.closest('.category-block');
+    const items = block.querySelector('.category-items');
+    const chevron = headerEl.querySelector('.category-chevron');
+    const isOpen = items.classList.contains('open');
+    items.classList.toggle('open', !isOpen);
+    chevron.classList.toggle('open', !isOpen);
+  }
+
+  // ── OTHER-SECTION HINTS ──
+  // When a search returns no results but looks tax-related, show a targeted message.
+  // ── FUZZY SEARCH UTILITIES ──
+
+  // Strip hyphens/punctuation and lowercase so "1099nec" matches "1099-NEC", "W2" matches "W-2"
+  function norm(s) {
+    return s.toLowerCase().replace(/[-–—_.,]/g, '').replace(/(\d)\s+([a-z])/g, '$1$2').replace(/([a-z])\s+(\d)/g, '$1$2').replace(/\s+/g, ' ').trim();
+  }
+
+  // Levenshtein distance (capped early for speed)
+  function lev(a, b) {
+    if (Math.abs(a.length - b.length) > 3) return 99;
+    const dp = Array.from({length: a.length + 1}, (_, i) => [i]);
+    for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+    for (let i = 1; i <= a.length; i++)
+      for (let j = 1; j <= b.length; j++)
+        dp[i][j] = a[i-1] === b[j-1] ? dp[i-1][j-1]
+          : 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
+    return dp[a.length][b.length];
+  }
+
+  // Does `text` contain `word` exactly or fuzzily?
+  function fuzzyIncludes(text, word) {
+    const nt = norm(text), nw = norm(word);
+    if (nt.includes(nw)) return true;
+    const maxDist = nw.length >= 8 ? 2 : nw.length >= 7 ? 1 : 0;
+    if (maxDist === 0) return false;
+    return nt.split(' ').some(tw => lev(tw, nw) <= maxDist);
+  }
+
+  // Returns true if every space-separated word in query fuzzy-matches somewhere in text
+  function queryMatches(query, text) {
+    return query.trim().split(/\s+/).every(w => fuzzyIncludes(text, w));
+  }
+
+  // ── EXTRA KEYWORDS (synonyms per income type) ──
+  // Keyed by lowercased data-label value
+  const extraKeywords = {
+    'wages and salaries':
+      'w2 w-2 job paycheck payroll employer box1 salary income',
+    'investments and savings':
+      'stocks bonds dividends interest brokerage capital gains etf mutual fund securities 1099b 1099div 1099int crypto cryptocurrency 8949',
+    'retirement income':
+      '401k 403b ira pension roth distribution annuity withdrawal 1099r',
+    'unemployment compensation':
+      'jobless benefits state unemployment 1099g',
+    'social security benefits':
+      'ssa ssdi disability retirement ssa1099 ssi',
+    'taxable state refund':
+      '1099g refund overpayment local refund',
+    'capital loss carryovers':
+      'carryforward carryover prior year loss schedule d',
+    'form 1099-nec and form 1099-misc income':
+      'nonemployee compensation miscellaneous contractor gig side job nec misc 1099nec 1099misc',
+    'form 1099-k income':
+      'paypal venmo stripe cashapp cash app ebay amazon seller marketplace 1099k payment app',
+    'business income':
+      'self employed selfemployed schedule c contractor freelance freelancing consulting sole proprietor llc',
+    'partnership income':
+      'k1 k-1 form 1065 partner',
+    's corporation income':
+      'k1 k-1 form 1120s scorp s corp shareholder',
+    'rental income':
+      'landlord airbnb vrbo property tenant rent',
+    'farm income':
+      'agriculture farming crops livestock',
+    'farm rental income':
+      'cash rent farmland agricultural',
+    'sale of business assets':
+      'depreciation recapture form 4797 business property',
+    'gambling income':
+      'lottery casino poker sports betting w2g winnings',
+    'original issue discount income':
+      'bond discount zero coupon 1099oid oid',
+    'estate or trust income':
+      'inheritance trust distribution executor form 1041 k1 k-1',
+    'seller-financed loans':
+      'owner financing private mortgage loan interest',
+    'royalty income':
+      'royalties book patent mineral rights oil gas',
+    'unreported or allocated tips':
+      'cash tips form 4137 tipped',
+    'sale of home':
+      'house property real estate exclusion 1099s',
+    'installment sales':
+      'deferred payment form 6252',
+    'canceled debt':
+      'debt forgiveness foreclosure short sale 1099c insolvency',
+    'qualified tuition program distributions':
+      '529 plan education savings 1099q',
+    'long-term care insurance payments':
+      '1099ltc',
+    'able account distributions':
+      'disability savings 1099qa',
+    'child with investment income over $1,350':
+      'kiddie tax form 8814',
+    'undistributed long-term capital gains':
+      'mutual fund form 2439',
+    'contracts and straddles':
+      'options futures section 1256',
+    'other income':
+      'prizes awards hobby jury duty household employee scholarship miscellaneous',
+  };
+
+  // ── OTHER-SECTION HINTS ──
+  // Patterns are checked against the normalized (no-hyphen) query
+  const otherSectionHints = [
+    { patterns: ['1098t', 'tuition', 'education credit', 'american opportunity', 'lifetime learning', '8863', 'aotc'],
+      formName: '1098-T', path: ['Deductions / Credits', 'Education Credits', 'College Tuition (1098-T)'] },
+    { patterns: ['1098e', 'student loan interest'],
+      formName: '1098-E', path: ['Deductions / Credits', 'Adjustments', 'Student Loan Interest (1098-E)'] },
+    { patterns: ['1098', 'mortgage interest', 'home mortgage'],
+      formName: '1098', path: ['Deductions / Credits', 'Itemized Deductions', 'Mortgage Interest (1098)'] },
+    { patterns: ['child tax credit', 'ctc', '8812', 'additional child tax'],
+      formName: '8812', path: ['Deductions / Credits', 'Common Credits', 'Child Tax Credit'] },
+    { patterns: ['earned income credit', 'eitc', 'eic'],
+      formName: 'EIC', path: ['Deductions / Credits', 'Common Credits', 'Earned Income Credit'] },
+    { patterns: ['child care', 'dependent care', '2441', 'daycare', 'childcare'],
+      formName: '2441', path: ['Deductions / Credits', 'Common Credits', 'Child & Dependent Care (2441)'] },
+    { patterns: ['hsa', 'health savings', '8889'],
+      formName: '8889', path: ['Deductions / Credits', 'Adjustments', 'HSA Contributions (8889)'] },
+    { patterns: ['charitable', 'donation', 'charity'],
+      formName: 'Sch A', path: ['Deductions / Credits', 'Itemized Deductions', 'Charitable Donations'] },
+    { patterns: ['property tax', 'real estate tax', 'salt deduction'],
+      formName: 'Sch A', path: ['Deductions / Credits', 'Itemized Deductions', 'State & Local Taxes (SALT)'] },
+    { patterns: ['medical expense', 'dental expense'],
+      formName: 'Sch A', path: ['Deductions / Credits', 'Itemized Deductions', 'Medical & Dental Expenses'] },
+    { patterns: ['solar', 'energy credit', '5695', 'electric vehicle credit', 'ev credit'],
+      formName: '5695', path: ['Deductions / Credits', 'Other Credits', 'Residential Energy Credits (5695)'] },
+    { patterns: ['saver credit', 'retirement credit', '8880'],
+      formName: '8880', path: ['Deductions / Credits', 'Other Credits', 'Retirement Savings Credit (8880)'] },
+    { patterns: ['1095a', '8962'],
+      formName: '1095-A', path: ['Deductions / Credits', 'Other', 'Health Insurance Marketplace (1095-A)'] },
+    { patterns: ['1095b', '1095c'],
+      title: "You don't need to enter this",
+      sub: "Forms 1095-B and 1095-C are for your records only. You may be prompted for them if you file a state return with a health insurance mandate.",
+      formName: '1095-B' },
+    { patterns: ['1095'],
+      formName: '1095-A', path: ['Deductions / Credits', 'Other', 'Health Insurance Marketplace (1095-A)'] },
+    { patterns: ['8862'],
+      formName: '8862', path: ['Deductions / Credits', 'Other Credits', 'Credit Recertification (8862)'] },
+    { patterns: ['prior year', 'prior return', '2024', '2023', '2022', '2021', '2020'],
+      title: "You don't need to enter this",
+      sub: "To access previous years' returns, use the Account menu in the top-right corner and select \"Prior Returns\"." },
+    { patterns: ['w4', 'withholding allowance'],
+      formName: 'W-4', path: ['Personal', 'Tax Withholding', 'W-4 Details'] },
+    { patterns: ['estimated tax', '1040es', 'quarterly payment', 'quarterly tax'],
+      formName: '1040-ES', path: ['Misc', 'Taxes Paid', 'Estimated Tax Payments'] },
+    { patterns: ['ira contribution', 'ira deduction', 'traditional ira contribution', 'roth ira contribution'],
+      formName: 'IRA', path: ['Deductions / Credits', 'Adjustments', 'IRA Contributions'] },
+    { patterns: ['alimony paid', 'spousal support paid'],
+      formName: 'Alimony', path: ['Deductions / Credits', 'Adjustments', 'Alimony Paid'] },
+  ];
+
+  function getOtherSectionHint(q) {
+    const nq = norm(q);
+    for (const hint of otherSectionHints) {
+      if (hint.patterns.some(p => nq.includes(norm(p)))) return hint;
+    }
+    return null;
+  }
+
+  // ── SEARCH / FILTER ──
+  function filterIncome(query) {
+    const q = query.trim().toLowerCase();
+    const noResults     = document.getElementById('noResults');
+    const noResultsTitle = document.getElementById('noResultsTitle');
+    const noResultsSub  = document.getElementById('noResultsSub');
+    const clearBtn      = document.getElementById('searchClear');
+    clearBtn.style.display = query ? 'flex' : 'none';
+    let anyVisible = false;
+
+    document.querySelectorAll('.category-block').forEach(cat => {
+      const items = cat.querySelectorAll('.income-item');
+      let catHasMatch = false;
+
+      items.forEach(item => {
+        const label = (item.getAttribute('data-label') || '').toLowerCase();
+        const forms = (item.getAttribute('data-forms') || '').toLowerCase();
+        const extra = extraKeywords[label] || '';
+        const fullText = [label, forms, extra].join(' ');
+        const matches = !q || queryMatches(q, fullText);
+        item.classList.toggle('hidden', !matches);
+        if (matches) { catHasMatch = true; anyVisible = true; }
+      });
+
+      const itemsEl = cat.querySelector('.category-items');
+      const chevron  = cat.querySelector('.category-chevron');
+      if (q) {
+        if (catHasMatch) {
+          itemsEl.classList.add('open'); chevron.classList.add('open'); cat.style.display = '';
+        } else {
+          cat.style.display = 'none';
+        }
+      } else {
+        cat.style.display = '';
+        const isCommon = cat.getAttribute('data-category') === 'common';
+        itemsEl.classList.toggle('open', isCommon);
+        chevron.classList.toggle('open', isCommon);
+      }
+    });
+
+    const pathEl = document.getElementById('noResultsPath');
+    const illustrationEl = document.getElementById('noResultsIllustration');
+    const formTextEl = document.getElementById('noResultsFormText');
+    const iconEl = document.querySelector('.no-results-icon');
+    if (!anyVisible && q) {
+      const hint = getOtherSectionHint(q);
+      if (hint && hint.path && hint.path.length) {
+        // State 1: covered in another section — illustration + menu path
+        noResultsTitle.textContent = "We'll enter this later";
+        noResultsSub.style.display = 'none';
+        formTextEl.textContent = hint.formName || '';
+        illustrationEl.style.display = 'block';
+        if (iconEl) iconEl.style.display = 'none';
+        pathEl.textContent = hint.path.join(' > ');
+        pathEl.style.display = 'block';
+      } else if (hint) {
+        // State 2: don't need to enter — illustration + explanation
+        noResultsTitle.textContent = hint.title;
+        noResultsSub.textContent   = hint.sub;
+        noResultsSub.style.display = '';
+        formTextEl.textContent = hint.formName || '';
+        illustrationEl.style.display = 'block';
+        if (iconEl) iconEl.style.display = 'none';
+        pathEl.style.display = 'none';
+      } else {
+        // State 3: generic no results — magnifying glass icon
+        noResultsTitle.textContent = 'No results found';
+        noResultsSub.textContent   = 'Try searching for a form number, income type, or source.';
+        noResultsSub.style.display = '';
+        illustrationEl.style.display = 'none';
+        if (iconEl) {
+          iconEl.style.display = '';
+          iconEl.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#016ee6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`;
+        }
+        pathEl.style.display = 'none';
+      }
+      noResults.style.display = 'flex';
+    } else {
+      noResults.style.display = 'none';
+      pathEl.style.display = 'none';
+    }
+  }
+
+  // ── INVESTMENTS FLOW ──
+  function showInvestmentsScreen() {
+    document.getElementById('screen-investments').classList.add('active');
+    document.getElementById('screen-investments').scrollTop = 0;
+  }
+  function hideInvestmentsScreen() {
+    document.getElementById('screen-investments').classList.remove('active');
+    clearSearch();
+  }
+  // ── GENERIC SCREEN CONFIG ──
+  const genericConfig = {
+    'unemployment':     { title: 'Your Unemployment Compensation',         desc: 'If you received unemployment benefits in 2025, you\'ll need to enter the amount shown on your <strong>Form 1099-G</strong>.', question: 'Do you need to enter any unemployment compensation for 2025?',           addLabel: 'Add Unemployment Compensation', congrats: 'Nice job! You entered your 1099-G.' },
+    'social-security':  { title: 'Your Social Security Benefits',          desc: 'Enter the information from your <strong>Form SSA-1099</strong> or <strong>RRB-1099</strong> showing the total Social Security benefits you received.', question: 'Do you need to enter any Social Security benefits for 2025?',           addLabel: 'Add Social Security Benefits',   congrats: 'Nice job! You entered your SSA-1099.' },
+    'retirement':       { title: 'Your Retirement Income',                 desc: 'Include distributions from pensions, annuities, IRAs, and other retirement plans reported on <strong>Form 1099-R</strong>, <strong>CSA-1099-R</strong>, <strong>CSF-1099-R</strong>, or <strong>RRB-1099-R</strong>.', question: 'Do you need to enter any retirement income for 2025?',                  addLabel: 'Add a 1099-R',                   congrats: 'Nice job! You entered your 1099-R.' },
+    'state-refund':     { title: 'Your Taxable State Refund',              desc: 'If you itemized deductions last year and received a state tax refund, part or all of it may be taxable. Check <strong>Form 1099-G</strong> from your state.', question: 'Do you need to enter a taxable state refund for 2025?',              addLabel: 'Add a State Refund',             congrats: 'Nice job! You entered your state refund.' },
+    'capital-loss':     { title: 'Your Capital Loss Carryovers',           desc: 'If you had a net capital loss in a prior year that exceeded the annual deduction limit, you can carry the remainder forward to offset gains or income this year.', question: 'Do you have any capital loss carryovers to enter for 2025?',          addLabel: 'Add a Capital Loss Carryover',   congrats: 'Nice job! You entered your capital loss carryover.' },
+    '1099k':            { title: 'Your Form 1099-K Income',                desc: 'You may receive a <strong>Form 1099-K</strong> from payment apps, online marketplaces, or credit card processors. Enter income from personal item sales separately from business income.', question: 'Do you need to enter any 1099-K income for 2025?',                  addLabel: 'Add a 1099-K',                   congrats: 'Nice job! You entered your 1099-K.',      helper: 'Where do I enter my 1099-K from selling personal items?' },
+    'business':         { title: 'Your Business Income',                   desc: 'Report self-employment income from freelancing, consulting, contracting, or running your own business. You\'ll complete a <strong>Schedule C</strong> for each business.', question: 'Do you need to enter any business income for 2025?',                 addLabel: 'Add a Business',                 congrats: 'Nice job! You entered your business income.' },
+    'partnership':      { title: 'Your Partnership Income',                desc: 'If you\'re a partner in a partnership, you\'ll receive a <strong>Schedule K-1</strong> showing your share of income, deductions, and credits.', question: 'Do you need to enter any partnership income for 2025?',               addLabel: 'Add a Schedule K-1 (Partnership)', congrats: 'Nice job! You entered your partnership K-1.' },
+    's-corp':           { title: 'Your S Corporation Income',              desc: 'S corporation shareholders receive a <strong>Schedule K-1</strong> reporting their share of the corporation\'s income, losses, deductions, and credits.', question: 'Do you need to enter any S corporation income for 2025?',              addLabel: 'Add a Schedule K-1 (S Corp)',    congrats: 'Nice job! You entered your S corp K-1.' },
+    'rental':           { title: 'Your Rental Income',                     desc: 'Report income and expenses from rental properties on <strong>Schedule E</strong>. This includes long-term rentals, vacation rentals, and Airbnb or VRBO properties.', question: 'Do you need to enter any rental income for 2025?',                   addLabel: 'Add a Rental Property',          congrats: 'Nice job! You entered your rental income.' },
+    'farm':             { title: 'Your Farm Income',                       desc: 'Report income and expenses from farming operations on <strong>Schedule F</strong>. This includes crop sales, livestock, and agricultural program payments.', question: 'Do you need to enter any farm income for 2025?',                      addLabel: 'Add Farm Income',                congrats: 'Nice job! You entered your farm income.' },
+    'farm-rental':      { title: 'Your Farm Rental Income',                desc: 'If you rent out farmland for someone else to farm, report that income on <strong>Form 4835</strong> rather than Schedule E.', question: 'Do you need to enter any farm rental income for 2025?',               addLabel: 'Add Farm Rental Income',         congrats: 'Nice job! You entered your farm rental income.' },
+    'business-assets':  { title: 'Sale of Business Assets',               desc: 'If you sold depreciable property or other assets used in your business, you\'ll need to report the sale and any depreciation recapture.', question: 'Do you need to report the sale of any business assets for 2025?',     addLabel: 'Add a Business Asset Sale',      congrats: 'Nice job! You entered your business asset sale.' },
+    'gambling':         { title: 'Your Gambling Income',                   desc: 'Report all gambling winnings including casino winnings, lottery prizes, and sports betting. You may receive a <strong>Form W-2G</strong> for large winnings.', question: 'Do you need to enter any gambling income for 2025?',                 addLabel: 'Add Gambling Income',            congrats: 'Nice job! You entered your gambling income.' },
+    'oid':              { title: 'Your Original Issue Discount Income',    desc: 'OID is a form of interest earned on bonds and other debt instruments purchased below face value. Your financial institution will send a <strong>Form 1099-OID</strong>.', question: 'Do you need to enter any OID income for 2025?',                      addLabel: 'Add a 1099-OID',                 congrats: 'Nice job! You entered your 1099-OID.' },
+    'estate':           { title: 'Your Estate or Trust Income',            desc: 'As a beneficiary of an estate or trust, you\'ll receive a <strong>Schedule K-1 (Form 1041)</strong> showing your share of the income.', question: 'Do you need to enter any estate or trust income for 2025?',          addLabel: 'Add an Estate or Trust K-1',    congrats: 'Nice job! You entered your estate K-1.' },
+    'seller-loans':     { title: 'Your Seller-Financed Loan Income',       desc: 'If you sold property and financed the sale yourself, report the mortgage interest you received from the buyer.', question: 'Do you need to enter any seller-financed loan interest for 2025?',    addLabel: 'Add a Seller-Financed Loan',     congrats: 'Nice job! You entered your seller-financed loan income.' },
+    'royalty':          { title: 'Your Royalty Income',                    desc: 'Report royalties received from oil, gas, mineral rights, copyrights, or patents. Royalties are typically reported on <strong>Schedule E</strong>.', question: 'Do you need to enter any royalty income for 2025?',                   addLabel: 'Add Royalty Income',             congrats: 'Nice job! You entered your royalty income.' },
+    'tips':             { title: 'Your Unreported or Allocated Tips',      desc: 'If you received tips that weren\'t included on your W-2, or if your employer allocated tips to you, you\'ll need to report them here.', question: 'Do you need to enter any unreported or allocated tips for 2025?',     addLabel: 'Add Tips',                       congrats: 'Nice job! You entered your tip income.' },
+    'sale-home':        { title: 'Your Sale of Home',                      desc: 'If you sold your main home, you may be able to exclude up to $250,000 ($500,000 if married filing jointly) of the gain from your income.', question: 'Do you need to report the sale of a home for 2025?',                  addLabel: 'Add a Home Sale',                congrats: 'Nice job! You entered your home sale.',   helper: 'What is the home sale exclusion?' },
+    'installment':      { title: 'Your Installment Sales',                 desc: 'If you sold property and will receive payments over more than one year, you may be able to report the gain as payments are received using <strong>Form 6252</strong>.', question: 'Do you need to enter any installment sales for 2025?',               addLabel: 'Add an Installment Sale',        congrats: 'Nice job! You entered your installment sale.' },
+    'canceled-debt':    { title: 'Your Canceled Debt',                     desc: 'If a lender canceled or forgave a debt you owed, that amount is generally taxable income. You\'ll receive a <strong>Form 1099-C</strong>.', question: 'Do you need to enter any canceled debt for 2025?',                   addLabel: 'Add a 1099-C',                   congrats: 'Nice job! You entered your 1099-C.' },
+    'tuition-dist':     { title: 'Your 529 Plan Distributions',            desc: 'Distributions from a Qualified Tuition Program (529 plan or Coverdell ESA) are reported on <strong>Form 1099-Q</strong>. Only non-qualified distributions are taxable.', question: 'Do you need to enter any 529 plan distributions for 2025?',          addLabel: 'Add a 1099-Q',                   congrats: 'Nice job! You entered your 1099-Q.' },
+    'ltc':              { title: 'Your Long-Term Care Insurance Payments',  desc: 'Payments from a long-term care insurance policy are reported on <strong>Form 1099-LTC</strong>. Some payments may be excluded from income.', question: 'Do you need to enter any long-term care insurance payments for 2025?', addLabel: 'Add a 1099-LTC',                 congrats: 'Nice job! You entered your 1099-LTC.' },
+    'able':             { title: 'Your ABLE Account Distributions',        desc: 'Distributions from an ABLE account used for non-qualified purposes are reported on <strong>Form 1099-QA</strong> and may be subject to tax.', question: 'Do you need to enter any ABLE account distributions for 2025?',       addLabel: 'Add a 1099-QA',                  congrats: 'Nice job! You entered your ABLE account distribution.' },
+    'child-invest':     { title: 'Child with Investment Income',           desc: 'If your child had investment income over $1,350 in 2025, you may be able to include it on your return using <strong>Form 8814</strong> instead of filing a separate return for your child.', question: 'Do you need to report a child\'s investment income on your return?',  addLabel: 'Add Child Investment Income',    congrats: 'Nice job! You entered your child\'s investment income.' },
+    'undist-gains':     { title: 'Your Undistributed Capital Gains',       desc: 'Mutual fund companies that retain long-term capital gains must send you <strong>Form 2439</strong>. You must report these gains even though you didn\'t receive them as a distribution.', question: 'Do you need to enter any undistributed capital gains for 2025?',     addLabel: 'Add a Form 2439',                congrats: 'Nice job! You entered your undistributed capital gains.' },
+    'contracts':        { title: 'Your Contracts and Straddles',           desc: 'Report gains and losses from Section 1256 contracts (like regulated futures and foreign currency contracts) and straddle positions.', question: 'Do you need to enter any contracts or straddles for 2025?',           addLabel: 'Add Contracts or Straddles',     congrats: 'Nice job! You entered your contracts and straddles.' },
+    'other':            { title: 'Your Other Income',                      desc: 'This includes taxable scholarship income, household employee wages, prizes and awards, and other miscellaneous income not reported elsewhere.', question: 'Do you need to enter any other income for 2025?',                     addLabel: 'Add Other Income',               congrats: 'Nice job! You entered your other income.' },
+  };
+
+  let currentGenericKey = null;
+  let currentCongratsFlow = null;
+
+  function showCongratsScreen(title, flow) {
+    // Hide whichever sub-screen is currently active
+    document.getElementById('screen-investments').classList.remove('active');
+    document.getElementById('screen-nec').classList.remove('active');
+    document.getElementById('screen-generic').classList.remove('active');
+    // Set dynamic title and store flow
+    document.getElementById('congrats-title-text').textContent = title || 'Nice job!';
+    currentCongratsFlow = flow || null;
+    const congrats = document.getElementById('screen-congrats');
+    congrats.classList.add('active');
+    congrats.scrollTop = 0;
+  }
+
+  function finishCurrentFlow() {
+    if (currentCongratsFlow === 'investments') finishInvestments();
+    else if (currentCongratsFlow === 'nec') finishNec();
+    else if (currentCongratsFlow === 'generic') finishGeneric();
+    else document.getElementById('screen-congrats').classList.remove('active');
+  }
+
+  // ── GENERIC SCREEN ──
+  function showGenericScreen(key) {
+    const cfg = genericConfig[key];
+    if (!cfg) return;
+    currentGenericKey = key;
+    document.getElementById('generic-screen-title').textContent = cfg.title;
+    document.getElementById('generic-screen-desc').innerHTML = cfg.desc;
+    document.getElementById('generic-screen-question').textContent = cfg.question;
+    document.getElementById('generic-add-label').textContent = cfg.addLabel;
+    const helper = document.getElementById('generic-helper-link');
+    if (cfg.helper) { helper.textContent = cfg.helper; helper.style.display = 'block'; }
+    else { helper.style.display = 'none'; }
+    const screen = document.getElementById('screen-generic');
+    screen.classList.add('active');
+    screen.scrollTop = 0;
+  }
+  function hideGenericScreen() {
+    document.getElementById('screen-generic').classList.remove('active');
+    currentGenericKey = null;
+    clearSearch();
+  }
+  function triggerGenericCongrats() {
+    const cfg = genericConfig[currentGenericKey];
+    if (!cfg) return;
+    showCongratsScreen(cfg.congrats, 'generic');
+  }
+  function finishGeneric() {
+    document.getElementById('screen-congrats').classList.remove('active');
+    clearSearch();
+    const key = currentGenericKey;
+    if (!key) return;
+    const info = incomeLabels[key] || { title: genericConfig[key]?.title || key, form: '', prevAmount: '—' };
+    const amount = mockAmounts[key] || '$2,400';
+    let row = document.getElementById(`row-${key}`);
+    if (row) {
+      row.querySelector('.col-current').innerHTML = amount;
+      row.querySelector('.col-actions').innerHTML =
+        `<button class="btn-edit-add" onclick="showGenericScreen('${key}')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit/Add</button>`;
+    } else {
+      const table = document.getElementById('addedIncomeTable');
+      row = document.createElement('div');
+      row.className = 'added-income-row added-income-row--entering';
+      row.id = `row-${key}`;
+      row.innerHTML = `
+        <div>
+          <div class="added-income-label">${info.title}</div>
+          ${info.form ? `<div class="added-income-sublabel">${info.form}</div>` : ''}
+        </div>
+        <div class="added-income-amount col-prev">${info.prevAmount || '—'}</div>
+        <div class="col-current">${amount}</div>
+        <div class="col-actions">
+          <button class="btn-edit-add" onclick="showGenericScreen('${key}')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit/Add</button>
+        </div>`;
+      table.appendChild(row);
+      setTimeout(() => row.classList.remove('added-income-row--entering'), 20);
+    }
+    addedKeys.add(key);
+    currentGenericKey = null;
+    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(() => {
+      row.classList.add('added-income-row--completing');
+      row.addEventListener('animationend', () => row.classList.remove('added-income-row--completing'), { once: true });
+    }, 80);
+  }
+
+  function finishInvestments() {
+    document.getElementById('screen-congrats').classList.remove('active');
+    clearSearch();
+    // Update investments row: swap needs-info → amount, Start → Edit/Add
+    const key = 'investments';
+    const row = document.getElementById('row-investments');
+    const amount = mockAmounts[key] || '$0';
+    row.querySelector('.col-current').innerHTML = amount;
+    row.querySelector('.col-actions').innerHTML =
+      `<button class="btn-edit-add" onclick="openModal('investments')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit/Add</button>`;
+    rolloverKeys.delete(key);
+    addedKeys.add(key);
+    const pdfLink = document.getElementById('investments-pdf-link');
+    if (pdfLink) pdfLink.style.display = '';
+    // Swap category button from +Add to Edit/Add
+    const catBtn = document.getElementById('cat-investments-btn');
+    if (catBtn) {
+      catBtn.className = 'btn-edit-add';
+      catBtn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit/Add`;
+    }
+    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(() => {
+      row.classList.add('added-income-row--completing');
+      row.addEventListener('animationend', () => row.classList.remove('added-income-row--completing'), { once: true });
+    }, 80);
+  }
+
+  function showNecScreen() {
+    document.getElementById('screen-nec').classList.add('active');
+    document.getElementById('screen-nec').scrollTop = 0;
+  }
+  function hideNecScreen() {
+    document.getElementById('screen-nec').classList.remove('active');
+    clearSearch();
+  }
+  function finishNec() {
+    document.getElementById('screen-congrats').classList.remove('active');
+    clearSearch();
+    const key = 'nec-misc';
+    const amount = mockAmounts[key] || '$0';
+    // If the row already exists in the top table (added via modal previously), just update it
+    let row = document.getElementById(`row-${key}`);
+    if (row) {
+      row.querySelector('.col-current').innerHTML = amount;
+      row.querySelector('.col-actions').innerHTML =
+        `<button class="btn-edit-add" onclick="showNecScreen()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit/Add</button>`;
+    } else {
+      // Add new row to the top table
+      const info = incomeLabels[key] || { title: 'Form 1099-NEC / 1099-MISC Income', form: 'Form 1099-NEC / 1099-MISC' };
+      const table = document.getElementById('addedIncomeTable');
+      row = document.createElement('div');
+      row.className = 'added-income-row added-income-row--entering';
+      row.id = `row-${key}`;
+      row.innerHTML = `
+        <div>
+          <div class="added-income-label">${info.title}</div>
+          ${info.form ? `<div class="added-income-sublabel">${info.form}</div>` : ''}
+        </div>
+        <div class="added-income-amount col-prev">${info.prevAmount || '—'}</div>
+        <div class="col-current">${amount}</div>
+        <div class="col-actions">
+          <button class="btn-edit-add" onclick="showNecScreen()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit/Add</button>
+        </div>`;
+      table.appendChild(row);
+      setTimeout(() => row.classList.remove('added-income-row--entering'), 20);
+    }
+    addedKeys.add(key);
+    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(() => {
+      row.classList.add('added-income-row--completing');
+      row.addEventListener('animationend', () => row.classList.remove('added-income-row--completing'), { once: true });
+    }, 80);
+  }
+
+  function clearSearch() {
+    const input = document.getElementById('incomeSearch');
+    input.value = '';
+    filterIncome('');
+    input.focus();
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeInfoModal(); } });
+
+  // ── INFO MODALS ──
+  const infoContent = {
+    nontaxable: {
+      title: 'What types of income are NOT taxable?',
+      body: `<p style="margin-bottom:12px;">Here are some common types of income that are generally not taxable:</p>
+        <ul style="margin:0 0 0 20px;padding:0;display:flex;flex-direction:column;gap:8px;">
+          <li>Gifts</li>
+          <li>Child support payments</li>
+          <li>Welfare payments</li>
+          <li>Disaster relief payments</li>
+          <li>Inheritances</li>
+        </ul>`
+    },
+    taxchanges: {
+      title: 'How do the recent tax changes affect my 2025 taxes?',
+      body: `<p style="margin-bottom:12px;">Some of the new tax changes from the One Big Beautiful Bill Act include:</p>
+        <ul style="margin:0 0 0 20px;padding:0;display:flex;flex-direction:column;gap:8px;">
+          <li><strong>Standard deduction:</strong> The Standard Deduction increased for all filing statuses.</li>
+          <li><strong>Tips deduction:</strong> Certain employees and self-employed taxpayers can deduct qualified tips.</li>
+          <li><strong>Overtime deduction:</strong> Qualified taxpayers can deduct some of their overtime income.</li>
+          <li><strong>Car loan interest deduction:</strong> Certain car buyers can deduct auto loan interest for new cars assembled in the US.</li>
+          <li><strong>Senior deduction:</strong> Seniors 65 and older can receive an additional deduction of up to $6,000.</li>
+          <li><strong>SALT deduction:</strong> The State and Local Tax Deduction (SALT) cap increased to $40,000.</li>
+          <li><strong>Adoption credit:</strong> The Adoption Credit is now partially refundable.</li>
+          <li><strong>Child tax credit:</strong> The Child Tax Credit increased to $2,200 per child.</li>
+          <li><strong>Child investment accounts:</strong> You can sign your children up for Child Investment Accounts.</li>
+        </ul>`
+    }
+  };
+  function openInfoModal(key) {
+    const content = infoContent[key];
+    if (!content) return;
+    document.getElementById('infoModalTitle').textContent = content.title;
+    document.getElementById('infoModalBody').innerHTML = content.body;
+    document.getElementById('infoModalOverlay').classList.add('open');
+  }
+  function closeInfoModal() {
+    document.getElementById('infoModalOverlay').classList.remove('open');
+  }
+</script>
+</body>
+</html>

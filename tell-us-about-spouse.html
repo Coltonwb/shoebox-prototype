@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FreeTaxUSA — Spouse Info</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── CSS Reset ── */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      color: inherit;
+    }
+    html, body {
+      font-family: 'Lexend', sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      color: #212f45;
+      background: #f9f9f9;
+    }
+
+    /* ── GLOBAL HEADER ── */
+    .global-header {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e5e9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 64px;
+      font-family: 'Lexend', sans-serif;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .header-logo-svg { height: 19px; width: auto; display: block; }
+    .header-logo-year { font-size: 16px; font-weight: 700; color: #212f45; }
+    .header-center { display: flex; align-items: center; gap: 12px; font-size: 14px; color: #212f45; }
+    .header-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .header-nav-btn {
+      display: flex; align-items: center; gap: 6px; background: none; border: none;
+      cursor: pointer; font-family: 'Lexend', sans-serif; font-size: 14px; color: #212f45;
+      height: 40px; padding: 0 12px; border-radius: 20px; white-space: nowrap;
+    }
+    .header-nav-btn:hover { background: #f4f9ff; text-decoration: underline; }
+    .header-nav-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+    /* ── TAB NAV ── */
+    .tab-nav {
+      width: 1152px; margin: 0 auto; display: flex; justify-content: space-between;
+      align-items: center; height: 36px; margin-top: 48px; margin-bottom: 16px;
+    }
+    .tab {
+      height: 36px; padding: 0 16px; border: 1px solid #e2e5e9; border-radius: 20px;
+      background: #ffffff; font-family: 'Lexend', sans-serif; font-size: 14px; color: #667285;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      cursor: pointer; white-space: nowrap;
+    }
+    .tab--active { background: #212f45; color: #ffffff; border-color: #212f45; }
+    .tab--disabled {
+      background: transparent; border-color: transparent; color: #667285;
+      pointer-events: none; cursor: default; box-shadow: none;
+    }
+
+    /* ── CONTENT BOX ── */
+    .content-box {
+      width: 1152px; margin: 0 auto; background: #ffffff; border: none;
+      border-radius: 8px; position: relative; padding: 40px 48px 40px;
+    }
+
+    /* ── PAGE ACTIONS (back + bookmark) ── */
+    .page-actions {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 0; width: 100%;
+    }
+    .icon-btn {
+      width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+      background: none; border: none; cursor: pointer; border-radius: 50%;
+      color: #212f45; transition: background 0.15s, color 0.15s;
+    }
+    .icon-btn:hover { background: #f4f9ff; color: #016ee6; }
+    .icon-btn svg { width: 24px; height: 24px; }
+
+    /* ── PAGE TITLE ── */
+    .page-title {
+      font-size: 30px; font-weight: 600; line-height: 38px; color: #212f45;
+      text-align: center; margin-bottom: 32px;
+    }
+
+    /* ── FORM ── */
+    .form-container { width: 864px; margin: 0 auto; }
+    .section-intro {
+      font-size: 16px; font-weight: 400; color: #212f45; text-align: left;
+      width: 864px; margin: 0 auto 32px;
+    }
+    .form-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;
+    }
+    .form-row.single-half { grid-template-columns: 1fr 1fr; }
+    .form-row.single-half .form-group:only-child { grid-column: 1; }
+    .form-group { display: flex; flex-direction: column; }
+    .form-label {
+      font-size: 16px; font-weight: 400; color: #212f45; margin-bottom: 8px; line-height: 20px;
+      display: flex; align-items: center;
+    }
+    .tooltip-icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 16px; height: 16px; border-radius: 50%; background: #daebff;
+      border: 1.5px solid transparent; color: #016ee6; font-size: 10px; font-weight: 600;
+      cursor: default; vertical-align: middle; margin-left: 4px; flex-shrink: 0;
+    }
+    .tooltip-icon:hover { background: #bad9f7; }
+    .tooltip-icon:focus { outline: none; background: #eaf4ff; border-color: #016ee6; }
+    .form-input {
+      width: 100%; height: 44px; border: 1px solid #bec4cc; border-radius: 4px;
+      padding: 8px 12px; font-size: 16px; font-weight: 400; color: #212f45;
+      font-family: 'Lexend', sans-serif; background: #ffffff;
+      box-shadow: 0px 1px 2px rgba(33,47,69,0.05);
+    }
+    .form-input:focus { outline: none; border-color: #016ee6; box-shadow: 0 0 0 3px #f4f9ff; }
+    .form-input::placeholder { color: #667285; }
+    .help-text { font-size: 14px; color: #667285; margin-top: 4px; }
+    .form-select {
+      width: 100%; height: 44px; border: 1px solid #bec4cc; border-radius: 4px;
+      padding: 8px 12px; font-size: 16px; color: #212f45; background: #ffffff;
+      display: flex; align-items: center; justify-content: space-between; cursor: pointer;
+      box-shadow: 0px 1px 2px rgba(33,47,69,0.05);
+    }
+    .form-select svg { width: 16px; height: 16px; color: #667285; flex-shrink: 0; }
+    .zip-row { display: flex; align-items: center; gap: 8px; }
+    .zip-main { width: 100px; }
+    .zip-sep { color: #667285; font-size: 16px; }
+    .zip-ext { width: 64px; }
+
+    /* ── DIVIDER ── */
+    .form-divider { height: 1px; background: #e2e5e9; margin: 32px 0; }
+
+    /* ── CHECKBOX ── */
+    .checkbox-row { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 8px; cursor: pointer; }
+    .checkbox-box {
+      width: 24px; height: 24px; border: 2px solid #bec4cc; border-radius: 4px;
+      background: #ffffff; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; flex-shrink: 0; transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+    }
+    .checkbox-box:hover { background: #f4f9ff; border-color: #91c2f4; }
+    .checkbox-box.checked { background: #f4f9ff; border-color: #016ee6; }
+    .checkbox-box.checked:hover { background: #eaf4ff; border-color: #0850c4; }
+    .checkbox-box svg { width: 16px; height: 16px; color: #016ee6; display: none; }
+    .checkbox-box.checked svg { display: block; }
+    .checkbox-label-row { display: flex; align-items: center; gap: 4px; }
+    .checkbox-label { font-size: 16px; font-weight: 400; color: #212f45; line-height: 24px; cursor: pointer; }
+
+    /* ── YES/NO BUTTONS ── */
+    .yn-section { margin-bottom: 32px; }
+    .yn-question { font-size: 16px; font-weight: 400; color: #212f45; line-height: 24px; margin-bottom: 8px; }
+    .yn-question a { color: #016ee6; text-decoration: underline; }
+    .yn-question .subtle { color: #667285; font-size: 14px; }
+    .yn-btn-group { display: flex; gap: 16px; }
+    .yn-btn {
+      display: flex; align-items: center; gap: 8px; padding: 8px 16px;
+      border: 1px solid #e2e5e9; background: #ffffff; font-family: 'Lexend', sans-serif;
+      font-size: 14px; font-weight: 400; color: #212f45; cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      width: 88px; border-radius: 4px; box-sizing: border-box;
+      box-shadow: 0px 1px 2px 0px rgba(33, 47, 69, 0.05);
+    }
+    .yn-btn svg { width: 20px; height: 20px; flex-shrink: 0; color: #e2e5e9; }
+    .yn-btn.selected svg { color: currentColor; }
+    .yn-btn.selected {
+      background: #eaf4ff; border-color: #016ee6; color: #0850c4;
+    }
+    .yn-btn:not(.selected):hover { background: #f9f9f9; }
+
+    /* ── BUTTON ROW ── */
+    .button-row {
+      width: 1072px; margin: 0 auto; padding-top: 20px; border-top: 1px solid #e2e5e9;
+      display: flex; justify-content: space-between; align-items: center; margin-top: 48px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; border-radius: 4px;
+      font-family: 'Lexend', sans-serif; font-weight: 400; cursor: pointer; border: 1px solid;
+      text-decoration: none; transition: background 0.15s, border-color 0.15s;
+    }
+    .btn-primary {
+      background: #016ee6; border-color: #016ee6; color: #ffffff;
+      box-shadow: 0px 1px 2px 0px rgba(33, 47, 69, 0.05);
+    }
+    .btn-primary:hover { background: #0850c4; border-color: #0850c4; }
+    .btn-secondary {
+      background: transparent; border-color: #016ee6; color: #016ee6;
+      box-shadow: 0px 1px 2px 0px rgba(33, 47, 69, 0.05);
+    }
+    .btn-secondary:hover { background: #f4f9ff; }
+    .btn-md { padding: 10px 18px; font-size: 16px; line-height: 24px; gap: 8px; min-width: 216px; }
+
+    /* ── FOOTER ── */
+    .footer {
+      width: 100%; background: #f9f9f9;
+      margin-top: 48px; padding: 16px 0 24px;
+    }
+    .footer-links {
+      display: flex; justify-content: center; gap: 24px; font-size: 14px;
+      color: #667285; padding: 8px 0;
+    }
+    .footer-links a { color: #667285; text-decoration: none; }
+    .footer-links a:hover { text-decoration: underline; }
+    .footer-copyright { text-align: center; font-size: 12px; color: #667285; padding: 4px 0; }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════ GLOBAL HEADER ══════════ -->
+  <header class="global-header">
+    <a class="header-logo" href="welcome.html">
+      <svg class="header-logo-svg" viewBox="0 0 212 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2.13833 2.02319H0V23.6797H4.64346V15.0795H13.3373V11.0916H4.64346V6.20621H14.6328V2.02319H4.64346H2.13833Z" fill="#212352"/><path d="M24.9847 6.97888C24.1575 6.97888 23.3693 7.17399 22.6201 7.56419C21.8709 7.9544 21.2153 8.50069 20.6534 9.18745C20.4505 9.43718 20.271 9.70252 20.115 9.97567L20.0369 7.31446H15.7993V23.6797H20.2242V15.2044C20.2242 14.6894 20.3101 14.2133 20.4896 13.7841C20.6612 13.3549 20.9032 12.9725 21.2153 12.6525C21.5275 12.3325 21.8943 12.0828 22.3157 11.9111C22.7371 11.7394 23.1976 11.6458 23.6893 11.6458C24.0638 11.6458 24.4228 11.6926 24.774 11.7862C25.1252 11.8799 25.4218 11.9891 25.6715 12.114L26.8499 7.29105C26.6236 7.2052 26.3427 7.13496 26.0149 7.07253C25.6871 7.0101 25.3437 6.97888 24.9925 6.97888H24.9847Z" fill="#212352"/><path d="M40.8423 9.2811C40.1477 8.54751 39.3283 7.98562 38.384 7.5798C37.4319 7.17399 36.4017 6.97888 35.2935 6.97888C34.0995 6.97888 32.9913 7.18959 31.969 7.61102C30.9466 8.03244 30.0648 8.63336 29.3234 9.40597C28.582 10.1786 28.0045 11.0917 27.5908 12.1452C27.1772 13.1988 26.9743 14.3538 26.9743 15.6103C26.9743 17.2413 27.3489 18.6851 28.0903 19.9415C28.8317 21.198 29.8618 22.1891 31.1807 22.9149C32.4996 23.6329 34.0449 23.9997 35.8242 23.9997C36.5656 23.9997 37.3226 23.906 38.0796 23.7188C38.8444 23.5315 39.5858 23.2583 40.3038 22.8993C41.0218 22.5403 41.6851 22.0877 42.286 21.5492L40.1789 18.607C39.5 19.1611 38.86 19.5591 38.2591 19.7855C37.6582 20.0118 37.0026 20.1288 36.2768 20.1288C35.2233 20.1288 34.3102 19.9259 33.5376 19.5279C32.765 19.1299 32.1641 18.568 31.7426 17.8422C31.5007 17.4364 31.3368 16.976 31.2354 16.4843H42.8948L42.926 15.1264C42.965 13.948 42.8011 12.8632 42.4343 11.8799C42.0597 10.8888 41.529 10.0303 40.8423 9.29671V9.2811ZM33.0459 11.2477C33.6781 10.8966 34.4429 10.7249 35.3482 10.7249C35.9647 10.7249 36.5266 10.8497 37.0182 11.0995C37.5099 11.3492 37.9235 11.7004 38.2435 12.153C38.5635 12.6057 38.743 13.1129 38.782 13.667V13.7919H31.2666C31.3446 13.4329 31.4539 13.1051 31.6022 12.8008C31.9299 12.1218 32.4138 11.6067 33.0381 11.2555L33.0459 11.2477Z" fill="#212352"/><path d="M58.5613 9.2811C57.8667 8.54751 57.0473 7.98562 56.103 7.5798C55.1509 7.17399 54.1207 6.97888 53.0125 6.97888C51.8185 6.97888 50.7103 7.18959 49.688 7.61102C48.6656 8.03244 47.7837 8.63336 47.0424 9.40597C46.301 10.1786 45.7235 11.0917 45.3098 12.1452C44.8962 13.1988 44.6933 14.3538 44.6933 15.6103C44.6933 17.2413 45.0679 18.6851 45.8093 19.9415C46.5507 21.198 47.5808 22.1891 48.8997 22.9149C50.2186 23.6329 51.7639 23.9997 53.5432 23.9997C54.2846 23.9997 55.0416 23.906 55.7986 23.7188C56.5634 23.5315 57.3048 23.2583 58.0228 22.8993C58.7408 22.5403 59.4041 22.0877 60.005 21.5492L57.8979 18.607C57.219 19.1611 56.579 19.5591 55.9781 19.7855C55.3772 20.0118 54.7216 20.1288 53.9958 20.1288C52.9423 20.1288 52.0292 19.9259 51.2566 19.5279C50.484 19.1299 49.8831 18.568 49.4616 17.8422C49.2197 17.4364 49.0558 16.976 48.9544 16.4843H60.6137L60.645 15.1264C60.684 13.948 60.5201 12.8632 60.1533 11.8799C59.7787 10.8888 59.248 10.0303 58.5613 9.29671V9.2811ZM50.7649 11.2477C51.3971 10.8966 52.1619 10.7249 53.0671 10.7249C53.6837 10.7249 54.2456 10.8497 54.7372 11.0995C55.2289 11.3492 55.6425 11.7004 55.9625 12.153C56.2825 12.6057 56.4619 13.1129 56.501 13.667V13.7919H48.9856C49.0636 13.4329 49.1729 13.1051 49.3212 12.8008C49.6489 12.1218 50.1328 11.6067 50.7571 11.2555L50.7649 11.2477Z" fill="#212352"/><path d="M76.2998 2.02319H58.8497V6.20621H65.1633V23.6797H69.8068V6.20621H76.2998V2.02319Z" fill="#212352"/><path d="M86.1597 9.49211C85.8475 9.05508 85.4885 8.65707 85.0593 8.30588C84.552 7.89226 83.9667 7.57229 83.2956 7.33036C82.6244 7.09624 81.8908 6.97137 81.087 6.97137C79.6666 6.97137 78.3946 7.33817 77.2786 8.07176C76.1626 8.80535 75.2807 9.80428 74.633 11.0763C73.9852 12.3484 73.6574 13.8078 73.6574 15.4545C73.6574 17.1011 73.9774 18.5683 74.6174 19.8482C75.2573 21.1281 76.1236 22.1348 77.2161 22.884C78.3087 23.6254 79.534 24 80.8997 24C81.6645 24 82.3825 23.8829 83.0614 23.641C83.7404 23.4069 84.3569 23.0869 84.9032 22.6811C85.3714 22.3377 85.7539 21.9475 86.0972 21.5261V23.6878H90.5222V7.31476H86.1597V9.48431V9.49211ZM84.2711 19.5985C83.6545 19.9887 82.9288 20.1838 82.1093 20.1838C81.2899 20.1838 80.5953 19.9887 79.9866 19.5985C79.3779 19.2083 78.9018 18.6542 78.5506 17.944C78.1995 17.2338 78.0278 16.3988 78.0278 15.4545C78.0278 14.5102 78.1995 13.7141 78.5506 13.0118C78.9018 12.3094 79.3779 11.7553 79.9866 11.3573C80.5953 10.9515 81.3055 10.7564 82.1093 10.7564C82.9131 10.7564 83.6545 10.9593 84.2711 11.3573C84.8876 11.7553 85.3714 12.3094 85.707 13.0118C86.0504 13.7141 86.2143 14.5258 86.2143 15.4545C86.2143 16.3832 86.0426 17.2338 85.707 17.944C85.3636 18.6542 84.8876 19.2083 84.2711 19.5985Z" fill="#212352"/><path d="M109.068 7.3147H103.902L101.1 12.2313L97.627 7.3147H92.3046L98.3216 15.3608L92.2422 23.68H97.4085L100.608 18.537L104.214 23.68H109.474L103.402 15.3998L109.068 7.3147Z" fill="#212352"/><path d="M124.469 15.0798C124.469 15.946 124.266 16.7265 123.868 17.4132C123.47 18.1 122.916 18.6541 122.229 19.0677C121.535 19.4813 120.77 19.6842 119.927 19.6842C119.084 19.6842 118.351 19.4813 117.687 19.0677C117.016 18.6541 116.486 18.1078 116.095 17.4132C115.705 16.7187 115.51 15.946 115.51 15.0798V2.00006H110.835V15.3685C110.835 16.9996 111.226 18.459 112.014 19.7467C112.794 21.0343 113.879 22.0489 115.245 22.7825C116.618 23.5161 118.179 23.8829 119.935 23.8829C121.691 23.8829 123.221 23.5161 124.594 22.7825C125.968 22.0489 127.045 21.0421 127.825 19.7467C128.605 18.459 129.003 16.9996 129.003 15.3685V2.00006H124.485V15.0876L124.469 15.0798Z" fill="#212352"/><path d="M147.054 14.6661C146.703 13.9559 146.203 13.3394 145.556 12.8087C144.908 12.278 144.127 11.8332 143.222 11.4664C142.317 11.0918 141.295 10.7953 140.155 10.5689C139.554 10.4441 139.008 10.3036 138.516 10.1397C138.025 9.97582 137.595 9.78071 137.244 9.57C136.893 9.35929 136.628 9.10175 136.44 8.813C136.253 8.52425 136.159 8.19648 136.159 7.82188C136.159 7.34582 136.3 6.94781 136.581 6.61224C136.862 6.28446 137.244 6.02693 137.744 5.85523C138.235 5.68354 138.828 5.58989 139.507 5.58989C140.124 5.58989 140.733 5.69135 141.318 5.88645C141.903 6.08155 142.45 6.37811 142.957 6.76832C143.464 7.15852 143.932 7.64238 144.362 8.21989L147.304 5.37138C146.812 4.56755 146.196 3.88859 145.462 3.3267C144.728 2.7726 143.87 2.34337 142.879 2.03901C141.888 1.74246 140.733 1.59418 139.414 1.59418C138.345 1.59418 137.322 1.75026 136.37 2.05462C135.41 2.36679 134.567 2.81162 133.834 3.38913C133.1 3.96663 132.53 4.6534 132.117 5.44942C131.703 6.24544 131.5 7.1039 131.5 8.03259C131.5 8.96128 131.641 9.7573 131.922 10.4753C132.203 11.2011 132.624 11.841 133.209 12.4107C133.787 12.9804 134.505 13.4565 135.371 13.8311C136.237 14.2135 137.244 14.5412 138.399 14.8066C138.938 14.8924 139.429 14.9939 139.882 15.1344C140.335 15.267 140.748 15.4231 141.123 15.5948C141.497 15.7743 141.817 15.9694 142.083 16.1801C142.348 16.3908 142.559 16.6405 142.699 16.9215C142.84 17.2024 142.918 17.5068 142.918 17.8346C142.918 18.2872 142.769 18.6774 142.489 19.013C142.2 19.3408 141.802 19.5983 141.294 19.77C140.787 19.9417 140.218 20.0353 139.578 20.0353C138.399 20.0353 137.314 19.7856 136.315 19.2783C135.317 18.7711 134.31 17.819 133.303 16.4142L130.392 19.7232C131.071 20.6285 131.844 21.4089 132.694 22.041C133.553 22.681 134.528 23.1648 135.636 23.4926C136.737 23.8204 137.962 23.9842 139.304 23.9842C140.951 23.9842 142.395 23.7111 143.636 23.1648C144.877 22.6185 145.844 21.8303 146.547 20.8002C147.249 19.77 147.6 18.5213 147.6 17.0542C147.6 16.1645 147.421 15.3685 147.077 14.6583L147.054 14.6661Z" fill="#212352"/><path d="M163.661 23.6797H168.422L159.986 2.02319H155.842L147.366 23.6797H151.947L153.664 19.1299H161.976L163.677 23.6797H163.661ZM155.069 15.3917L156.302 12.1139C156.466 11.6379 156.645 11.154 156.825 10.6624C157.012 10.1707 157.184 9.65564 157.348 9.13276C157.512 8.60988 157.668 8.09481 157.824 7.59535C157.98 8.0792 158.136 8.58647 158.308 9.11715C158.495 9.69466 158.674 10.2409 158.846 10.756C159.018 11.2711 159.174 11.6925 159.291 12.0281L160.555 15.3995H155.053L155.069 15.3917Z" fill="#212352"/><path d="M206.305 6.1558H166.592L164.952 1.98059H206.305V6.1558Z" fill="#D11911"/><path d="M206.304 14.8887H170.002L168.397 10.7057L206.304 10.7057V14.8887Z" fill="#D11911"/><path d="M206.304 23.6214L173.426 23.6213L171.763 19.4071L206.304 19.4384V23.6214Z" fill="#D11911"/><path d="M210.219 3.63351C209.988 3.63594 209.76 3.59101 209.547 3.50151C209.341 3.41386 209.155 3.28695 208.997 3.12788C208.838 2.962 208.711 2.76772 208.623 2.55512C208.441 2.07974 208.441 1.55388 208.623 1.07849C208.711 0.865892 208.838 0.671616 208.997 0.505736C209.156 0.343372 209.347 0.21489 209.557 0.128002C209.768 0.0411131 209.993 -0.0023906 210.221 0.000101305C210.451 -2.54542e-05 210.679 0.0448149 210.892 0.132103C211.099 0.218622 211.287 0.34565 211.445 0.505736C211.605 0.670867 211.732 0.865333 211.818 1.07849C212.003 1.55332 212.003 2.0803 211.818 2.55512C211.732 2.76828 211.605 2.96275 211.445 3.12788C211.287 3.28797 211.099 3.41499 210.892 3.50151C210.679 3.59011 210.45 3.635 210.219 3.63351ZM210.219 3.29344C210.404 3.29434 210.587 3.25781 210.758 3.18605C210.927 3.11993 211.08 3.0176 211.205 2.88625C211.332 2.75175 211.431 2.59361 211.496 2.42088C211.568 2.22769 211.604 2.02292 211.601 1.81681C211.603 1.61366 211.567 1.41192 211.496 1.22168C211.43 1.04814 211.331 0.888724 211.205 0.751841C211.08 0.61878 210.928 0.512827 210.76 0.440493C210.592 0.36816 210.411 0.330976 210.228 0.331225C210.04 0.328436 209.855 0.366617 209.684 0.443091C209.519 0.51368 209.372 0.619002 209.252 0.751841C209.129 0.889504 209.031 1.04878 208.966 1.22168C208.893 1.41148 208.856 1.61343 208.858 1.81681C208.856 2.02315 208.892 2.22813 208.966 2.42088C209.03 2.59295 209.128 2.75095 209.252 2.88625C209.371 3.01678 209.518 3.11919 209.682 3.18605C209.852 3.25799 210.034 3.29454 210.219 3.29344ZM209.547 2.72963V0.856996H210.248C210.426 0.851921 210.603 0.898533 210.756 0.991235C210.831 1.04171 210.892 1.11151 210.931 1.19336C210.97 1.27521 210.987 1.36611 210.979 1.4566C210.98 1.56626 210.948 1.6736 210.888 1.76535C210.83 1.85863 210.741 1.92897 210.637 1.96447L211.062 2.72963H210.637L210.315 2.08305H209.923V2.72963H209.547ZM209.923 1.78996H210.163C210.427 1.78996 210.561 1.6848 210.561 1.4745C210.563 1.43336 210.556 1.39227 210.542 1.35378C210.527 1.31529 210.505 1.28022 210.476 1.25076C210.391 1.18718 210.286 1.15765 210.181 1.16798H209.923V1.78996Z" fill="#212352"/>
+      </svg>
+      <span class="header-logo-year">2025</span>
+    </a>
+    <div class="header-center"></div>
+    <div class="header-right">
+      <button class="header-nav-btn">
+        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-3.5-3.5m2.5-6a8.5 8.5 0 1 1-17 0 8.5 8.5 0 0 1 17 0Z"></path></svg>
+        Search
+      </button>
+      <button class="header-nav-btn">
+        Support
+        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+      </button>
+      <button class="header-nav-btn">
+        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21c0-1.396 0-2.093-.172-2.661a4 4 0 0 0-2.667-2.667c-.568-.172-1.265-.172-2.661-.172h-5c-1.396 0-2.093 0-2.661.172a4 4 0 0 0-2.667 2.667C4 18.907 4 19.604 4 21M16.5 7.5a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z"></path></svg>
+        Account
+        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ══════════ TAB NAV ══════════ -->
+  <nav class="tab-nav">
+    <button class="tab tab--active">Personal <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <button class="tab tab--disabled" disabled>Income <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <button class="tab tab--disabled" disabled>Deductions / Credits <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <button class="tab tab--disabled" disabled>Misc <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <button class="tab tab--disabled" disabled>Summary <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <button class="tab tab--disabled" disabled>State <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <button class="tab tab--disabled" disabled>Final Steps <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+  </nav>
+
+  <!-- ══════════ CONTENT BOX ══════════ -->
+  <main class="content-box">
+    <!-- Page actions: back + bookmark -->
+    <div class="page-actions">
+      <button class="icon-btn" onclick="window.location.href='filing-status.html'" title="Go back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m0 0 7 7m-7-7 7-7"/></svg>
+      </button>
+      <button class="icon-btn" title="Bookmark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7.8c0-1.68 0-2.52.327-3.162a3 3 0 0 1 1.311-1.311C7.28 3 8.12 3 9.8 3h4.4c1.68 0 2.52 0 3.162.327a3 3 0 0 1 1.311 1.311C19 5.28 19 6.12 19 7.8V21l-7-4-7 4V7.8Z"/></svg>
+      </button>
+    </div>
+
+    <h1 class="page-title" id="page-title">Tell us about your spouse</h1>
+
+    <!-- Form -->
+    <div class="form-container">
+      <!-- Row 1: First name, Middle initial -->
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">First name <span class="tooltip-icon">?</span></label>
+          <input type="text" class="form-input" value="Jill">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Middle initial <span class="tooltip-icon">?</span></label>
+          <input type="text" class="form-input" value="G" maxlength="1">
+        </div>
+      </div>
+
+      <!-- Row 2: Last name, Jr./Sr. -->
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Last name <span class="tooltip-icon">?</span></label>
+          <input type="text" class="form-input" value="ASDF">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Jr., Sr. III <span class="tooltip-icon">?</span></label>
+          <input type="text" class="form-input">
+        </div>
+      </div>
+
+      <!-- Row 3: Occupation, SSN -->
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Occupation <span class="tooltip-icon">?</span></label>
+          <input type="text" class="form-input" value="Talent Manager">
+          <div class="help-text">(Cashier, homemaker, retired, student, etc.)</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Social security number <span class="tooltip-icon">?</span></label>
+          <input type="text" class="form-input" value="555-55-5555">
+        </div>
+      </div>
+
+      <!-- Row 4: Date of birth -->
+      <div class="form-row single-half">
+        <div class="form-group">
+          <label class="form-label">Date of birth <span class="tooltip-icon">?</span></label>
+          <input type="text" class="form-input" value="05/05/1990">
+        </div>
+      </div>
+
+      <div class="form-divider"></div>
+
+      <!-- Yes/No questions -->
+      <div class="yn-section">
+        <div class="yn-question">Can a parent (or somebody else) claim Jill as a dependent on their tax return?</div>
+        <div class="yn-btn-group">
+          <button class="yn-btn" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/></svg>
+            Yes
+          </button>
+          <button class="yn-btn selected" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            No
+          </button>
+        </div>
+      </div>
+
+      <div class="yn-section">
+        <div class="yn-question">Do Jill want to contribute $3 to the Presidential Election Campaign Fund?</div>
+        <div class="yn-btn-group">
+          <button class="yn-btn" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/></svg>
+            Yes
+          </button>
+          <button class="yn-btn selected" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            No
+          </button>
+        </div>
+      </div>
+
+      <div class="yn-section">
+        <div class="yn-question">Is Jill legally blind?</div>
+        <div class="yn-btn-group">
+          <button class="yn-btn" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/></svg>
+            Yes
+          </button>
+          <button class="yn-btn selected" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            No
+          </button>
+        </div>
+      </div>
+
+      <div class="yn-section">
+        <div class="yn-question">Has Jill passed away before the filing of this tax return?</div>
+        <div class="yn-btn-group">
+          <button class="yn-btn" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/></svg>
+            Yes
+          </button>
+          <button class="yn-btn selected" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            No
+          </button>
+        </div>
+      </div>
+
+      <div class="yn-section">
+        <div class="yn-question">Is Jill a <a href="#">nonresident alien</a>? <span class="subtle">(not common)</span></div>
+        <div class="yn-btn-group">
+          <button class="yn-btn" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/></svg>
+            Yes
+          </button>
+          <button class="yn-btn selected" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            No
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Button row -->
+    <div class="button-row">
+      <button class="btn btn-secondary btn-md" onclick="window.location.href='filing-status.html'">Previous page</button>
+      <button class="btn btn-primary btn-md" id="save-continue-btn" onclick="window.location.href='dependents.html'">Save and continue</button>
+    </div>
+  </main>
+
+  <!-- ══════════ FOOTER ══════════ -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Security</a>
+      <a href="#">Accessibility</a>
+    </div>
+    <div class="footer-copyright">
+      &copy; 2002-2025 FreeTaxUSA, a TaxHawk, Inc. owned and operated website - All Rights Reserved
+    </div>
+  </footer>
+
+  <script>
+    // Check if data was imported
+    var wasImported = new URLSearchParams(window.location.search).get('imported') === 'true';
+
+    if (wasImported) {
+      // Change title to use spouse's name
+      document.getElementById('page-title').textContent = 'Tell us about Jill';
+    } else {
+      // Clear all form inputs
+      document.querySelectorAll('.form-input').forEach(function(input) { input.value = ''; });
+    }
+
+    // Yes/No button toggle
+    document.querySelectorAll('.yn-btn-group').forEach(group => {
+      group.querySelectorAll('.yn-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          group.querySelectorAll('.yn-btn').forEach(b => {
+            b.classList.remove('selected');
+            // Reset to radio circle
+            b.querySelector('svg').innerHTML = '<circle cx="12" cy="12" r="8"/>';
+            b.querySelector('svg').setAttribute('stroke-width', '2');
+            b.querySelector('svg').removeAttribute('stroke-linecap');
+            b.querySelector('svg').removeAttribute('stroke-linejoin');
+          });
+          btn.classList.add('selected');
+          // Set to checkmark
+          btn.querySelector('svg').innerHTML = '<polyline points="20 6 9 17 4 12"/>';
+          btn.querySelector('svg').setAttribute('stroke-width', '2');
+          btn.querySelector('svg').setAttribute('stroke-linecap', 'round');
+          btn.querySelector('svg').setAttribute('stroke-linejoin', 'round');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
