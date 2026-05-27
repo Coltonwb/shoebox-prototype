@@ -509,7 +509,6 @@
     var uploadZone = document.getElementById('upload-zone');
     var fileList = document.getElementById('file-list');
     var importBtn = document.getElementById('import-btn');
-    var uploading = false;
     var fileCount = 0;
 
     function updateButtons() {
@@ -521,12 +520,13 @@
       { name: 'myworkW2.pdf', badge: 'W-2', state: 'ok' },
       { name: 'chase-consolidated-1099-2025.pdf', badge: '1099 Consolidated', state: 'ok' },
       { name: 'fidelity-1099R-2025.pdf', badge: '1099-R', state: 'ok' },
+      { name: 'university-1098T-2025.pdf', badge: '1098-T', state: 'ok' },
       { name: 'kfcreceipt.jpeg', badge: 'Uncategorized', state: 'warning' },
       { name: 'TitanicblurayHI-RES.mov', badge: null, state: 'error' }
     ];
 
     var formTypes = [
-      'Uncategorized','W-2','1099 Consolidated','1099-R','1099-INT','1099-DIV','1099-G','SSA-1099','1099-B','1099-DA',
+      'Uncategorized','W-2','1098-T','1099 Consolidated','1099-R','1099-INT','1099-DIV','1099-G','SSA-1099','1099-B','1099-DA',
       '1099-NEC','1099-MISC','1099-K','1099-A','1099-C','1099-LTC','1099-OID',
       '1099-PATR','1099-Q','1099-QA','1099-S','1099-SA','2439','W-2G',
       'RRB-1099','RRB-1099-R','CSA-1099-R','CSF-1099-R','Schedule C','Schedule E',
@@ -546,9 +546,6 @@
     var closeIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg>';
 
     function addFile() {
-      if (uploading) return;
-      uploading = true;
-
       var file = sampleFiles[fileCount % sampleFiles.length];
       fileCount++;
 
@@ -771,7 +768,6 @@
         }
 
         card.replaceWith(wrapper);
-        uploading = false;
         updateButtons();
       }, 2700);
     }
