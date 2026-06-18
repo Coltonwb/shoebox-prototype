@@ -211,15 +211,22 @@
     .file-name {
       font-size: 14px; font-weight: 400; color: #212f45;
     }
+    .card-actions {
+      margin-left: auto;
+      display: flex; gap: 16px; align-items: center;
+    }
+    .edit-link,
     .delete-link {
       display: flex; align-items: center; gap: 8px;
       color: #016ee6; font-size: 14px; font-weight: 500;
       text-decoration: none; cursor: pointer;
       transition: color 0.15s;
     }
+    .edit-link:hover,
     .delete-link:hover {
       color: #0850c4; text-decoration: underline;
     }
+    .edit-link svg,
     .delete-link svg {
       width: 20px; height: 20px; flex-shrink: 0;
     }
@@ -333,17 +340,6 @@
       <h1 class="page-title">Here's a look at what we got.</h1>
       <p class="page-subtitle">We'll review the rest of the information in a bit.</p>
 
-      <!-- SUCCESS ALERT -->
-      <div class="success-alert">
-        <svg class="success-alert-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M7.5 12L10.5 15L16.5 9M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#15aa51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <div>
-          <div class="success-alert-title">Import Successful!</div>
-          <div class="success-alert-text">Review the info below and make sure everything is looking correct.</div>
-        </div>
-      </div>
-
       <!-- WAGES AND SALARIES SECTION -->
       <div class="section">
         <h2 class="section-heading">Wages and Salaries</h2>
@@ -353,10 +349,14 @@
             <div class="field-value">Acme Corporation</div>
           </div>
           <div class="field">
+            <div class="field-label">Name</div>
+            <div class="field-value">Jamie</div>
+          </div>
+          <div class="field">
             <div class="field-label">Total W-2 wages</div>
             <div class="field-value">$68,500</div>
           </div>
-          <button class="btn btn-primary btn-sm" style="margin-left: auto;">Review</button>
+          <button class="btn btn-primary btn-sm" style="margin-left: auto;" data-review-key="wages">Review</button>
         </div>
       </div>
 
@@ -374,10 +374,14 @@
                 <div class="field-value">Interest / 1099-INT</div>
               </div>
               <div class="field">
+                <div class="field-label">Name</div>
+                <div class="field-value">Jamie</div>
+              </div>
+              <div class="field">
                 <div class="field-label">Total</div>
                 <div class="field-value">$352</div>
               </div>
-              <button class="btn btn-primary btn-sm" style="margin-left: auto;">Review</button>
+              <button class="btn btn-primary btn-sm" style="margin-left: auto;" data-review-key="investments">Review</button>
             </div>
             <div class="institution-card">
               <div class="field">
@@ -385,10 +389,14 @@
                 <div class="field-value">Dividends / 1099-DIV</div>
               </div>
               <div class="field">
+                <div class="field-label">Name</div>
+                <div class="field-value">Jamie and Jill</div>
+              </div>
+              <div class="field">
                 <div class="field-label">Total</div>
                 <div class="field-value">$1,247</div>
               </div>
-              <button class="btn btn-primary btn-sm" style="margin-left: auto;">Review</button>
+              <button class="btn btn-primary btn-sm" style="margin-left: auto;" data-review-key="investments">Review</button>
             </div>
           </div>
         </div>
@@ -403,10 +411,14 @@
             <div class="field-value">Fidelity Investments</div>
           </div>
           <div class="field">
+            <div class="field-label">Name</div>
+            <div class="field-value">Jamie</div>
+          </div>
+          <div class="field">
             <div class="field-label">Gross Distribution / 1099-R</div>
             <div class="field-value">$24,500</div>
           </div>
-          <button class="btn btn-primary btn-sm" style="margin-left: auto;">Review</button>
+          <button class="btn btn-primary btn-sm" style="margin-left: auto;" data-review-key="retirement">Review</button>
         </div>
       </div>
 
@@ -417,6 +429,10 @@
           <div class="field">
             <div class="field-label">School</div>
             <div class="field-value">Lakeside University</div>
+          </div>
+          <div class="field">
+            <div class="field-label">Name</div>
+            <div class="field-value">Jamie</div>
           </div>
           <div class="field">
             <div class="field-label">Payments Received / 1098-T</div>
@@ -453,10 +469,25 @@
   </main>
 
   <script>
-    // Make native selects update the visible span text
-    document.querySelectorAll('.form-select select').forEach(function(sel) {
-      sel.addEventListener('change', function() {
-        this.parentElement.querySelector('span').textContent = this.value;
+    // Clicking a per-row Review button swaps it for Edit / Delete actions,
+    // matching the record-actions pattern on the income dive screen.
+    var editIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 6H6.5c-1.4 0-2.1 0-2.63.27a2.5 2.5 0 0 0-1.1 1.1C2.5 7.9 2.5 8.6 2.5 10v7.5c0 1.4 0 2.1.27 2.63a2.5 2.5 0 0 0 1.1 1.1c.53.27 1.23.27 2.63.27H14c1.4 0 2.1 0 2.63-.27a2.5 2.5 0 0 0 1.1-1.1c.27-.53.27-1.23.27-2.63V13.5M7 17h1.67c.49 0 .74 0 .97-.06.2-.04.4-.13.58-.24.2-.12.37-.3.72-.66L21 6a2.12 2.12 0 0 0-3-3l-10.06 10.06c-.35.35-.52.52-.64.72-.1.18-.19.37-.24.58-.05.23-.05.48-.05.97V17Z"/></svg>';
+    var deleteIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 6V5.2c0-1.12 0-1.68-.218-2.108a2 2 0 0 0-.874-.874C14.48 2 13.92 2 12.8 2h-1.6c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874C8 3.52 8 4.08 8 5.2V6M10 11v6M14 11v6M3 6h18M19 6v11.8c0 1.12 0 1.68-.218 2.108a2 2 0 0 1-.874.874C17.48 21 16.92 21 15.8 21H8.2c-1.12 0-1.68 0-2.108-.218a2 2 0 0 1-.874-.874C5 19.48 5 18.92 5 17.8V6"/></svg>';
+
+    document.querySelectorAll('button.btn.btn-primary.btn-sm').forEach(function(btn) {
+      if (btn.textContent.trim() !== 'Review') return;
+      btn.addEventListener('click', function() {
+        // If this row maps to a page3 income row, remember it so page3 can
+        // skip the "Needs review" state on next visit.
+        var key = btn.getAttribute('data-review-key');
+        if (key) sessionStorage.setItem('reviewed-' + key, '1');
+
+        var actions = document.createElement('div');
+        actions.className = 'card-actions';
+        actions.innerHTML =
+          '<a class="edit-link" href="#">' + editIcon + 'Edit</a>' +
+          '<a class="delete-link" href="#">' + deleteIcon + 'Delete</a>';
+        btn.replaceWith(actions);
       });
     });
   </script>

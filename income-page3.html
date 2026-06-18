@@ -2719,6 +2719,39 @@
       this.parentElement.querySelector('span').textContent = this.value;
     });
   });
+
+  // When users review records on income-import-complete-v2 and hit Save and
+  // continue, those rows arrive here pre-reviewed: no "Needs review" badge,
+  // and the Review button is swapped for Edit/Add.
+  (function applyReviewedFromShoeboxV2() {
+    var editIconSvg = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
+
+    function markRowReviewed(rowId, amount, onclickAttr) {
+      var row = document.getElementById(rowId);
+      if (!row) return;
+      var current = row.querySelector('.col-current');
+      var actions = row.querySelector('.col-actions');
+      if (current) current.innerHTML = amount;
+      if (actions) actions.innerHTML = '<button class="btn-edit-add" onclick="' + onclickAttr + '">' + editIconSvg + ' Edit/Add</button>';
+    }
+
+    if (sessionStorage.getItem('reviewed-wages') === '1') {
+      markRowReviewed('row-wages', '$82,760', 'goBackToWages()');
+    }
+    if (sessionStorage.getItem('reviewed-investments') === '1') {
+      markRowReviewed('row-investments', '$1,599', 'showInvestmentsScreen()');
+      var pdfLink = document.getElementById('investments-pdf-link');
+      if (pdfLink) pdfLink.style.display = '';
+      var catBtn = document.getElementById('cat-investments-btn');
+      if (catBtn) {
+        catBtn.className = 'btn-edit-add';
+        catBtn.innerHTML = editIconSvg + ' Edit/Add';
+      }
+    }
+    if (sessionStorage.getItem('reviewed-retirement') === '1') {
+      markRowReviewed('row-retirement', '$24,500', 'showRetirementScreen()');
+    }
+  })();
 </script>
 </body>
 </html>

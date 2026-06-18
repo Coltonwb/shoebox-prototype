@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FreeTaxUSA — Select documents to import</title>
+  <title>FreeTaxUSA — Import all of your documents in one place</title>
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     /* ── CSS Reset ── */
@@ -319,6 +319,32 @@
       animation: spin 1s linear infinite;
     }
 
+    /* Animated success check shown briefly between extraction and the close X */
+    .complete-card-check {
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .complete-card-check svg {
+      width: 32px; height: 32px;
+    }
+    .complete-card-check .check-circle {
+      stroke-dasharray: 90;
+      stroke-dashoffset: 90;
+      animation: draw-check-circle 0.4s ease-out forwards;
+    }
+    .complete-card-check .check-mark {
+      stroke-dasharray: 20;
+      stroke-dashoffset: 20;
+      animation: draw-check-mark 0.3s ease-out 0.35s forwards;
+    }
+    @keyframes draw-check-circle {
+      to { stroke-dashoffset: 0; }
+    }
+    @keyframes draw-check-mark {
+      to { stroke-dashoffset: 0; }
+    }
+
     /* ── WARNING WRAPPER ── */
     .warning-wrapper {
       border: 1px solid #f9df71;
@@ -484,8 +510,8 @@
 
     <div class="content-inner">
       <!-- Title area -->
-      <h1 class="page-title">Select documents to import</h1>
-      <p class="page-subtitle">Add as many documents as you'd like, and make sure to double check the form type before importing.</p>
+      <h1 class="page-title">Import all of your documents in one place</h1>
+      <p class="page-subtitle">Please check the form type before importing.</p>
 
       <!-- Upload zone -->
       <div class="upload-zone" id="upload-zone">
@@ -549,6 +575,8 @@
     var fileIcon = '<svg class="file-card-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H8.8c-1.68 0-2.52 0-3.162.327a3 3 0 0 0-1.311 1.311C4 4.28 4 5.12 4 6.8v10.4c0 1.68 0 2.52.327 3.162a3 3 0 0 0 1.311 1.311C6.28 22 7.12 22 8.8 22h6.4c1.68 0 2.52 0 3.162-.327a3 3 0 0 0 1.311-1.311C20 19.72 20 18.88 20 17.2V8m-6-6 6 6m-6-6v4.8c0 .56 0 .84.109 1.054a1 1 0 0 0 .437.437C14.76 8 15.04 8 15.6 8H20"/></svg>';
 
     var spinnerSvg = '<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="13" stroke="#e2e5e9" stroke-width="3"/><path d="M16 3a13 13 0 0 1 13 13" stroke="#212f45" stroke-width="3" stroke-linecap="round"/></svg>';
+
+    var checkSvg = '<svg viewBox="0 0 32 32" fill="none" stroke="#15aa51" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle class="check-circle" cx="16" cy="16" r="14"/><polyline class="check-mark" points="10 16 14 20 22 12"/></svg>';
 
     var pdfSvg = '<svg class="complete-card-pdf-svg" width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#016EE6" stroke="#016EE6"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#4B9AEE"/><path d="M5.27561 34V25.6H8.69561C9.15161 25.6 9.56361 25.716 9.93161 25.948C10.3076 26.172 10.6076 26.48 10.8316 26.872C11.0556 27.264 11.1676 27.7 11.1676 28.18C11.1676 28.66 11.0556 29.096 10.8316 29.488C10.6076 29.88 10.3076 30.196 9.93161 30.436C9.56361 30.668 9.15161 30.784 8.69561 30.784H6.57161V34H5.27561ZM6.57161 29.536H8.67161C8.88761 29.536 9.08361 29.476 9.25961 29.356C9.43561 29.228 9.57561 29.064 9.67961 28.864C9.79161 28.656 9.84761 28.428 9.84761 28.18C9.84761 27.932 9.79161 27.708 9.67961 27.508C9.57561 27.308 9.43561 27.148 9.25961 27.028C9.08361 26.908 8.88761 26.848 8.67161 26.848H6.57161V29.536ZM12.8811 34V25.6H16.1691C16.7691 25.6 17.3091 25.7 17.7891 25.9C18.2771 26.1 18.6931 26.388 19.0371 26.764C19.3811 27.14 19.6451 27.584 19.8291 28.096C20.0131 28.608 20.1051 29.176 20.1051 29.8C20.1051 30.424 20.0131 30.996 19.8291 31.516C19.6451 32.028 19.3811 32.472 19.0371 32.848C18.7011 33.216 18.2891 33.5 17.8011 33.7C17.3131 33.9 16.7691 34 16.1691 34H12.8811ZM14.1771 32.884L14.1411 32.752H16.1091C16.5331 32.752 16.9091 32.684 17.2371 32.548C17.5731 32.412 17.8531 32.22 18.0771 31.972C18.3091 31.716 18.4851 31.404 18.6051 31.036C18.7251 30.668 18.7851 30.256 18.7851 29.8C18.7851 29.344 18.7251 28.936 18.6051 28.576C18.4851 28.208 18.3091 27.896 18.0771 27.64C17.8451 27.384 17.5651 27.188 17.2371 27.052C16.9091 26.916 16.5331 26.848 16.1091 26.848H14.1051L14.1771 26.74V32.884ZM21.8576 34V25.6H23.1536V34H21.8576ZM22.4336 30.424V29.176H26.7656V30.424H22.4336ZM22.4336 26.848V25.6H27.3056V26.848H22.4336Z" fill="white"/></svg>';
 
@@ -720,6 +748,83 @@
             wrapper.appendChild(warningMsg);
           }
 
+          // Per-file state helpers, used by both the initial extraction and
+          // any replay triggered by the user changing the form-type dropdown.
+          var extractionTimer = null;
+
+          function wireCloseButton(closeBtn) {
+            closeBtn.addEventListener('click', function() {
+              wrapper.remove();
+              updateButtons();
+            });
+          }
+
+          function finishExtraction() {
+            var statusFinal = complete.querySelector('.complete-card-status');
+            if (statusFinal) statusFinal.textContent = 'Record created';
+
+            // Spinner → animated green check.
+            var spinnerSlot = complete.querySelector('.complete-card-spinner');
+            if (spinnerSlot) {
+              var checkDiv = document.createElement('div');
+              checkDiv.className = 'complete-card-check';
+              checkDiv.innerHTML = checkSvg;
+              spinnerSlot.replaceWith(checkDiv);
+            }
+            updateButtons();
+
+            // After a brief celebration, swap the check for the close X.
+            extractionTimer = setTimeout(function() {
+              extractionTimer = null;
+              var checkSlot = complete.querySelector('.complete-card-check');
+              if (checkSlot) {
+                var closeBtn = document.createElement('button');
+                closeBtn.className = 'complete-card-close';
+                closeBtn.title = 'Remove file';
+                closeBtn.innerHTML = closeIcon;
+                wireCloseButton(closeBtn);
+                checkSlot.replaceWith(closeBtn);
+              }
+            }, 1500);
+          }
+
+          function startExtraction() {
+            if (extractionTimer) clearTimeout(extractionTimer);
+
+            var statusEl = complete.querySelector('.complete-card-status');
+            if (statusEl) statusEl.textContent = 'Extracting...';
+
+            // Swap whatever's in the right slot (close X or check) back to a spinner.
+            var existing = complete.querySelector('.complete-card-close, .complete-card-check');
+            if (existing) {
+              var spinnerDiv = document.createElement('div');
+              spinnerDiv.className = 'complete-card-spinner';
+              spinnerDiv.innerHTML = spinnerSvg;
+              existing.replaceWith(spinnerDiv);
+            }
+
+            extractionTimer = setTimeout(finishExtraction, 3000);
+          }
+
+          function setToDone() {
+            if (extractionTimer) { clearTimeout(extractionTimer); extractionTimer = null; }
+
+            var statusEl = complete.querySelector('.complete-card-status');
+            if (statusEl) statusEl.textContent = 'Done';
+
+            // If a spinner or check is showing, swap it back to a close X.
+            var transient = complete.querySelector('.complete-card-spinner, .complete-card-check');
+            if (transient) {
+              var closeBtn = document.createElement('button');
+              closeBtn.className = 'complete-card-close';
+              closeBtn.title = 'Remove file';
+              closeBtn.innerHTML = closeIcon;
+              wireCloseButton(closeBtn);
+              transient.replaceWith(closeBtn);
+            }
+            updateButtons();
+          }
+
           // Wire the badge dropdown
           var badge = complete.querySelector('.complete-card-badge');
           var badgeLabel = complete.querySelector('.badge-label');
@@ -733,8 +838,11 @@
               wrapper.classList.remove('warning-wrapper');
               if (warningDivider) { warningDivider.remove(); warningDivider = null; }
               if (warningMsg) { warningMsg.remove(); warningMsg = null; }
+              // Replay extraction so users see the system reprocess for the new form type.
+              startExtraction();
             } else {
               wrapper.classList.add('warning-wrapper');
+              setToDone();
               if (!warningMsg) {
                 warningDivider = document.createElement('div');
                 warningDivider.className = 'warning-divider';
@@ -756,31 +864,11 @@
 
           if (isWarning) {
             // Uncategorized files are already in Done state — wire close X and finish.
-            complete.querySelector('.complete-card-close').addEventListener('click', function() {
-              wrapper.remove();
-              updateButtons();
-            });
+            wireCloseButton(complete.querySelector('.complete-card-close'));
             updateButtons();
           } else {
-            // ── STAGE 4: DONE (after 3s of extracting) — swap spinner for close X, status → "Done" ──
-            setTimeout(function() {
-              var statusFinal = complete.querySelector('.complete-card-status');
-              if (statusFinal) statusFinal.textContent = 'Done';
-
-              var spinnerSlot = complete.querySelector('.complete-card-spinner');
-              if (spinnerSlot) {
-                var closeBtn = document.createElement('button');
-                closeBtn.className = 'complete-card-close';
-                closeBtn.title = 'Remove file';
-                closeBtn.innerHTML = closeIcon;
-                closeBtn.addEventListener('click', function() {
-                  wrapper.remove();
-                  updateButtons();
-                });
-                spinnerSlot.replaceWith(closeBtn);
-              }
-              updateButtons();
-            }, 3000);
+            // ── STAGE 4: initial extraction finishes after 3s, status → "Record created". ──
+            extractionTimer = setTimeout(finishExtraction, 3000);
           }
         }, isWarning ? 1000 : 2000);
       }, 2700);
