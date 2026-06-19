@@ -529,6 +529,13 @@
         this.parentElement.querySelector('span').textContent = this.value;
       });
     });
+
+    // Flow 1 has no per-row Review action, so the user reaches income-page3
+    // un-reviewed. Wipe any "reviewed-*" flags that a prior Flow 2 session
+    // may have left in sessionStorage so page3 doesn't show stale state.
+    sessionStorage.removeItem('reviewed-wages');
+    sessionStorage.removeItem('reviewed-investments');
+    sessionStorage.removeItem('reviewed-retirement');
   </script>
 
   <!-- ══════════ FOOTER ══════════ -->

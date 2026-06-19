@@ -127,6 +127,9 @@
       font-size: 24px; font-weight: 400; line-height: 32px; color: #212f45;
       margin-bottom: 16px;
     }
+    .section-heading:has(+ .uncategorized-text) {
+      margin-bottom: 4px;
+    }
 
     /* ── SUMMARY CARD (reused from personal-summary) ── */
     .summary-card {
@@ -422,9 +425,10 @@
         </div>
       </div>
 
-      <!-- COLLEGE EXPENSES SECTION -->
+      <!-- DEDUCTIONS AND CREDITS SECTION -->
       <div class="section">
-        <h2 class="section-heading">College Expenses</h2>
+        <h2 class="section-heading">Deductions and Credits</h2>
+        <p class="uncategorized-text">You'll have a chance to review these documents when you reach this step in your return.</p>
         <div class="summary-card">
           <div class="field">
             <div class="field-label">School</div>
@@ -438,7 +442,6 @@
             <div class="field-label">Payments Received / 1098-T</div>
             <div class="field-value">$8,500</div>
           </div>
-          <button class="btn btn-primary btn-sm" style="margin-left: auto;">Review</button>
         </div>
       </div>
 

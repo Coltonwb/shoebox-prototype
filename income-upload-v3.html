@@ -306,7 +306,7 @@
       transition: background 0.15s;
     }
     .complete-card-close:hover { background: #eaf4ff; }
-    .complete-card-close svg { width: 24px; height: 24px; }
+    .complete-card-close svg { width: 20px; height: 20px; }
 
     /* Spinner shown in the close-button slot while extraction is running */
     .complete-card-spinner {
@@ -389,6 +389,42 @@
     }
     .warning-message-text a:hover { color: #0850c4; }
 
+    /* ── INFO WRAPPER (e.g. 1098-T deferred to Deductions & Credits) ── */
+    .info-wrapper {
+      border: 1px solid #bad9f7;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .info-wrapper .complete-card {
+      border: none;
+      border-radius: 0;
+    }
+
+    /* ── INFO MESSAGE ── */
+    .info-divider {
+      height: 1px;
+      background: #daebff;
+      margin: 0 16px;
+    }
+    .info-message {
+      display: flex;
+      gap: 16px;
+      padding: 16px;
+      background: #f4f9ff;
+    }
+    .info-message-icon {
+      width: 24px; height: 24px; flex-shrink: 0; color: #016ee6;
+    }
+    .info-message-content {
+      display: flex; flex-direction: column; flex: 1; gap: 4px;
+    }
+    .info-message-title {
+      font-size: 16px; font-weight: 600; line-height: 24px; color: #465163;
+    }
+    .info-message-text {
+      font-size: 16px; font-weight: 400; line-height: 24px; color: #465163;
+    }
+
     /* ── ERROR FILE CARD ── */
     .file-card--error {
       background: #fef6f6;
@@ -397,22 +433,27 @@
     .file-card--error .file-card-icon { color: #d11911; }
     .file-card--error .file-card-status { color: #465163; }
     .file-card-close {
-      position: absolute;
-      right: 16px; top: 50%; transform: translateY(-50%);
       width: 40px; height: 40px;
       display: flex; align-items: center; justify-content: center;
       background: transparent; border: none; cursor: pointer;
       border-radius: 50%; color: #212f45;
       transition: background 0.15s;
-      z-index: 2;
     }
     .file-card-close:hover { background: #fee3e2; }
-    .file-card-close svg { width: 24px; height: 24px; }
+    .file-card-close svg { width: 20px; height: 20px; }
+    /* Right-side action group on error cards: Try again + close. */
+    .file-card-right {
+      position: absolute;
+      right: 16px; top: 50%; transform: translateY(-50%);
+      display: flex; align-items: center; gap: 12px;
+      z-index: 2;
+    }
+    .file-card--error .file-card-content { padding-right: 175px; }
     .try-again-btn {
       display: inline-flex; align-items: center; gap: 4px;
       font-size: 12px; line-height: 18px; font-weight: 400; color: #212f45;
       background: none; border: none; cursor: pointer; padding: 0;
-      margin-top: 4px; font-family: inherit; align-self: flex-start;
+      font-family: inherit;
     }
     .try-again-btn:hover { text-decoration: underline; }
     .try-again-btn svg { width: 16px; height: 16px; }
@@ -438,6 +479,14 @@
     }
     .btn-secondary:hover { background: #f4f9ff; }
     .btn-md { padding: 10px 18px; font-size: 16px; line-height: 24px; gap: 8px; }
+    .btn-sm { padding: 6px 12px; font-size: 14px; line-height: 20px; gap: 6px; }
+
+    /* Right-side action group on completed cards: Review + close. */
+    .complete-card-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
     /* ── FOOTER ── */
     .footer {
@@ -526,7 +575,7 @@
     <!-- Button row -->
     <div class="button-row">
       <button class="btn btn-secondary btn-md" onclick="window.location.href='income-import.html'">Previous Page</button>
-      <button class="btn btn-primary btn-md" id="import-btn" style="display:none;" onclick="window.location.href='income-import-complete-v2.html'">Review</button>
+      <button class="btn btn-primary btn-md" id="import-btn" style="display:none;" onclick="sessionStorage.setItem('reviewed-wages','1'); sessionStorage.setItem('reviewed-investments','1'); sessionStorage.setItem('reviewed-retirement','1'); window.location.href='income-page3.html';">Continue</button>
     </div>
   </main>
 
@@ -557,7 +606,7 @@
       { name: 'myworkW2.pdf', badge: 'W-2', state: 'ok' },
       { name: 'chase-consolidated-1099-2025.pdf', badge: '1099 Consolidated', state: 'ok' },
       { name: 'fidelity-1099R-2025.pdf', badge: '1099-R', state: 'ok' },
-      { name: 'university-1098T-2025.pdf', badge: '1098-T', state: 'ok' },
+      { name: 'university-1098T-2025.pdf', badge: '1098-T', state: 'info' },
       { name: 'kfcreceipt.jpeg', badge: 'Uncategorized', state: 'warning' },
       { name: 'TitanicblurayHI-RES.mov', badge: null, state: 'error' }
     ];
@@ -572,6 +621,8 @@
 
     var warningIcon = '<svg class="warning-message-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg>';
 
+    var infoIcon = '<svg class="info-message-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
+
     var fileIcon = '<svg class="file-card-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H8.8c-1.68 0-2.52 0-3.162.327a3 3 0 0 0-1.311 1.311C4 4.28 4 5.12 4 6.8v10.4c0 1.68 0 2.52.327 3.162a3 3 0 0 0 1.311 1.311C6.28 22 7.12 22 8.8 22h6.4c1.68 0 2.52 0 3.162-.327a3 3 0 0 0 1.311-1.311C20 19.72 20 18.88 20 17.2V8m-6-6 6 6m-6-6v4.8c0 .56 0 .84.109 1.054a1 1 0 0 0 .437.437C14.76 8 15.04 8 15.6 8H20"/></svg>';
 
     var spinnerSvg = '<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="13" stroke="#e2e5e9" stroke-width="3"/><path d="M16 3a13 13 0 0 1 13 13" stroke="#212f45" stroke-width="3" stroke-linecap="round"/></svg>';
@@ -582,7 +633,7 @@
 
     var retryIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8m0 0V3m0 5h-5M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16m0 0v5m0-5h5"/></svg>';
 
-    var closeIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg>';
+    var closeIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 6V5.2c0-1.12 0-1.68-.218-2.108a2 2 0 0 0-.874-.874C14.48 2 13.92 2 12.8 2h-1.6c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874C8 3.52 8 4.08 8 5.2V6M10 11v6M14 11v6M3 6h18M19 6v11.8c0 1.12 0 1.68-.218 2.108a2 2 0 0 1-.874.874C17.48 21 16.92 21 15.8 21H8.2c-1.12 0-1.68 0-2.108-.218a2 2 0 0 1-.874-.874C5 19.48 5 18.92 5 17.8V6"/></svg>';
 
     function addFile() {
       var file = sampleFiles[fileCount % sampleFiles.length];
@@ -638,13 +689,15 @@
                 '<div class="file-card-text">' +
                   '<span class="file-card-name">' + file.name + '</span>' +
                   '<span class="file-card-status">Upload failed, please try again</span>' +
-                  '<button class="try-again-btn" type="button">' +
-                    retryIcon +
-                    '<span>Try again</span>' +
-                  '</button>' +
                 '</div>' +
               '</div>' +
-              '<button class="file-card-close" title="Remove file">' + closeIcon + '</button>';
+              '<div class="file-card-right">' +
+                '<button class="try-again-btn" type="button">' +
+                  retryIcon +
+                  '<span>Try again</span>' +
+                '</button>' +
+                '<button class="file-card-close" title="Remove file">' + closeIcon + '</button>' +
+              '</div>';
 
             errorCard.querySelector('.file-card-close').addEventListener('click', function() {
               wrapper.remove();
@@ -685,7 +738,11 @@
 
         // ── STAGE 2: CATEGORIZING — keep uploading card, swap status text ──
         // Uncategorized (warning) files skip Extracting and finish faster.
+        // Info-state files (e.g. 1098-T deferred to Deductions & Credits)
+        // extract like ok files but skip the Review button and show a
+        // primary alert below the card.
         var isWarning = file.state === 'warning';
+        var isInfo = file.state === 'info';
         var statusEl = card.querySelector('.file-card-status');
         if (statusEl) statusEl.textContent = 'Categorizing...';
         if (progressDiv) progressDiv.style.opacity = '0';
@@ -698,6 +755,8 @@
           var complete = document.createElement('div');
           complete.className = 'complete-card';
           if (isWarning) wrapper.className = 'warning-wrapper';
+          // info-wrapper is applied on demand by finishExtraction when the
+          // current badge value is in the deferred list.
 
           var opts = '';
           for (var i = 0; i < formTypes.length; i++) {
@@ -706,9 +765,10 @@
           }
 
           var initialStatus = isWarning ? 'Done' : 'Extracting...';
-          var rightSlot = isWarning
+          var rightInner = isWarning
             ? '<button class="complete-card-close" title="Remove file">' + closeIcon + '</button>'
             : '<div class="complete-card-spinner">' + spinnerSvg + '</div>';
+          var rightSlot = '<div class="complete-card-right">' + rightInner + '</div>';
 
           complete.innerHTML =
             '<div class="complete-card-inner">' +
@@ -748,6 +808,11 @@
             wrapper.appendChild(warningMsg);
           }
 
+          // Info UI (deferred-review forms like 1098-T) — not shown during
+          // extraction. finishExtraction surfaces it when the check appears.
+          var infoDivider = null;
+          var infoMsg = null;
+
           // Per-file state helpers, used by both the initial extraction and
           // any replay triggered by the user changing the form-type dropdown.
           var extractionTimer = null;
@@ -770,6 +835,36 @@
               checkDiv.className = 'complete-card-check';
               checkDiv.innerHTML = checkSvg;
               spinnerSlot.replaceWith(checkDiv);
+            }
+            // Whether the current form type defers review to Deductions & Credits.
+            var currentlyDeferred = badgeLabel.textContent === '1098-T';
+
+            // Surface the Review button only for non-deferred form types.
+            if (!currentlyDeferred && !complete.querySelector('.complete-card-review')) {
+              var rightGroup = complete.querySelector('.complete-card-right');
+              if (rightGroup) {
+                var reviewBtn = document.createElement('button');
+                reviewBtn.className = 'btn btn-primary btn-sm complete-card-review';
+                reviewBtn.textContent = 'Review';
+                rightGroup.insertBefore(reviewBtn, rightGroup.firstChild);
+              }
+            }
+
+            // For deferred form types, surface the alert now — timed with the check.
+            if (currentlyDeferred && !infoMsg) {
+              wrapper.classList.add('info-wrapper');
+              infoDivider = document.createElement('div');
+              infoDivider.className = 'info-divider';
+              wrapper.appendChild(infoDivider);
+              infoMsg = document.createElement('div');
+              infoMsg.className = 'info-message';
+              infoMsg.innerHTML =
+                infoIcon +
+                '<div class="info-message-content">' +
+                  '<span class="info-message-title">We\'ll come back to this</span>' +
+                  '<span class="info-message-text">1098-T forms are reviewed in the Deductions &amp; Credits section. You\'ll see this document again when you get there.</span>' +
+                '</div>';
+              wrapper.appendChild(infoMsg);
             }
             updateButtons();
 
@@ -794,6 +889,16 @@
             var statusEl = complete.querySelector('.complete-card-status');
             if (statusEl) statusEl.textContent = 'Extracting...';
 
+            // Record isn't ready while extracting — drop the Review button.
+            var review = complete.querySelector('.complete-card-review');
+            if (review) review.remove();
+
+            // Hide the info alert during extraction; finishExtraction re-adds it
+            // (and the wrapper class) iff the new form type is still deferred.
+            wrapper.classList.remove('info-wrapper');
+            if (infoDivider) { infoDivider.remove(); infoDivider = null; }
+            if (infoMsg) { infoMsg.remove(); infoMsg = null; }
+
             // Swap whatever's in the right slot (close X or check) back to a spinner.
             var existing = complete.querySelector('.complete-card-close, .complete-card-check');
             if (existing) {
@@ -811,6 +916,10 @@
 
             var statusEl = complete.querySelector('.complete-card-status');
             if (statusEl) statusEl.textContent = 'Done';
+
+            // Uncategorized files don't get a Review action.
+            var review = complete.querySelector('.complete-card-review');
+            if (review) review.remove();
 
             // If a spinner or check is showing, swap it back to a close X.
             var transient = complete.querySelector('.complete-card-spinner, .complete-card-check');
@@ -838,9 +947,14 @@
               wrapper.classList.remove('warning-wrapper');
               if (warningDivider) { warningDivider.remove(); warningDivider = null; }
               if (warningMsg) { warningMsg.remove(); warningMsg = null; }
-              // Replay extraction so users see the system reprocess for the new form type.
+              // finishExtraction decides whether the new form type still
+              // warrants the deferred-review wrapper + alert.
               startExtraction();
             } else {
+              // Dropping back to Uncategorized — clear any info-state UI first.
+              wrapper.classList.remove('info-wrapper');
+              if (infoDivider) { infoDivider.remove(); infoDivider = null; }
+              if (infoMsg) { infoMsg.remove(); infoMsg = null; }
               wrapper.classList.add('warning-wrapper');
               setToDone();
               if (!warningMsg) {
