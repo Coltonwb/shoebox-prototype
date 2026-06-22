@@ -2752,6 +2752,18 @@
       markRowReviewed('row-retirement', '$24,500', 'showRetirementScreen()');
     }
   })();
+
+  // Single-type Review routing from the import-complete screen: when the URL
+  // carries #review-<type>, jump straight into that income type's review.
+  (function () {
+    var routes = {
+      'review-wages': goBackToWages,
+      'review-investments': showInvestmentsScreen,
+      'review-retirement': showRetirementScreen
+    };
+    var fn = routes[(location.hash || '').replace('#', '')];
+    if (fn) fn();
+  })();
 </script>
 </body>
 </html>

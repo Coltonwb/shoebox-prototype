@@ -224,6 +224,14 @@
       width: 20px; height: 20px; flex-shrink: 0;
     }
 
+    /* ── FAILED EXTRACTIONS SECTION ── */
+    .failed-text {
+      font-size: 16px; font-weight: 400; color: #212f45; line-height: 24px;
+      margin-bottom: 20px;
+    }
+    .failed-card { border-left: 4px solid #d11911; }
+    .failed-actions { margin-top: 4px; }
+
     /* ── UNCATEGORIZED SECTION TEXT ── */
     .uncategorized-text {
       font-size: 16px; font-weight: 400; color: #212f45; line-height: 24px;
@@ -339,7 +347,7 @@
         </svg>
         <div>
           <div class="success-alert-title">Import Successful!</div>
-          <div class="success-alert-text">Review the info below and make sure everything is looking correct.</div>
+          <div class="success-alert-text">Here's what we pulled from your documents. You'll review each one in the next step.</div>
         </div>
       </div>
 
@@ -352,23 +360,12 @@
             <div class="field-value">Acme Corporation</div>
           </div>
           <div class="field">
+            <div class="field-label">Belongs to</div>
+            <div class="field-value">Jamie</div>
+          </div>
+          <div class="field">
             <div class="field-label">Total W-2 wages</div>
             <div class="field-value">$68,500</div>
-          </div>
-          <div class="form-field">
-            <div class="form-field-label">
-              This form belongs to
-              <span class="tooltip-icon">?</span>
-            </div>
-            <div class="form-select">
-              <span>Jamie</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-              <select>
-                <option selected>Jamie</option>
-                <option>Jill</option>
-                <option>Both</option>
-              </select>
-            </div>
           </div>
         </div>
       </div>
@@ -387,23 +384,12 @@
                 <div class="field-value">Interest / 1099-INT</div>
               </div>
               <div class="field">
+                <div class="field-label">Belongs to</div>
+                <div class="field-value">Jamie</div>
+              </div>
+              <div class="field">
                 <div class="field-label">Total</div>
                 <div class="field-value">$352</div>
-              </div>
-              <div class="form-field">
-                <div class="form-field-label">
-                  This form belongs to
-                  <span class="tooltip-icon">?</span>
-                </div>
-                <div class="form-select">
-                  <span>Jamie</span>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-                  <select>
-                    <option selected>Jamie</option>
-                    <option>Jill</option>
-                    <option>Both</option>
-                  </select>
-                </div>
               </div>
             </div>
             <div class="institution-card">
@@ -412,23 +398,12 @@
                 <div class="field-value">Dividends / 1099-DIV</div>
               </div>
               <div class="field">
+                <div class="field-label">Belongs to</div>
+                <div class="field-value">Both</div>
+              </div>
+              <div class="field">
                 <div class="field-label">Total</div>
                 <div class="field-value">$1,247</div>
-              </div>
-              <div class="form-field">
-                <div class="form-field-label">
-                  This form belongs to
-                  <span class="tooltip-icon">?</span>
-                </div>
-                <div class="form-select">
-                  <span>Both</span>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-                  <select>
-                    <option>Jamie</option>
-                    <option>Jill</option>
-                    <option selected>Both</option>
-                  </select>
-                </div>
               </div>
             </div>
           </div>
@@ -444,23 +419,12 @@
             <div class="field-value">Fidelity Investments</div>
           </div>
           <div class="field">
+            <div class="field-label">Belongs to</div>
+            <div class="field-value">Jamie</div>
+          </div>
+          <div class="field">
             <div class="field-label">Gross Distribution / 1099-R</div>
             <div class="field-value">$24,500</div>
-          </div>
-          <div class="form-field">
-            <div class="form-field-label">
-              This form belongs to
-              <span class="tooltip-icon">?</span>
-            </div>
-            <div class="form-select">
-              <span>Jamie</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-              <select>
-                <option selected>Jamie</option>
-                <option>Jill</option>
-                <option>Both</option>
-              </select>
-            </div>
           </div>
         </div>
       </div>
@@ -474,25 +438,46 @@
             <div class="field-value">Lakeside University</div>
           </div>
           <div class="field">
+            <div class="field-label">Belongs to</div>
+            <div class="field-value">Jamie</div>
+          </div>
+          <div class="field">
             <div class="field-label">Payments Received / 1098-T</div>
             <div class="field-value">$8,500</div>
           </div>
-          <div class="form-field">
-            <div class="form-field-label">
-              This form belongs to
-              <span class="tooltip-icon">?</span>
-            </div>
-            <div class="form-select">
-              <span>Jamie</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-              <select>
-                <option selected>Jamie</option>
-                <option>Jill</option>
-                <option>Dependent 1</option>
-                <option>Dependent 2</option>
-              </select>
-            </div>
+        </div>
+      </div>
+
+      <!-- FAILED EXTRACTIONS SECTION -->
+      <div class="section">
+        <h2 class="section-heading">We couldn't read these</h2>
+        <p class="failed-text">We weren't able to pull the information from the documents below. This usually happens when an image is blurry, cropped, or too dark. Add these forms again and we'll give them another try.</p>
+
+        <div class="summary-card failed-card">
+          <div class="field">
+            <div class="field-label">File name</div>
+            <div class="field-value">w-2-employer2.jpg</div>
           </div>
+          <div class="field">
+            <div class="field-label">Reason</div>
+            <div class="field-value">Image was too blurry to read</div>
+          </div>
+        </div>
+        <div class="summary-card failed-card">
+          <div class="field">
+            <div class="field-label">File name</div>
+            <div class="field-value">1099-int-chase.pdf</div>
+          </div>
+          <div class="field">
+            <div class="field-label">Reason</div>
+            <div class="field-value">Part of the form was cut off</div>
+          </div>
+        </div>
+
+        <div class="failed-actions">
+          <button class="btn btn-secondary btn-md" onclick="window.location.href='income-upload.html'">
+            Add more forms
+          </button>
         </div>
       </div>
 
@@ -516,26 +501,38 @@
       <button class="btn btn-secondary btn-md" onclick="window.location.href='income-upload.html'">
         Add more documents
       </button>
-      <button class="btn btn-primary btn-md" onclick="window.location.href='income-page3.html'">
-        Save and continue
+      <button class="btn btn-primary btn-md" onclick="goToReview()">
+        Review
       </button>
     </div>
   </main>
 
   <script>
-    // Make native selects update the visible span text
-    document.querySelectorAll('.form-select select').forEach(function(sel) {
-      sel.addEventListener('change', function() {
-        this.parentElement.querySelector('span').textContent = this.value;
-      });
-    });
-
     // Flow 1 has no per-row Review action, so the user reaches income-page3
     // un-reviewed. Wipe any "reviewed-*" flags that a prior Flow 2 session
     // may have left in sessionStorage so page3 doesn't show stale state.
     sessionStorage.removeItem('reviewed-wages');
     sessionStorage.removeItem('reviewed-investments');
     sessionStorage.removeItem('reviewed-retirement');
+
+    // ── REVIEW ROUTING ──
+    // The reviewable income types in this import batch. (1098-T / College
+    // expenses are reviewed later under Deductions & Credits, so they don't
+    // count toward income review routing.) For this demo the batch spans
+    // multiple types, so Review lands on the income dive. If a batch were a
+    // single type, Review would jump straight into that type's review screen.
+    var unreviewedTypes = ['wages', 'investments', 'retirement'];
+
+    function goToReview() {
+      if (unreviewedTypes.length === 1) {
+        // Single income type → straight into that type's review screen.
+        window.location.href = 'income-page3.html#review-' + unreviewedTypes[0];
+      } else {
+        // Multiple income types → income dive, which shows a blue "Review"
+        // button next to each type that still needs review.
+        window.location.href = 'income-page3.html';
+      }
+    }
   </script>
 
   <!-- ══════════ FOOTER ══════════ -->
