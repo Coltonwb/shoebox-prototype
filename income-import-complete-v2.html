@@ -206,14 +206,30 @@
     }
 
     /* ── FILE CARDS (UNCATEGORIZED) ── */
+    /* ── FILE CARDS (UNCATEGORIZED / FAILED) — mirrors the upload screen ── */
     .file-card {
-      border: 1px solid #e2e5e9; border-radius: 4px; padding: 16px 20px;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 24px; margin-bottom: 12px;
+      width: 100%; min-height: 72px; border: 1px solid #e2e5e9; border-radius: 4px;
+      background: #ffffff; margin-bottom: 12px;
     }
-    .file-name {
-      font-size: 14px; font-weight: 400; color: #212f45;
+    .file-card-content {
+      display: flex; align-items: flex-start; gap: 8px; padding: 16px 24px;
     }
+    .file-card-icon { width: 20px; height: 20px; color: #667285; flex-shrink: 0; }
+    .file-card-text { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+    .file-card-name {
+      display: block; font-size: 14px; font-weight: 500; line-height: 20px; color: #465163;
+    }
+    .file-card-status {
+      display: block; font-size: 14px; font-weight: 400; line-height: 20px; color: #667285;
+    }
+    .file-card--error { background: #fef6f6; border-color: #fecbc9; }
+    .file-card--error .file-card-icon { color: #d11911; }
+    .file-card--error .file-card-status { color: #d11911; }
+    .failed-text {
+      font-size: 16px; font-weight: 400; color: #212f45; line-height: 24px;
+      margin-bottom: 20px;
+    }
+    .failed-actions { margin-top: 4px; }
     .card-actions {
       margin-left: auto;
       display: flex; gap: 16px; align-items: center;
@@ -445,15 +461,49 @@
         </div>
       </div>
 
+      <!-- FAILED EXTRACTIONS SECTION -->
+      <div class="section">
+        <h2 class="section-heading">We couldn't read these</h2>
+        <p class="failed-text">We weren't able to pull the information from the documents below. This usually happens when an image is blurry, cropped, or too dark. Add these forms again and we'll give them another try.</p>
+
+        <div class="file-card file-card--error">
+          <div class="file-card-content">
+            <svg class="file-card-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H8.8c-1.68 0-2.52 0-3.162.327a3 3 0 0 0-1.311 1.311C4 4.28 4 5.12 4 6.8v10.4c0 1.68 0 2.52.327 3.162a3 3 0 0 0 1.311 1.311C6.28 22 7.12 22 8.8 22h6.4c1.68 0 2.52 0 3.162-.327a3 3 0 0 0 1.311-1.311C20 19.72 20 18.88 20 17.2V8m-6-6 6 6m-6-6v4.8c0 .56 0 .84.109 1.054a1 1 0 0 0 .437.437C14.76 8 15.04 8 15.6 8H20"/></svg>
+            <div class="file-card-text">
+              <span class="file-card-name">w-2-employer2.jpg</span>
+              <span class="file-card-status">Couldn't import — add it again to retry</span>
+            </div>
+          </div>
+        </div>
+        <div class="file-card file-card--error">
+          <div class="file-card-content">
+            <svg class="file-card-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H8.8c-1.68 0-2.52 0-3.162.327a3 3 0 0 0-1.311 1.311C4 4.28 4 5.12 4 6.8v10.4c0 1.68 0 2.52.327 3.162a3 3 0 0 0 1.311 1.311C6.28 22 7.12 22 8.8 22h6.4c1.68 0 2.52 0 3.162-.327a3 3 0 0 0 1.311-1.311C20 19.72 20 18.88 20 17.2V8m-6-6 6 6m-6-6v4.8c0 .56 0 .84.109 1.054a1 1 0 0 0 .437.437C14.76 8 15.04 8 15.6 8H20"/></svg>
+            <div class="file-card-text">
+              <span class="file-card-name">1099-int-chase.pdf</span>
+              <span class="file-card-status">Couldn't import — add it again to retry</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="failed-actions">
+          <button class="btn btn-secondary btn-md" onclick="window.location.href='income-upload-v2.html'">
+            Add more forms
+          </button>
+        </div>
+      </div>
+
       <!-- UNCATEGORIZED DOCUMENTS SECTION -->
       <div class="section">
         <h2 class="section-heading">Uncategorized Documents</h2>
         <p class="uncategorized-text">The following documents successfully saved in <a href="#">My Tax Files</a>, which you can find in the account menu.</p>
 
-        <div class="summary-card">
-          <div class="field">
-            <div class="field-label">File name</div>
-            <div class="field-value">kfcreceipt.jpeg</div>
+        <div class="file-card">
+          <div class="file-card-content">
+            <svg class="file-card-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H8.8c-1.68 0-2.52 0-3.162.327a3 3 0 0 0-1.311 1.311C4 4.28 4 5.12 4 6.8v10.4c0 1.68 0 2.52.327 3.162a3 3 0 0 0 1.311 1.311C6.28 22 7.12 22 8.8 22h6.4c1.68 0 2.52 0 3.162-.327a3 3 0 0 0 1.311-1.311C20 19.72 20 18.88 20 17.2V8m-6-6 6 6m-6-6v4.8c0 .56 0 .84.109 1.054a1 1 0 0 0 .437.437C14.76 8 15.04 8 15.6 8H20"/></svg>
+            <div class="file-card-text">
+              <span class="file-card-name">kfcreceipt.jpeg</span>
+              <span class="file-card-status">Saved to My Tax Files</span>
+            </div>
           </div>
         </div>
       </div>
