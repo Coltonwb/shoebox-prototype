@@ -127,6 +127,10 @@
       font-size: 24px; font-weight: 400; line-height: 32px; color: #212f45;
       margin-bottom: 16px;
     }
+    /* Tighten the gap when a heading is immediately followed by a subheader */
+    .section-heading:has(+ .uncategorized-text) {
+      margin-bottom: 4px;
+    }
 
     /* ── SUMMARY CARD (reused from personal-summary) ── */
     .summary-card {
@@ -426,9 +430,10 @@
         </div>
       </div>
 
-      <!-- COLLEGE EXPENSES SECTION -->
+      <!-- DEDUCTIONS AND CREDITS SECTION -->
       <div class="section">
-        <h2 class="section-heading">College Expenses</h2>
+        <h2 class="section-heading">Deductions and Credits</h2>
+        <p class="uncategorized-text">You'll have a chance to review these documents when you reach this step in your return.</p>
         <div class="summary-card">
           <div class="field">
             <div class="field-label">School</div>
