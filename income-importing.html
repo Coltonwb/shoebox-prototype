@@ -204,14 +204,15 @@
   </footer>
 
   <script>
-    // Force GIF to restart from frame 1 by cache-busting the src
+    // Restart the SVG animation from the first frame by cache-busting the src
     var gif = document.querySelector('.importing-gif');
     gif.src = gif.src.split('?')[0] + '?t=' + Date.now();
 
-    // Play through once (~7 seconds) then navigate to income-import-complete
+    // Let the full 8.33s animation play through (plus a small settle buffer)
+    // before navigating to income-import-complete.
     setTimeout(function() {
       window.location.href = 'income-import-complete.html';
-    }, 7000);
+    }, 8500);
   </script>
 </body>
 </html>
