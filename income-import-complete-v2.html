@@ -135,7 +135,7 @@
     .summary-card {
       border: 1px solid #e2e5e9; border-radius: 4px; padding: 24px;
       margin-bottom: 16px; position: relative;
-      display: flex; align-items: center; gap: 48px;
+      display: flex; align-items: center; gap: 24px;
     }
     .field { flex: 0 0 auto; min-width: 140px; }
     .field-label {
@@ -145,6 +145,20 @@
     .field-value {
       font-size: 16px; font-weight: 400; color: #212f45;
       line-height: 24px;
+    }
+
+    /* ── FORM BADGE (leading element in record cards) ── */
+    .form-badge-wrap {
+      flex: 0 0 auto; min-width: 100px;
+      display: flex; align-items: center; justify-content: flex-start;
+    }
+    .form-badge {
+      display: inline-flex; align-items: center;
+      padding: 2px 10px;
+      background: #f2f4f7;
+      border-radius: 16px;
+      font-size: 14px; font-weight: 500; line-height: 20px; color: #465163;
+      white-space: nowrap;
     }
 
     /* ── FORM SELECT (reused from import-complete) ── */
@@ -201,7 +215,7 @@
     }
     .institution-card {
       padding: 20px 24px; display: flex; align-items: center;
-      gap: 48px; border: 1px solid #e2e5e9; border-radius: 4px;
+      gap: 24px; border: 1px solid #e2e5e9; border-radius: 4px;
       background: #ffffff;
     }
 
@@ -233,6 +247,7 @@
     .card-actions {
       margin-left: auto;
       display: flex; gap: 16px; align-items: center;
+      flex-shrink: 0; white-space: nowrap;
     }
     .edit-link,
     .delete-link {
@@ -283,7 +298,7 @@
     }
     .btn-secondary:hover { background: #f4f9ff; }
     .btn-md { padding: 10px 18px; font-size: 16px; line-height: 24px; gap: 8px; }
-    .btn-sm { padding: 6px 12px; font-size: 14px; line-height: 20px; gap: 6px; }
+    .btn-sm { padding: 6px 12px; font-size: 14px; line-height: 20px; gap: 6px; flex-shrink: 0; white-space: nowrap; }
 
     /* ── FOOTER ── */
     .footer {
@@ -357,12 +372,24 @@
     <div class="content-inner">
       <!-- PAGE TITLE & SUBTITLE -->
       <h1 class="page-title">Here's a look at what we got.</h1>
-      <p class="page-subtitle">We'll review the rest of the information in a bit.</p>
+      <p class="page-subtitle">Review each form below — we'll cover the rest later in your return.</p>
 
-      <!-- WAGES AND SALARIES SECTION -->
+      <!-- SUCCESS ALERT -->
+      <div class="success-alert">
+        <svg class="success-alert-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7.5 12L10.5 15L16.5 9M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#15aa51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div>
+          <div class="success-alert-title">Import Successful!</div>
+          <div class="success-alert-text">Here's what we pulled from your documents. Review each one below.</div>
+        </div>
+      </div>
+
+      <!-- IMPORTED AND READY SECTION -->
       <div class="section">
-        <h2 class="section-heading">Wages and Salaries</h2>
+        <h2 class="section-heading">Imported and ready to review</h2>
         <div class="summary-card">
+          <div class="form-badge-wrap"><span class="form-badge">W-2</span></div>
           <div class="field">
             <div class="field-label">Employer</div>
             <div class="field-value">Acme Corporation</div>
@@ -372,26 +399,18 @@
             <div class="field-value">Jamie</div>
           </div>
           <div class="field">
-            <div class="field-label">Total W-2 wages</div>
+            <div class="field-label">Total wages</div>
             <div class="field-value">$68,500</div>
           </div>
           <button class="btn btn-primary btn-sm" style="margin-left: auto;" data-review-key="wages">Review</button>
         </div>
-      </div>
-
-      <!-- INVESTMENTS AND SAVINGS SECTION -->
-      <div class="section">
-        <h2 class="section-heading">Investments and Savings</h2>
         <div class="institution-wrapper">
           <div class="institution-header">
             <span class="institution-name">CHASE BANK</span>
           </div>
           <div class="institution-inner">
             <div class="institution-card">
-              <div class="field">
-                <div class="field-label">Form Type</div>
-                <div class="field-value">Interest / 1099-INT</div>
-              </div>
+              <div class="form-badge-wrap"><span class="form-badge">1099-INT</span></div>
               <div class="field">
                 <div class="field-label">Name</div>
                 <div class="field-value">Jamie</div>
@@ -403,10 +422,7 @@
               <button class="btn btn-primary btn-sm" style="margin-left: auto;" data-review-key="investments">Review</button>
             </div>
             <div class="institution-card">
-              <div class="field">
-                <div class="field-label">Form Type</div>
-                <div class="field-value">Dividends / 1099-DIV</div>
-              </div>
+              <div class="form-badge-wrap"><span class="form-badge">1099-DIV</span></div>
               <div class="field">
                 <div class="field-label">Name</div>
                 <div class="field-value">Jamie and Jill</div>
@@ -419,12 +435,8 @@
             </div>
           </div>
         </div>
-      </div>
-
-      <!-- RETIREMENT INCOME SECTION -->
-      <div class="section">
-        <h2 class="section-heading">Retirement Income</h2>
         <div class="summary-card">
+          <div class="form-badge-wrap"><span class="form-badge">1099-R</span></div>
           <div class="field">
             <div class="field-label">Payer</div>
             <div class="field-value">Fidelity Investments</div>
@@ -434,18 +446,19 @@
             <div class="field-value">Jamie</div>
           </div>
           <div class="field">
-            <div class="field-label">Gross Distribution / 1099-R</div>
+            <div class="field-label">Gross Distribution</div>
             <div class="field-value">$24,500</div>
           </div>
           <button class="btn btn-primary btn-sm" style="margin-left: auto;" data-review-key="retirement">Review</button>
         </div>
       </div>
 
-      <!-- DEDUCTIONS AND CREDITS SECTION -->
+      <!-- REVIEW LATER SECTION -->
       <div class="section">
-        <h2 class="section-heading">Deductions and Credits</h2>
+        <h2 class="section-heading">We'll review these later</h2>
         <p class="uncategorized-text">You'll have a chance to review these documents when you reach this step in your return.</p>
         <div class="summary-card">
+          <div class="form-badge-wrap"><span class="form-badge">1098-T</span></div>
           <div class="field">
             <div class="field-label">School</div>
             <div class="field-value">Lakeside University</div>
@@ -455,9 +468,40 @@
             <div class="field-value">Jamie</div>
           </div>
           <div class="field">
-            <div class="field-label">Payments Received / 1098-T</div>
+            <div class="field-label">Payments Received</div>
             <div class="field-value">$8,500</div>
           </div>
+        </div>
+      </div>
+
+      <!-- FAILED EXTRACTIONS SECTION -->
+      <div class="section">
+        <h2 class="section-heading">We couldn't read these</h2>
+        <p class="failed-text">We weren't able to pull the information from the documents below. This usually happens when an image is blurry, cropped, or too dark. Add these forms again and we'll give them another try.</p>
+
+        <div class="file-card file-card--error">
+          <div class="file-card-content">
+            <svg class="file-card-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H8.8c-1.68 0-2.52 0-3.162.327a3 3 0 0 0-1.311 1.311C4 4.28 4 5.12 4 6.8v10.4c0 1.68 0 2.52.327 3.162a3 3 0 0 0 1.311 1.311C6.28 22 7.12 22 8.8 22h6.4c1.68 0 2.52 0 3.162-.327a3 3 0 0 0 1.311-1.311C20 19.72 20 18.88 20 17.2V8m-6-6 6 6m-6-6v4.8c0 .56 0 .84.109 1.054a1 1 0 0 0 .437.437C14.76 8 15.04 8 15.6 8H20"/></svg>
+            <div class="file-card-text">
+              <span class="file-card-name">w-2-employer2.jpg</span>
+              <span class="file-card-status">Couldn't import — add it again to retry</span>
+            </div>
+          </div>
+        </div>
+        <div class="file-card file-card--error">
+          <div class="file-card-content">
+            <svg class="file-card-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H8.8c-1.68 0-2.52 0-3.162.327a3 3 0 0 0-1.311 1.311C4 4.28 4 5.12 4 6.8v10.4c0 1.68 0 2.52.327 3.162a3 3 0 0 0 1.311 1.311C6.28 22 7.12 22 8.8 22h6.4c1.68 0 2.52 0 3.162-.327a3 3 0 0 0 1.311-1.311C20 19.72 20 18.88 20 17.2V8m-6-6 6 6m-6-6v4.8c0 .56 0 .84.109 1.054a1 1 0 0 0 .437.437C14.76 8 15.04 8 15.6 8H20"/></svg>
+            <div class="file-card-text">
+              <span class="file-card-name">1099-int-chase.pdf</span>
+              <span class="file-card-status">Couldn't import — add it again to retry</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="failed-actions">
+          <button class="btn btn-secondary btn-md" onclick="window.location.href='income-upload-v2.html'">
+            Add more documents
+          </button>
         </div>
       </div>
 

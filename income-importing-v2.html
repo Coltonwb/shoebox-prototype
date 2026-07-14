@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FreeTaxUSA — Import Complete</title>
+  <title>FreeTaxUSA — Importing Data</title>
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     /* ── CSS Reset ── */
@@ -79,207 +79,48 @@
     .content-box {
       width: 1152px; margin: 0 auto; background: #ffffff; border: none;
       border-radius: 8px; position: relative; padding: 40px 48px 40px;
-    }
-
-    /* ── PAGE ACTIONS ── */
-    .page-actions {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 0; width: 100%;
-    }
-    .icon-btn {
-      width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
-      background: none; border: none; cursor: pointer; border-radius: 50%;
-      color: #212f45; transition: background 0.15s, color 0.15s;
-    }
-    .icon-btn:hover { background: #f4f9ff; color: #016ee6; }
-    .icon-btn svg { width: 24px; height: 24px; }
-
-    /* ── CONTENT INNER ── */
-    .content-inner {
-      padding: 0 96px;
-    }
-
-    /* ── PAGE TITLE ── */
-    .page-title {
-      font-size: 30px; font-weight: 600; line-height: 38px; color: #212f45;
-      text-align: center; margin-bottom: 8px; margin-top: 16px;
-    }
-    .page-subtitle {
-      font-size: 16px; font-weight: 400; line-height: 24px; color: #212f45;
-      text-align: center; margin-bottom: 32px;
-    }
-
-    /* ── SUCCESS ALERT ── */
-    .success-alert {
-      background: #edfcf0; border-radius: 4px;
-      padding: 16px; display: flex; gap: 16px; align-items: flex-start;
-      margin-bottom: 32px;
-    }
-    .success-alert-icon { width: 24px; height: 24px; flex-shrink: 0; color: #15aa51; }
-    .success-alert-title { font-size: 16px; font-weight: 600; color: #465163; line-height: 24px; }
-    .success-alert-text { font-size: 16px; font-weight: 400; color: #465163; line-height: 24px; }
-
-    /* ── SECTION ── */
-    .section {
-      margin-bottom: 32px;
-    }
-    .section-heading {
-      font-size: 24px; font-weight: 400; line-height: 32px; color: #212f45;
-      margin-bottom: 16px;
-    }
-    /* Tighten the gap when a heading is immediately followed by a subheader */
-    .section-heading:has(+ .uncategorized-text) {
-      margin-bottom: 4px;
-    }
-
-    /* ── SUMMARY CARD (reused from personal-summary) ── */
-    .summary-card {
-      border: 1px solid #e2e5e9; border-radius: 4px; padding: 24px;
-      margin-bottom: 16px; position: relative;
-      display: flex; align-items: center; gap: 48px;
-    }
-    .field { flex: 0 0 auto; min-width: 140px; }
-    .field-label {
-      font-size: 14px; font-weight: 500; color: #667285;
-      line-height: 20px; margin-bottom: 2px;
-    }
-    .field-value {
-      font-size: 16px; font-weight: 400; color: #212f45;
-      line-height: 24px;
-    }
-
-    /* ── FORM BADGE (leading element in record cards) ── */
-    .form-badge-wrap {
-      flex: 0 0 auto; min-width: 140px;
-      display: flex; align-items: center; justify-content: flex-start;
-    }
-    .form-badge {
-      display: inline-flex; align-items: center;
-      padding: 2px 10px;
-      background: #f2f4f7;
-      border-radius: 16px;
-      font-size: 14px; font-weight: 500; line-height: 20px; color: #465163;
-      white-space: nowrap;
-    }
-
-    /* ── FORM SELECT (reused from import-complete) ── */
-    .form-field { display: flex; flex-direction: column; gap: 4px; margin-left: auto; }
-    .form-field-label {
-      display: flex; align-items: center; gap: 4px;
-      font-size: 14px; font-weight: 500; color: #667285; line-height: 20px;
-    }
-    .tooltip-icon {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 16px; height: 16px; border-radius: 50%; background: #daebff;
-      border: 1.5px solid transparent; color: #016ee6; font-size: 10px; font-weight: 600;
-      cursor: default; vertical-align: middle; margin-left: 4px; flex-shrink: 0;
-    }
-    .tooltip-icon:hover { background: #bad9f7; }
-    .form-select {
-      width: 100%; height: 40px; border: 1px solid #bec4cc; border-radius: 4px;
-      padding: 6px 12px; font-size: 16px; color: #212f45; background: #ffffff;
-      display: flex; align-items: center; justify-content: space-between; cursor: pointer;
-      box-shadow: 0px 1px 2px rgba(33,47,69,0.05); min-width: 220px;
-      font-family: 'Lexend', sans-serif; position: relative;
-    }
-    .form-select select {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      opacity: 0; cursor: pointer; font-size: 16px;
-    }
-    .form-select svg { width: 16px; height: 16px; color: #667285; flex-shrink: 0; }
-
-    /* ── INSTITUTION WRAPPER ── */
-    .institution-wrapper {
-      border: 1px solid #e2e5e9; border-radius: 4px; overflow: hidden;
-      margin-bottom: 12px; background: #f9fafb;
-    }
-    .institution-header {
-      padding: 16px 20px; display: flex; justify-content: space-between;
+      min-height: 480px;
+      display: flex;
+      flex-direction: column;
       align-items: center;
-    }
-    .institution-name {
-      font-size: 14px; font-weight: 600; text-transform: uppercase; color: #212f45;
-    }
-    .menu-btn {
-      width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
-      background: transparent; border: none; cursor: pointer; color: #667285;
-      border-radius: 50%; transition: background 0.15s, color 0.15s;
-    }
-    .menu-btn:hover {
-      background: #e2e5e9; color: #465163;
-    }
-    .menu-btn svg { width: 20px; height: 20px; }
-
-    .institution-inner {
-      display: flex; flex-direction: column; gap: 12px;
-      padding: 0 20px 20px;
-    }
-    .institution-card {
-      padding: 20px 24px; display: flex; align-items: center;
-      gap: 48px; border: 1px solid #e2e5e9; border-radius: 4px;
-      background: #ffffff;
+      justify-content: center;
     }
 
-    /* ── FILE CARDS (UNCATEGORIZED) — mirrors the upload screen ── */
-    .file-card {
-      width: 100%; min-height: 72px; border: 1px solid #e2e5e9; border-radius: 4px;
-      background: #ffffff; margin-bottom: 12px;
+    /* ── IMPORTING STATE ── */
+    .importing-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
     }
-    .file-card-content {
-      display: flex; align-items: flex-start; gap: 8px; padding: 16px 24px;
+    .importing-title {
+      font-family: 'Lexend', sans-serif;
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 32px;
+      color: #212f45;
+      text-align: center;
     }
-    .file-card-icon { width: 20px; height: 20px; color: #667285; flex-shrink: 0; }
-    .file-card-text { display: flex; flex-direction: column; flex: 1; min-width: 0; }
-    .file-card-name {
-      display: block; font-size: 14px; font-weight: 500; line-height: 20px; color: #465163;
+    .importing-gif {
+      width: 600px;
+      max-width: 100%;
+      height: auto;
     }
-    .file-card-status {
-      display: block; font-size: 14px; font-weight: 400; line-height: 20px; color: #667285;
+    .importing-subtext {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 200px;
     }
-
-    /* ── FAILED EXTRACTIONS SECTION ── */
-    .failed-text {
-      font-size: 16px; font-weight: 400; color: #212f45; line-height: 24px;
-      margin-bottom: 20px;
+    .importing-subtext p {
+      font-family: 'Lexend', sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      color: #212f45;
+      text-align: center;
     }
-    .file-card--error { background: #fef6f6; border-color: #fecbc9; }
-    .file-card--error .file-card-icon { color: #d11911; }
-    .file-card--error .file-card-status { color: #d11911; }
-    .failed-actions { margin-top: 4px; }
-
-    /* ── UNCATEGORIZED SECTION TEXT ── */
-    .uncategorized-text {
-      font-size: 16px; font-weight: 400; color: #212f45; line-height: 24px;
-      margin-bottom: 20px;
-    }
-    .uncategorized-text a {
-      color: #016ee6; text-decoration: none; font-weight: 500;
-    }
-    .uncategorized-text a:hover {
-      text-decoration: underline;
-    }
-
-    /* ── BUTTON ROW ── */
-    .button-row {
-      padding-top: 20px; border-top: 1px solid #e2e5e9; margin-left: 32px; margin-right: 32px;
-      display: flex; justify-content: space-between; align-items: center; margin-top: 48px;
-    }
-    .btn {
-      display: inline-flex; align-items: center; justify-content: center; border-radius: 4px;
-      font-family: 'Lexend', sans-serif; font-weight: 400; cursor: pointer; border: 1px solid;
-      text-decoration: none; transition: background 0.15s, border-color 0.15s;
-    }
-    .btn-primary {
-      background: #016ee6; border-color: #016ee6; color: #ffffff;
-      box-shadow: 0px 1px 2px 0px rgba(33, 47, 69, 0.05);
-    }
-    .btn-primary:hover { background: #0850c4; border-color: #0850c4; }
-    .btn-secondary {
-      background: transparent; border-color: #016ee6; color: #016ee6;
-      box-shadow: 0px 1px 2px 0px rgba(33, 47, 69, 0.05);
-    }
-    .btn-secondary:hover { background: #f4f9ff; }
-    .btn-md { padding: 10px 18px; font-size: 16px; line-height: 24px; gap: 8px; }
 
     /* ── FOOTER ── */
     .footer {
@@ -340,204 +181,15 @@
 
   <!-- ══════════ CONTENT BOX ══════════ -->
   <main class="content-box">
-    <!-- PAGE ACTIONS (Back + Bookmark) -->
-    <div class="page-actions">
-      <button class="icon-btn" onclick="window.location.href='income-importing.html'" title="Go back">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m0 0 7 7m-7-7 7-7"/></svg>
-      </button>
-      <button class="icon-btn" title="Bookmark">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7.8c0-1.68 0-2.52.327-3.162a3 3 0 0 1 1.311-1.311C7.28 3 8.12 3 9.8 3h4.4c1.68 0 2.52 0 3.162.327a3 3 0 0 1 1.311 1.311C19 5.28 19 6.12 19 7.8V21l-7-4-7 4V7.8Z"/></svg>
-      </button>
-    </div>
-
-    <div class="content-inner">
-      <!-- PAGE TITLE & SUBTITLE -->
-      <h1 class="page-title">Here's a look at what we got.</h1>
-      <p class="page-subtitle">You'll review some of these forms on the next page — we'll cover the rest later in your return.</p>
-
-      <!-- SUCCESS ALERT -->
-      <div class="success-alert">
-        <svg class="success-alert-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M7.5 12L10.5 15L16.5 9M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#15aa51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <div>
-          <div class="success-alert-title">Import Successful!</div>
-          <div class="success-alert-text">Here's what we pulled from your documents. You'll review each one in the next step.</div>
-        </div>
+    <div class="importing-content">
+      <h1 class="importing-title">Importing Data</h1>
+      <img class="importing-gif" src="import-info-animation-desktop.svg" alt="Importing your information">
+      <div class="importing-subtext">
+        <p>This may take a few minutes.</p>
+        <p>We appreciate your patience.</p>
       </div>
-
-      <!-- READY TO REVIEW SECTION -->
-      <div class="section">
-        <h2 class="section-heading">Imported and ready</h2>
-        <div class="summary-card">
-          <div class="form-badge-wrap"><span class="form-badge">W-2</span></div>
-          <div class="field">
-            <div class="field-label">Employer</div>
-            <div class="field-value">Acme Corporation</div>
-          </div>
-          <div class="field">
-            <div class="field-label">Belongs to</div>
-            <div class="field-value">Jamie</div>
-          </div>
-          <div class="field">
-            <div class="field-label">Total wages</div>
-            <div class="field-value">$68,500</div>
-          </div>
-        </div>
-        <div class="institution-wrapper">
-          <div class="institution-header">
-            <span class="institution-name">CHASE BANK</span>
-          </div>
-          <div class="institution-inner">
-            <div class="institution-card">
-              <div class="form-badge-wrap"><span class="form-badge">1099-INT</span></div>
-              <div class="field">
-                <div class="field-label">Belongs to</div>
-                <div class="field-value">Jamie</div>
-              </div>
-              <div class="field">
-                <div class="field-label">Total</div>
-                <div class="field-value">$352</div>
-              </div>
-            </div>
-            <div class="institution-card">
-              <div class="form-badge-wrap"><span class="form-badge">1099-DIV</span></div>
-              <div class="field">
-                <div class="field-label">Belongs to</div>
-                <div class="field-value">Both</div>
-              </div>
-              <div class="field">
-                <div class="field-label">Total</div>
-                <div class="field-value">$1,247</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="summary-card">
-          <div class="form-badge-wrap"><span class="form-badge">1099-R</span></div>
-          <div class="field">
-            <div class="field-label">Payer</div>
-            <div class="field-value">Fidelity Investments</div>
-          </div>
-          <div class="field">
-            <div class="field-label">Belongs to</div>
-            <div class="field-value">Jamie</div>
-          </div>
-          <div class="field">
-            <div class="field-label">Gross Distribution</div>
-            <div class="field-value">$24,500</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- REVIEW LATER SECTION -->
-      <div class="section">
-        <h2 class="section-heading">We'll review these later</h2>
-        <p class="uncategorized-text">You'll have a chance to review these documents when you reach this step in your return.</p>
-        <div class="summary-card">
-          <div class="form-badge-wrap"><span class="form-badge">1098-T</span></div>
-          <div class="field">
-            <div class="field-label">School</div>
-            <div class="field-value">Lakeside University</div>
-          </div>
-          <div class="field">
-            <div class="field-label">Belongs to</div>
-            <div class="field-value">Jamie</div>
-          </div>
-          <div class="field">
-            <div class="field-label">Payments Received</div>
-            <div class="field-value">$8,500</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- FAILED EXTRACTIONS SECTION -->
-      <div class="section">
-        <h2 class="section-heading">We couldn't read these</h2>
-        <p class="failed-text">We weren't able to pull the information from the documents below. This usually happens when an image is blurry, cropped, or too dark. Add these forms again and we'll give them another try.</p>
-
-        <div class="file-card file-card--error">
-          <div class="file-card-content">
-            <svg class="file-card-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H8.8c-1.68 0-2.52 0-3.162.327a3 3 0 0 0-1.311 1.311C4 4.28 4 5.12 4 6.8v10.4c0 1.68 0 2.52.327 3.162a3 3 0 0 0 1.311 1.311C6.28 22 7.12 22 8.8 22h6.4c1.68 0 2.52 0 3.162-.327a3 3 0 0 0 1.311-1.311C20 19.72 20 18.88 20 17.2V8m-6-6 6 6m-6-6v4.8c0 .56 0 .84.109 1.054a1 1 0 0 0 .437.437C14.76 8 15.04 8 15.6 8H20"/></svg>
-            <div class="file-card-text">
-              <span class="file-card-name">w-2-employer2.jpg</span>
-              <span class="file-card-status">Couldn't import — add it again to retry</span>
-            </div>
-          </div>
-        </div>
-        <div class="file-card file-card--error">
-          <div class="file-card-content">
-            <svg class="file-card-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H8.8c-1.68 0-2.52 0-3.162.327a3 3 0 0 0-1.311 1.311C4 4.28 4 5.12 4 6.8v10.4c0 1.68 0 2.52.327 3.162a3 3 0 0 0 1.311 1.311C6.28 22 7.12 22 8.8 22h6.4c1.68 0 2.52 0 3.162-.327a3 3 0 0 0 1.311-1.311C20 19.72 20 18.88 20 17.2V8m-6-6 6 6m-6-6v4.8c0 .56 0 .84.109 1.054a1 1 0 0 0 .437.437C14.76 8 15.04 8 15.6 8H20"/></svg>
-            <div class="file-card-text">
-              <span class="file-card-name">1099-int-chase.pdf</span>
-              <span class="file-card-status">Couldn't import — add it again to retry</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="failed-actions">
-          <button class="btn btn-secondary btn-md" onclick="window.location.href='income-upload.html'">
-            Add more documents
-          </button>
-        </div>
-      </div>
-
-      <!-- UNCATEGORIZED DOCUMENTS SECTION -->
-      <div class="section">
-        <h2 class="section-heading">Uncategorized Documents</h2>
-        <p class="uncategorized-text">The following documents successfully saved in <a href="#">My Tax Files</a>, which you can find in the account menu.</p>
-
-        <div class="file-card">
-          <div class="file-card-content">
-            <svg class="file-card-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H8.8c-1.68 0-2.52 0-3.162.327a3 3 0 0 0-1.311 1.311C4 4.28 4 5.12 4 6.8v10.4c0 1.68 0 2.52.327 3.162a3 3 0 0 0 1.311 1.311C6.28 22 7.12 22 8.8 22h6.4c1.68 0 2.52 0 3.162-.327a3 3 0 0 0 1.311-1.311C20 19.72 20 18.88 20 17.2V8m-6-6 6 6m-6-6v4.8c0 .56 0 .84.109 1.054a1 1 0 0 0 .437.437C14.76 8 15.04 8 15.6 8H20"/></svg>
-            <div class="file-card-text">
-              <span class="file-card-name">kfcreceipt.jpeg</span>
-              <span class="file-card-status">Saved to My Tax Files</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- BUTTON ROW -->
-    <div class="button-row">
-      <button class="btn btn-secondary btn-md" onclick="window.location.href='income-upload.html'">
-        Add more documents
-      </button>
-      <button class="btn btn-primary btn-md" onclick="goToReview()">
-        Review
-      </button>
     </div>
   </main>
-
-  <script>
-    // Flow 1 has no per-row Review action, so the user reaches income-page3
-    // un-reviewed. Wipe any "reviewed-*" flags that a prior Flow 2 session
-    // may have left in sessionStorage so page3 doesn't show stale state.
-    sessionStorage.removeItem('reviewed-wages');
-    sessionStorage.removeItem('reviewed-investments');
-    sessionStorage.removeItem('reviewed-retirement');
-
-    // ── REVIEW ROUTING ──
-    // The reviewable income types in this import batch. (1098-T / College
-    // expenses are reviewed later under Deductions & Credits, so they don't
-    // count toward income review routing.) For this demo the batch spans
-    // multiple types, so Review lands on the income dive. If a batch were a
-    // single type, Review would jump straight into that type's review screen.
-    var unreviewedTypes = ['wages', 'investments', 'retirement'];
-
-    function goToReview() {
-      if (unreviewedTypes.length === 1) {
-        // Single income type → straight into that type's review screen.
-        window.location.href = 'income-page3.html#review-' + unreviewedTypes[0];
-      } else {
-        // Multiple income types → income dive, which shows a blue "Review"
-        // button next to each type that still needs review.
-        window.location.href = 'income-page3.html';
-      }
-    }
-  </script>
 
   <!-- ══════════ FOOTER ══════════ -->
   <footer class="footer">
@@ -551,5 +203,16 @@
     </div>
   </footer>
 
+  <script>
+    // Restart the SVG animation from the first frame by cache-busting the src
+    var gif = document.querySelector('.importing-gif');
+    gif.src = gif.src.split('?')[0] + '?t=' + Date.now();
+
+    // Let the full 8.33s animation play through (plus a small settle buffer)
+    // before navigating to income-import-complete-v2.
+    setTimeout(function() {
+      window.location.href = 'income-import-complete-v2.html';
+    }, 8500);
+  </script>
 </body>
 </html>

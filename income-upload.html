@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FreeTaxUSA — Import all of your documents in one place</title>
+  <title>FreeTaxUSA — Import all your 2025 tax documents in one place</title>
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     /* ── CSS Reset ── */
@@ -352,6 +352,25 @@
     }
     .warning-message-text a:hover { color: #0850c4; }
 
+    /* ── INFO ALERT ── */
+    .info-alert {
+      display: none;
+      gap: 16px;
+      padding: 16px;
+      background: #f4f9ff;
+      border: 1px solid #bad9f7;
+      border-radius: 4px;
+      margin-bottom: 12px;
+      align-items: center;
+    }
+    .info-alert.is-visible { display: flex; }
+    .info-alert-icon {
+      width: 24px; height: 24px; flex-shrink: 0; color: #016ee6;
+    }
+    .info-alert-text {
+      font-size: 16px; font-weight: 400; line-height: 24px; color: #465163;
+    }
+
     /* ── ERROR FILE CARD ── */
     .file-card--error {
       background: #fef6f6;
@@ -473,8 +492,14 @@
 
     <div class="content-inner">
       <!-- Title area -->
-      <h1 class="page-title">Import all of your documents in one place</h1>
-      <p class="page-subtitle">Please check the form type before importing.</p>
+      <h1 class="page-title">Import all your 2025 tax documents in one place</h1>
+      <p class="page-subtitle">This could include W-2s, 1099s, or any other tax documents you've received.</p>
+
+      <!-- Form type alert (shown once a form has uploaded) -->
+      <div class="info-alert" id="form-type-alert">
+        <svg class="info-alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg>
+        <span class="info-alert-text">Make sure each form is classified as the right form type before importing.</span>
+      </div>
 
       <!-- Upload zone -->
       <div class="upload-zone" id="upload-zone">
@@ -509,11 +534,13 @@
     var uploadZone = document.getElementById('upload-zone');
     var fileList = document.getElementById('file-list');
     var importBtn = document.getElementById('import-btn');
+    var formTypeAlert = document.getElementById('form-type-alert');
     var fileCount = 0;
 
     function updateButtons() {
       var hasImportable = fileList.querySelector('.complete-card') !== null;
       importBtn.style.display = hasImportable ? '' : 'none';
+      formTypeAlert.classList.toggle('is-visible', hasImportable);
     }
 
     var sampleFiles = [
