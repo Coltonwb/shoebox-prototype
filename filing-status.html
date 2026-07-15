@@ -377,13 +377,12 @@
     // Check if user imported data
     var wasImported = new URLSearchParams(window.location.search).get('imported') === 'true';
 
-    // Pre-select Married Filing Jointly if user imported data
-    if (wasImported) {
-      var mfjCard = document.querySelector('[data-card-id="mfj"]');
-      if (mfjCard) {
-        mfjCard.classList.add('radio-card--selected');
-        selected = mfjCard;
-      }
+    // Persona is Jamie + Jill filing jointly — always pre-select MFJ so the
+    // status never contradicts the spouse data shown on other pages.
+    var mfjCard = document.querySelector('[data-card-id="mfj"]');
+    if (mfjCard) {
+      mfjCard.classList.add('radio-card--selected');
+      selected = mfjCard;
     }
 
     // Set Continue button to pass along imported state to spouse page
