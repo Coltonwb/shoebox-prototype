@@ -826,9 +826,19 @@
     .income-categories.prod .category-chevron.open { transform: rotate(0deg); }
     .income-categories.prod .category-items-inner { border-top: none; }
     .prod-row {
-      display: grid; grid-template-columns: 1fr 130px 160px;
+      display: grid; grid-template-columns: 1fr 110px 130px 160px;
       border-top: 1px solid #e2e5e9; align-items: stretch; min-height: 72px;
     }
+    .prod-row .col-prev {
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; color: #667285; padding: 8px;
+    }
+    .prod-row--years { min-height: 40px; }
+    .prod-year {
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 500; color: #667285; padding: 10px 8px;
+    }
+    .prod-year--current { background: #f9fafb; color: #465163; }
     .prod-row-main { padding: 14px 24px; display: flex; flex-direction: column; justify-content: center; gap: 2px; }
     .prod-row-label { font-size: 16px; line-height: 24px; font-weight: 500; color: #212f45; }
     .prod-row-sublabel { font-size: 14px; line-height: 20px; color: #667285; }
@@ -1066,13 +1076,21 @@
             </div>
           </div>
           <div class="category-items open" id="items-common"><div class="category-items-inner">
+            <div class="prod-row prod-row--years">
+              <div></div>
+              <div class="prod-year">2024</div>
+              <div class="prod-year prod-year--current">2025</div>
+              <div></div>
+            </div>
+
 
           <div class="prod-row" id="row-wages">
             <div class="prod-row-main">
               <div class="prod-row-label">Wages and Salaries <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Wages and Salaries">?</span></div>
               <div class="prod-row-sublabel">Form W-2</div>
             </div>
-            <div class="prod-row-amount col-current">$68,500</div>
+            <div class="prod-row-amount col-prev">$64,300</div>
+            <div class="prod-row-amount col-current"><span class="needs-info-badge">Needs info</span></div>
             <div class="prod-row-action col-actions"><button class="btn-start" onclick="goBackToWages()">Review</button></div>
           </div>
 
@@ -1082,7 +1100,8 @@
               <div class="prod-row-sublabel">1099-INT, 1099-DIV, 1099-B, 1099-DA, consolidated 1099
               <a href="#" class="pdf-link" id="investments-pdf-link" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;vertical-align:-2px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> View PDF</a></div>
             </div>
-            <div class="prod-row-amount col-current">$1,599</div>
+            <div class="prod-row-amount col-prev">$1,380</div>
+            <div class="prod-row-amount col-current"><span class="needs-info-badge">Needs info</span></div>
             <div class="prod-row-action col-actions"><button class="btn-start" onclick="showInvestmentsScreen()">Review</button></div>
           </div>
 
@@ -1091,6 +1110,7 @@
               <div class="prod-row-label">Unemployment Compensation <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Unemployment Compensation">?</span></div>
               <div class="prod-row-sublabel">Form 1099-G, Box 1 and Box 10 Paid Family Leave</div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('unemployment')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1100,6 +1120,7 @@
               <div class="prod-row-label">Social Security Benefits <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Social Security Benefits">?</span></div>
               <div class="prod-row-sublabel">Form SSA-1099 and RRB-1099</div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('social-security')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1108,6 +1129,7 @@
             <div class="prod-row-main">
               <div class="prod-row-label">Taxable Social Security Benefits</div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('taxable-ss')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1117,6 +1139,7 @@
               <div class="prod-row-label">Retirement Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Retirement Income">?</span></div>
               <div class="prod-row-sublabel">Includes Form 1099-R, CSA-1099-R, CSF-1099-R, and RRB-1099-R</div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('retirement')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1126,6 +1149,7 @@
               <div class="prod-row-label">Taxable State Refund <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Taxable State Refund">?</span></div>
               <div class="prod-row-sublabel">Form 1099-G, Box 2</div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('state-refund')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1134,6 +1158,7 @@
             <div class="prod-row-main">
               <div class="prod-row-label">Capital Loss Carryovers <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Capital Loss Carryovers">?</span></div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('capital-loss')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1158,12 +1183,20 @@
             </div>
           </div>
           <div class="category-items open" id="items-business"><div class="category-items-inner">
+            <div class="prod-row prod-row--years">
+              <div></div>
+              <div class="prod-year">2024</div>
+              <div class="prod-year prod-year--current">2025</div>
+              <div></div>
+            </div>
+
 
           <div class="prod-row" id="row-nec-misc">
             <div class="prod-row-main">
               <div class="prod-row-label">Form 1099-NEC and Form 1099-MISC Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Form 1099-NEC and Form 1099-MISC Income">?</span></div>
               <div class="prod-row-sublabel">Form 1099-NEC / 1099-MISC</div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showNecScreen()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1173,6 +1206,7 @@
               <div class="prod-row-label">Form 1099-K Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Form 1099-K Income">?</span></div>
               <div class="prod-row-sublabel">Form 1099-K</div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('1099k')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1182,7 +1216,8 @@
               <div class="prod-row-label">Business Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Business Income">?</span></div>
               <div class="prod-row-sublabel">Schedule C</div>
             </div>
-            <div class="prod-row-amount col-current">$34,600</div>
+            <div class="prod-row-amount col-prev">$31,200</div>
+            <div class="prod-row-amount col-current"><span class="needs-info-badge">Needs info</span></div>
             <div class="prod-row-action col-actions"><button class="btn-start" onclick="showBusinessScreen()">Review</button></div>
           </div>
 
@@ -1191,6 +1226,7 @@
               <div class="prod-row-label">Partnership Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Partnership Income">?</span></div>
               <div class="prod-row-sublabel">Schedule K-1</div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('partnership')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1200,6 +1236,7 @@
               <div class="prod-row-label">S Corporation Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="S Corporation Income">?</span></div>
               <div class="prod-row-sublabel">Schedule K-1</div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('s-corp')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1209,6 +1246,7 @@
               <div class="prod-row-label">Rental Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Rental Income">?</span></div>
               <div class="prod-row-sublabel">Schedule E</div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('rental')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1218,6 +1256,7 @@
               <div class="prod-row-label">Farm Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Farm Income">?</span></div>
               <div class="prod-row-sublabel">Schedule F</div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('farm')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1227,6 +1266,7 @@
               <div class="prod-row-label">Farm Rental Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Farm Rental Income">?</span></div>
               <div class="prod-row-sublabel">Form 4835</div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('farm-rental')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1235,6 +1275,7 @@
             <div class="prod-row-main">
               <div class="prod-row-label">Sale of Business Assets <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Sale of Business Assets">?</span></div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('business-assets')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1259,12 +1300,20 @@
             </div>
           </div>
           <div class="category-items open" id="items-uncommon"><div class="category-items-inner">
+            <div class="prod-row prod-row--years">
+              <div></div>
+              <div class="prod-year">2024</div>
+              <div class="prod-year prod-year--current">2025</div>
+              <div></div>
+            </div>
+
 
           <div class="prod-row" id="row-gambling">
             <div class="prod-row-main">
               <div class="prod-row-label">Gambling Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Gambling Income">?</span></div>
               <div class="prod-row-sublabel">Form W-2G</div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('gambling')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1274,6 +1323,7 @@
               <div class="prod-row-label">Original Issue Discount Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Original Issue Discount Income">?</span></div>
               <div class="prod-row-sublabel">Form 1099-OID</div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('oid')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1283,6 +1333,7 @@
               <div class="prod-row-label">Estate or Trust Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Estate or Trust Income">?</span></div>
               <div class="prod-row-sublabel">Schedule K-1</div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('estate')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1291,6 +1342,7 @@
             <div class="prod-row-main">
               <div class="prod-row-label">Seller-Financed Loans <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Seller-Financed Loans">?</span></div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('seller-loans')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1299,6 +1351,7 @@
             <div class="prod-row-main">
               <div class="prod-row-label">Royalty Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Royalty Income">?</span></div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('royalty')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1307,6 +1360,7 @@
             <div class="prod-row-main">
               <div class="prod-row-label">Unreported Tips <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Unreported Tips">?</span></div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('tips')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1315,6 +1369,7 @@
             <div class="prod-row-main">
               <div class="prod-row-label">Sale of Home <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Sale of Home">?</span></div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('sale-home')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1323,6 +1378,7 @@
             <div class="prod-row-main">
               <div class="prod-row-label">Installment Sales <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Installment Sales">?</span></div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('installment')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1332,6 +1388,7 @@
               <div class="prod-row-label">Canceled Debt <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Canceled Debt">?</span></div>
               <div class="prod-row-sublabel">Form 1099-C</div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('canceled-debt')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1341,6 +1398,7 @@
               <div class="prod-row-label">Qualified Tuition Program Distributions <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Qualified Tuition Program Distributions">?</span></div>
               <div class="prod-row-sublabel">Form 1099-Q</div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('tuition-dist')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1350,6 +1408,7 @@
               <div class="prod-row-label">Long-Term Care Insurance Payments <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Long-Term Care Insurance Payments">?</span></div>
               <div class="prod-row-sublabel">Form 1099-LTC</div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('ltc')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1359,6 +1418,7 @@
               <div class="prod-row-label">ABLE Account Distributions <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="ABLE Account Distributions">?</span></div>
               <div class="prod-row-sublabel">Form 1099-QA</div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('able')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1368,6 +1428,7 @@
               <div class="prod-row-label">Child with Investment Income Over $1,350 <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Child with Investment Income Over $1,350">?</span></div>
               <div class="prod-row-sublabel">Form 8814</div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('child-invest')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1377,6 +1438,7 @@
               <div class="prod-row-label">Undistributed Long-Term Capital Gains <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Undistributed Long-Term Capital Gains">?</span></div>
               <div class="prod-row-sublabel">Form 2439</div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('undist-gains')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1385,6 +1447,7 @@
             <div class="prod-row-main">
               <div class="prod-row-label">Contracts and Straddles <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Contracts and Straddles">?</span></div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('contracts')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
@@ -1394,6 +1457,7 @@
               <div class="prod-row-label">Other Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Other Income">?</span></div>
               <div class="prod-row-sublabel">Includes taxable scholarship income, household employee wages, and other miscellaneous income</div>
             </div>
+            <div class="prod-row-amount col-prev">--</div>
             <div class="prod-row-amount col-current"></div>
             <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen(\'other\')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
           </div>
