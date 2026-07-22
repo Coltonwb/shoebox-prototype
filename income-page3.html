@@ -811,6 +811,35 @@
       .added-income-row .col-current { padding-left: 4px; padding-right: 4px; font-size: 12px; }
       .sub-screen .content-box { margin: 0; border-radius: 0; }
     }
+
+    /* ── PRODUCTION-STYLE INCOME DIVE (design test) ── */
+    .header-refund { font-size: 14px; font-weight: 500; color: #212f45; }
+    .header-refund strong { color: #15aa51; font-weight: 700; }
+    .income-categories.prod { display: flex; flex-direction: column; gap: 24px; }
+    .income-categories.prod .category-block,
+    .income-categories.prod .category-block:last-child {
+      border: 1px solid #e2e5e9; border-radius: 8px; background: #fff; overflow: hidden;
+    }
+    .income-categories.prod .category-header { background: #fff; padding: 24px; }
+    .income-categories.prod .category-title { font-size: 18px; font-weight: 600; line-height: 28px; }
+    .income-categories.prod .category-chevron { transform: rotate(-90deg); }
+    .income-categories.prod .category-chevron.open { transform: rotate(0deg); }
+    .income-categories.prod .category-items-inner { border-top: none; }
+    .prod-row {
+      display: grid; grid-template-columns: 1fr 130px 160px;
+      border-top: 1px solid #e2e5e9; align-items: stretch; min-height: 72px;
+    }
+    .prod-row-main { padding: 14px 24px; display: flex; flex-direction: column; justify-content: center; gap: 2px; }
+    .prod-row-label { font-size: 16px; line-height: 24px; font-weight: 500; color: #212f45; }
+    .prod-row-sublabel { font-size: 14px; line-height: 20px; color: #667285; }
+    .prod-row-sublabel .pdf-link { color: #016ee6; text-decoration: none; }
+    .prod-row-sublabel .pdf-link:hover { text-decoration: underline; }
+    .prod-row .col-current {
+      background: #f9fafb; border-left: 1px solid #f1f2f3;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; color: #212f45; padding: 8px; text-align: center;
+    }
+    .prod-row .col-actions { display: flex; align-items: center; justify-content: center; padding: 8px 16px; }
   </style>
 </head>
 <body>
@@ -838,7 +867,7 @@
     <span class="header-logo-year">2025</span>
   </a>
 
-  <div class="header-center"></div>
+  <div class="header-center"><span class="header-refund">Federal Refund:&nbsp;<strong>$5,484</strong></span></div>
 
   <div class="header-right">
     <button class="header-nav-btn">
@@ -1011,141 +1040,23 @@
       <!-- Page Header -->
       <div class="page-header">
         <h1>
-          Your income
+          Your Income
           <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Learn more about income types">?</span>
         </h1>
-        <p>This is the income we've collected from you so far.</p>
+        <p style="text-align:left;">Click on any income items that may apply to you.</p>
       </div>
 
-      <!-- ── ADDED INCOME TABLE ── -->
-      <div class="added-income-table" id="addedIncomeTable">
-        <div class="added-income-header">
-          <div></div>
-          <div class="col-year">2024</div>
-          <div class="col-year col-year--current">2025</div>
-          <div class="col-actions"></div>
-        </div>
-
-        <!-- Wages — already completed -->
-        <div class="added-income-row" id="row-wages">
-          <div>
-            <div class="added-income-label">Wages and Salaries
-              <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="About W-2 wages">?</span>
-            </div>
-            <div class="added-income-sublabel">Form W-2</div>
-          </div>
-          <div class="added-income-amount col-prev">$43,964</div>
-          <div class="col-current">
-            <span class="needs-info-badge">Needs review</span>
-          </div>
-          <div class="col-actions">
-            <button class="btn-start" onclick="goBackToWages()">Review</button>
-          </div>
-        </div>
-
-        <!-- Investments — rollover, needs info -->
-        <div class="added-income-row" id="row-investments">
-          <div>
-            <div class="added-income-label">Investments and Savings
-              <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="About investment income">?</span>
-            </div>
-            <div class="added-income-sublabel">
-              1099-INT, 1099-DIV, 1099-B, consolidated 1099, 1099-DA
-              <a href="#" class="pdf-link" id="investments-pdf-link" style="display:none">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                View PDF
-              </a>
-            </div>
-          </div>
-          <div class="added-income-amount col-prev">$46</div>
-          <div class="col-current">
-            <span class="needs-info-badge">Needs review</span>
-          </div>
-          <div class="col-actions">
-            <button class="btn-start" onclick="showInvestmentsScreen()">Review</button>
-          </div>
-        </div>
-
-        <!-- Retirement — imported -->
-        <div class="added-income-row" id="row-retirement">
-          <div>
-            <div class="added-income-label">Retirement Income
-              <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="About retirement income">?</span>
-            </div>
-            <div class="added-income-sublabel">Form 1099-R</div>
-          </div>
-          <div class="added-income-amount col-prev">$623</div>
-          <div class="col-current">
-            <span class="needs-info-badge">Needs review</span>
-          </div>
-          <div class="col-actions">
-            <button class="btn-start" onclick="showRetirementScreen()">Review</button>
-          </div>
-        </div>
-
-<!-- Dynamically added rows will go here -->
-      </div>
-
-      <!-- ── ADD MORE INCOME ── -->
-      <div class="section-divider">Add more income</div>
-
-      <!-- Search -->
-      <div class="search-wrapper">
-        <div class="search-icon">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-          </svg>
-        </div>
-        <input
-          type="text"
-          class="search-input"
-          id="incomeSearch"
-          placeholder="Search forms or kinds of income..."
-          oninput="filterIncome(this.value)"
-          autocomplete="off"
-        />
-        <button class="search-clear" id="searchClear" onclick="clearSearch()" aria-label="Clear search">
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 11C0 4.92487 4.92487 0 11 0C17.0751 0 22 4.92487 22 11C22 17.0751 17.0751 22 11 22C4.92487 22 0 17.0751 0 11Z" fill="#F4F9FF"/>
-            <path d="M14 8L8 14M8 8L14 14" stroke="#016EE6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
-
-      <!-- No results empty state -->
-      <div class="no-results" id="noResults">
-        <div class="no-results-illustration" id="noResultsIllustration">
-          <svg width="162" height="104" viewBox="0 0 162 104" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect y="5.09" width="156.53" height="98.37" fill="#016EE6"/>
-            <rect x="5.09" width="156.53" height="98.37" fill="#E1EFFF"/>
-            <text id="noResultsFormText" x="83" y="46" text-anchor="middle" font-family="Lexend, sans-serif" font-size="24" font-weight="600" fill="#0850C4"></text>
-            <path d="M22.45 75.006L145.148 74.298M22.327 59.476L145.025 58.768" stroke="#59B7FF" stroke-width="3.48" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div class="no-results-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#016ee6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-          </svg>
-        </div>
-        <p class="no-results-title" id="noResultsTitle">No results found</p>
-        <p class="no-results-sub" id="noResultsSub">Try searching for a form number, income type, or source.</p>
-        <div class="no-results-path" id="noResultsPath"></div>
-        <button class="no-results-clear" onclick="clearSearch()">Clear search</button>
-      </div>
-
-      <!-- ── CATEGORIES ── -->
-      <div class="income-categories" id="categoriesContainer">
+      <!-- ── INCOME CATEGORIES (production-style design test) ── -->
+      <div class="income-categories prod" id="categoriesContainer">
 
         <!-- COMMON INCOME (expanded by default) -->
         <div class="category-block" data-category="common">
           <div class="category-header" onclick="toggleCategory(this)">
             <div class="category-header-left">
               <div class="category-header-top">
-                <div class="category-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.101 4C11.3636 2.76281 13.0927 2 15 2C18.866 2 22 5.13401 22 9C22 10.9073 21.2372 12.6365 19.9999 13.899M16 15C16 18.866 12.866 22 9 22C5.13401 22 2 18.866 2 15C2 11.134 5.13401 8 9 8C12.866 8 16 11.134 16 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </div>
-                <div class="category-title">Common income
-                  <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Common income types">?</span>
+                <div class="category-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.101 4C11.3636 2.76281 13.0927 2 15 2C18.866 2 22 5.13401 22 9C22 10.9073 21.2372 12.6365 19.9999 13.899M16 15C16 18.866 12.866 22 9 22C5.13401 22 2 18.866 2 15C2 11.134 5.13401 8 9 8C12.866 8 16 11.134 16 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="category-title">Common Income
+                  <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Common Income">?</span>
                 </div>
               </div>
               <div class="category-subtitle">Wages (W-2), Retirement, Interest, Stocks, Unemployment, etc.</div>
@@ -1156,399 +1067,339 @@
           </div>
           <div class="category-items open" id="items-common"><div class="category-items-inner">
 
-            <div class="income-item" data-label="Wages and Salaries" data-forms="Form W-2 W2">
-              <div>
-                <div class="income-item-label">Wages and Salaries</div>
-                <div class="income-item-sublabel">Form W-2</div>
-              </div>
-              <button class="btn-edit-add" onclick="openModal('wages')">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                Edit/Add
-              </button>
+          <div class="prod-row" id="row-wages">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Wages and Salaries <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Wages and Salaries">?</span></div>
+              <div class="prod-row-sublabel">Form W-2</div>
             </div>
+            <div class="prod-row-amount col-current">$68,500</div>
+            <div class="prod-row-action col-actions"><button class="btn-start" onclick="goBackToWages()">Review</button></div>
+          </div>
 
-            <div class="income-item" data-label="Investments and Savings" data-forms="1099-INT 1099-DIV 1099-B consolidated 1099 1099-DA" id="cat-investments">
-              <div>
-                <div class="income-item-label">Investments and Savings</div>
-                <div class="income-item-sublabel">1099-INT, 1099-DIV, 1099-B, consolidated 1099, 1099-DA</div>
-              </div>
-              <button class="btn-add" onclick="showInvestmentsScreen()" id="cat-investments-btn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-investments">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Investments and Savings <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Investments and Savings">?</span></div>
+              <div class="prod-row-sublabel">1099-INT, 1099-DIV, 1099-B, 1099-DA, consolidated 1099
+              <a href="#" class="pdf-link" id="investments-pdf-link" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;vertical-align:-2px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> View PDF</a></div>
             </div>
+            <div class="prod-row-amount col-current">$1,599</div>
+            <div class="prod-row-action col-actions"><button class="btn-start" onclick="showInvestmentsScreen()">Review</button></div>
+          </div>
 
-            <div class="income-item" data-label="Unemployment Compensation" data-forms="Form 1099-G 1099G unemployment">
-              <div>
-                <div class="income-item-label">Unemployment Compensation</div>
-                <div class="income-item-sublabel">Form 1099-G</div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('unemployment')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-unemployment">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Unemployment Compensation <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Unemployment Compensation">?</span></div>
+              <div class="prod-row-sublabel">Form 1099-G, Box 1 and Box 10 Paid Family Leave</div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('unemployment')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
-            <div class="income-item" data-label="Social Security Benefits" data-forms="SSA-1099 RRB-1099 social security">
-              <div>
-                <div class="income-item-label">Social Security Benefits</div>
-                <div class="income-item-sublabel">Form SSA-1099 and RRB-1099</div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('social-security')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-social-security">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Social Security Benefits <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Social Security Benefits">?</span></div>
+              <div class="prod-row-sublabel">Form SSA-1099 and RRB-1099</div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('social-security')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
-            <div class="income-item" data-label="Retirement Income" data-forms="1099-R CSA-1099-R CSF-1099-R RRB-1099-R retirement pension">
-              <div>
-                <div class="income-item-label">Retirement Income</div>
-                <div class="income-item-sublabel">Includes Form 1099-R, CSA-1099-R, CSF-1099-R, and RRB-1099-R</div>
-              </div>
-              <button class="btn-edit-add" onclick="openModal('retirement')">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                Edit/Add
-              </button>
+          <div class="prod-row" id="row-taxable-ss">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Taxable Social Security Benefits</div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('taxable-ss')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
-            <div class="income-item" data-label="Taxable State Refund" data-forms="Form 1099-G state refund">
-              <div>
-                <div class="income-item-label">Taxable State Refund</div>
-                <div class="income-item-sublabel">Form 1099-G</div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('state-refund')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-retirement">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Retirement Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Retirement Income">?</span></div>
+              <div class="prod-row-sublabel">Includes Form 1099-R, CSA-1099-R, CSF-1099-R, and RRB-1099-R</div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('retirement')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
-            <div class="income-item" data-label="Capital Loss Carryovers" data-forms="capital loss carryover">
-              <div>
-                <div class="income-item-label">Capital Loss Carryovers</div>
-                <div class="income-item-sublabel"></div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('capital-loss')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-state-refund">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Taxable State Refund <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Taxable State Refund">?</span></div>
+              <div class="prod-row-sublabel">Form 1099-G, Box 2</div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('state-refund')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
+
+          <div class="prod-row" id="row-capital-loss">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Capital Loss Carryovers <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Capital Loss Carryovers">?</span></div>
+            </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('capital-loss')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
           </div></div>
         </div>
 
-        <!-- BUSINESS & RENTAL (collapsed) -->
+        <!-- BUSINESS AND RENTAL (collapsed) -->
         <div class="category-block" data-category="business">
           <div class="category-header" onclick="toggleCategory(this)">
             <div class="category-header-left">
               <div class="category-header-top">
-                <div class="category-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 21V15.6C15 15.0399 15 14.7599 14.891 14.546C14.7951 14.3578 14.6422 14.2049 14.454 14.109C14.2401 14 13.9601 14 13.4 14H10.6C10.0399 14 9.75992 14 9.54601 14.109C9.35785 14.2049 9.20487 14.3578 9.10899 14.546C9 14.7599 9 15.0399 9 15.6V21M3 7C3 8.65685 4.34315 10 6 10C7.65685 10 9 8.65685 9 7C9 8.65685 10.3431 10 12 10C13.6569 10 15 8.65685 15 7C15 8.65685 16.3431 10 18 10C19.6569 10 21 8.65685 21 7M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V6.2C21 5.0799 21 4.51984 20.782 4.09202C20.5903 3.71569 20.2843 3.40973 19.908 3.21799C19.4802 3 18.9201 3 17.8 3H6.2C5.0799 3 4.51984 3 4.09202 3.21799C3.71569 3.40973 3.40973 3.71569 3.21799 4.09202C3 4.51984 3 5.07989 3 6.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </div>
-                <div class="category-title">Business and rental income
-                  <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Business income types">?</span>
+                <div class="category-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 21V15.6C15 15.0399 15 14.7599 14.891 14.546C14.7951 14.3578 14.6422 14.2049 14.454 14.109C14.2401 14 13.9601 14 13.4 14H10.6C10.0399 14 9.75992 14 9.54601 14.109C9.35785 14.2049 9.20487 14.3578 9.10899 14.546C9 14.7599 9 15.0399 9 15.6V21M3 7C3 8.65685 4.34315 10 6 10C7.65685 10 9 8.65685 9 7C9 8.65685 10.3431 10 12 10C13.6569 10 15 8.65685 15 7C15 8.65685 16.3431 10 18 10C19.6569 10 21 8.65685 21 7M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V6.2C21 5.0799 21 4.51984 20.782 4.09202C20.5903 3.71569 20.2843 3.40973 19.908 3.21799C19.4802 3 18.9201 3 17.8 3H6.2C5.0799 3 4.51984 3 4.09202 3.21799C3.71569 3.40973 3.40973 3.71569 3.21799 4.09202C3 4.51984 3 5.07989 3 6.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="category-title">Business and Rental Income
+                  <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Business and Rental Income">?</span>
                 </div>
               </div>
               <div class="category-subtitle">1099-NEC, 1099-MISC, 1099-K, Schedule C, Rental, Partnership and S-Corporation K-1s, etc.</div>
             </div>
-            <div class="category-chevron">
+            <div class="category-chevron open">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
             </div>
           </div>
-          <div class="category-items" id="items-business"><div class="category-items-inner">
+          <div class="category-items open" id="items-business"><div class="category-items-inner">
 
-            <div class="income-item" data-label="Form 1099-NEC and Form 1099-MISC Income" data-forms="1099-NEC 1099-MISC nonemployee compensation miscellaneous">
-              <div>
-                <div class="income-item-label">Form 1099-NEC and Form 1099-MISC Income</div>
-              </div>
-              <button class="btn-add" onclick="showNecScreen()">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-nec-misc">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Form 1099-NEC and Form 1099-MISC Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Form 1099-NEC and Form 1099-MISC Income">?</span></div>
+              <div class="prod-row-sublabel">Form 1099-NEC / 1099-MISC</div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showNecScreen()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
-            <div class="income-item" data-label="Form 1099-K Income" data-forms="1099-K payment card third party network">
-              <div>
-                <div class="income-item-label">Form 1099-K Income</div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('1099k')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-1099k">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Form 1099-K Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Form 1099-K Income">?</span></div>
+              <div class="prod-row-sublabel">Form 1099-K</div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('1099k')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
-            <div class="income-item" data-label="Business Income" data-forms="Schedule C consulting freelancing contracting self employment">
-              <div>
-                <div class="income-item-label">Business Income</div>
-                <div class="income-item-sublabel">Schedule C, including consulting, freelancing, or contracting income</div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('business')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-business">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Business Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Business Income">?</span></div>
+              <div class="prod-row-sublabel">Schedule C</div>
             </div>
+            <div class="prod-row-amount col-current">$34,600</div>
+            <div class="prod-row-action col-actions"><button class="btn-start" onclick="showBusinessScreen()">Review</button></div>
+          </div>
 
-            <div class="income-item" data-label="Partnership Income" data-forms="Schedule K-1 partnership">
-              <div>
-                <div class="income-item-label">Partnership Income</div>
-                <div class="income-item-sublabel">Schedule K-1</div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('partnership')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-partnership">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Partnership Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Partnership Income">?</span></div>
+              <div class="prod-row-sublabel">Schedule K-1</div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('partnership')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
-            <div class="income-item" data-label="S Corporation Income" data-forms="Schedule K-1 S-corp S corporation">
-              <div>
-                <div class="income-item-label">S Corporation Income</div>
-                <div class="income-item-sublabel">Schedule K-1</div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('s-corp')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-s-corp">
+            <div class="prod-row-main">
+              <div class="prod-row-label">S Corporation Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="S Corporation Income">?</span></div>
+              <div class="prod-row-sublabel">Schedule K-1</div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('s-corp')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
-            <div class="income-item" data-label="Rental Income" data-forms="Schedule E rental property landlord">
-              <div>
-                <div class="income-item-label">Rental Income</div>
-                <div class="income-item-sublabel">Schedule E</div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('rental')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-rental">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Rental Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Rental Income">?</span></div>
+              <div class="prod-row-sublabel">Schedule E</div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('rental')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
-            <div class="income-item" data-label="Farm Income" data-forms="Schedule F farm farming agriculture">
-              <div>
-                <div class="income-item-label">Farm Income</div>
-                <div class="income-item-sublabel">Schedule F</div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('farm')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-farm">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Farm Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Farm Income">?</span></div>
+              <div class="prod-row-sublabel">Schedule F</div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('farm')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
-            <div class="income-item" data-label="Farm Rental Income" data-forms="Form 4835 farm rental">
-              <div>
-                <div class="income-item-label">Farm Rental Income</div>
-                <div class="income-item-sublabel">Form 4835</div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('farm-rental')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-farm-rental">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Farm Rental Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Farm Rental Income">?</span></div>
+              <div class="prod-row-sublabel">Form 4835</div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('farm-rental')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
-            <div class="income-item" data-label="Sale of Business Assets" data-forms="business assets depreciation sale">
-              <div>
-                <div class="income-item-label">Sale of Business Assets</div>
-                <div class="income-item-sublabel" style="color:#8898aa;">Less common</div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('business-assets')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-business-assets">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Sale of Business Assets <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Sale of Business Assets">?</span></div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('business-assets')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
           </div></div>
         </div>
 
-        <!-- UNCOMMON INCOME (collapsed) -->
+        <!-- UNCOMMON INCOME (expanded) -->
         <div class="category-block" data-category="uncommon">
           <div class="category-header" onclick="toggleCategory(this)">
             <div class="category-header-left">
               <div class="category-header-top">
-                <div class="category-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 15C8.68629 15 6 12.3137 6 9V3.44444C6 3.0306 6 2.82367 6.06031 2.65798C6.16141 2.38021 6.38021 2.16141 6.65798 2.06031C6.82367 2 7.0306 2 7.44444 2H16.5556C16.9694 2 17.1763 2 17.342 2.06031C17.6198 2.16141 17.8386 2.38021 17.9397 2.65798C18 2.82367 18 3.0306 18 3.44444V9C18 12.3137 15.3137 15 12 15ZM12 15V18M18 4H20.5C20.9659 4 21.1989 4 21.3827 4.07612C21.6277 4.17761 21.8224 4.37229 21.9239 4.61732C22 4.80109 22 5.03406 22 5.5V6C22 6.92997 22 7.39496 21.8978 7.77646C21.6204 8.81173 20.8117 9.62038 19.7765 9.89778C19.395 10 18.93 10 18 10M6 4H3.5C3.03406 4 2.80109 4 2.61732 4.07612C2.37229 4.17761 2.17761 4.37229 2.07612 4.61732C2 4.80109 2 5.03406 2 5.5V6C2 6.92997 2 7.39496 2.10222 7.77646C2.37962 8.81173 3.18827 9.62038 4.22354 9.89778C4.60504 10 5.07003 10 6 10M7.44444 22H16.5556C16.801 22 17 21.801 17 21.5556C17 19.5919 15.4081 18 13.4444 18H10.5556C8.59188 18 7 19.5919 7 21.5556C7 21.801 7.19898 22 7.44444 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </div>
-                <div class="category-title">Uncommon income
-                  <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Uncommon income types">?</span>
+                <div class="category-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 15C8.68629 15 6 12.3137 6 9V3.44444C6 3.0306 6 2.82367 6.06031 2.65798C6.16141 2.38021 6.38021 2.16141 6.65798 2.06031C6.82367 2 7.0306 2 7.44444 2H16.5556C16.9694 2 17.1763 2 17.342 2.06031C17.6198 2.16141 17.8386 2.38021 17.9397 2.65798C18 2.82367 18 3.0306 18 3.44444V9C18 12.3137 15.3137 15 12 15ZM12 15V18M18 4H20.5C20.9659 4 21.1989 4 21.3827 4.07612C21.6277 4.17761 21.8224 4.37229 21.9239 4.61732C22 4.80109 22 5.03406 22 5.5V6C22 6.92997 22 7.39496 21.8978 7.77646C21.6204 8.81173 20.8117 9.62038 19.7765 9.89778C19.395 10 18.93 10 18 10M6 4H3.5C3.03406 4 2.80109 4 2.61732 4.07612C2.37229 4.17761 2.17761 4.37229 2.07612 4.61732C2 4.80109 2 5.03406 2 5.5V6C2 6.92997 2 7.39496 2.10222 7.77646C2.37962 8.81173 3.18827 9.62038 4.22354 9.89778C4.60504 10 5.07003 10 6 10M7.44444 22H16.5556C16.801 22 17 21.801 17 21.5556C17 19.5919 15.4081 18 13.4444 18H10.5556C8.59188 18 7 19.5919 7 21.5556C7 21.801 7.19898 22 7.44444 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="category-title">Uncommon Income
+                  <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Uncommon Income">?</span>
                 </div>
               </div>
               <div class="category-subtitle">Taxable scholarships, gambling income, canceled debt, estate K-1s, other income</div>
             </div>
-            <div class="category-chevron">
+            <div class="category-chevron open">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
             </div>
           </div>
-          <div class="category-items" id="items-uncommon"><div class="category-items-inner">
+          <div class="category-items open" id="items-uncommon"><div class="category-items-inner">
 
-            <div class="income-item" data-label="Gambling Income" data-forms="W-2G gambling winnings casino">
-              <div>
-                <div class="income-item-label">Gambling Income</div>
-                <div class="income-item-sublabel">Form W-2G</div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('gambling')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-gambling">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Gambling Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Gambling Income">?</span></div>
+              <div class="prod-row-sublabel">Form W-2G</div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('gambling')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
-            <div class="income-item" data-label="Original Issue Discount Income" data-forms="1099-OID original issue discount bond">
-              <div>
-                <div class="income-item-label">Original Issue Discount Income</div>
-                <div class="income-item-sublabel">Form 1099-OID</div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('oid')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-oid">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Original Issue Discount Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Original Issue Discount Income">?</span></div>
+              <div class="prod-row-sublabel">Form 1099-OID</div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('oid')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
-            <div class="income-item" data-label="Estate or Trust Income" data-forms="K-1 estate trust 1041">
-              <div>
-                <div class="income-item-label">Estate or Trust Income</div>
-                <div class="income-item-sublabel">Schedule K-1</div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('estate')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-estate">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Estate or Trust Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Estate or Trust Income">?</span></div>
+              <div class="prod-row-sublabel">Schedule K-1</div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('estate')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
-            <div class="income-item" data-label="Seller-Financed Loans" data-forms="seller financed loan mortgage interest">
-              <div>
-                <div class="income-item-label">Seller-Financed Loans</div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('seller-loans')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-seller-loans">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Seller-Financed Loans <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Seller-Financed Loans">?</span></div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('seller-loans')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
-            <div class="income-item" data-label="Royalty Income" data-forms="royalties oil gas mineral rights">
-              <div>
-                <div class="income-item-label">Royalty Income</div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('royalty')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-royalty">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Royalty Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Royalty Income">?</span></div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('royalty')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
-            <div class="income-item" data-label="Unreported or Allocated Tips" data-forms="tips allocated unreported wages">
-              <div>
-                <div class="income-item-label">Unreported or Allocated Tips</div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('tips')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-tips">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Unreported Tips <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Unreported Tips">?</span></div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('tips')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
-            <div class="income-item" data-label="Sale of Home" data-forms="sale home residence capital gain exclusion">
-              <div>
-                <div class="income-item-label">Sale of Home</div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('sale-home')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-sale-home">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Sale of Home <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Sale of Home">?</span></div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('sale-home')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
-            <div class="income-item" data-label="Installment Sales" data-forms="installment sale form 6252 deferred gain">
-              <div>
-                <div class="income-item-label">Installment Sales</div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('installment')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-installment">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Installment Sales <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Installment Sales">?</span></div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('installment')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
-            <div class="income-item" data-label="Canceled Debt" data-forms="1099-C canceled debt forgiven">
-              <div>
-                <div class="income-item-label">Canceled Debt</div>
-                <div class="income-item-sublabel">Form 1099-C</div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('canceled-debt')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-canceled-debt">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Canceled Debt <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Canceled Debt">?</span></div>
+              <div class="prod-row-sublabel">Form 1099-C</div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('canceled-debt')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
-            <div class="income-item" data-label="Qualified Tuition Program Distributions" data-forms="1099-Q 529 plan tuition distribution">
-              <div>
-                <div class="income-item-label">Qualified Tuition Program Distributions</div>
-                <div class="income-item-sublabel">Form 1099-Q</div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('tuition-dist')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-tuition-dist">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Qualified Tuition Program Distributions <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Qualified Tuition Program Distributions">?</span></div>
+              <div class="prod-row-sublabel">Form 1099-Q</div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('tuition-dist')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
-            <div class="income-item" data-label="Long-Term Care Insurance Payments" data-forms="1099-LTC long term care insurance">
-              <div>
-                <div class="income-item-label">Long-Term Care Insurance Payments</div>
-                <div class="income-item-sublabel">Form 1099-LTC</div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('ltc')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-ltc">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Long-Term Care Insurance Payments <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Long-Term Care Insurance Payments">?</span></div>
+              <div class="prod-row-sublabel">Form 1099-LTC</div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('ltc')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
-            <div class="income-item" data-label="ABLE Account Distributions" data-forms="1099-QA ABLE account disability">
-              <div>
-                <div class="income-item-label">ABLE Account Distributions</div>
-                <div class="income-item-sublabel">Form 1099-QA</div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('able')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-able">
+            <div class="prod-row-main">
+              <div class="prod-row-label">ABLE Account Distributions <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="ABLE Account Distributions">?</span></div>
+              <div class="prod-row-sublabel">Form 1099-QA</div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('able')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
-            <div class="income-item" data-label="Child with Investment Income Over $1,350" data-forms="8814 kiddie tax child investment income">
-              <div>
-                <div class="income-item-label">Child with Investment Income Over $1,350</div>
-                <div class="income-item-sublabel">Form 8814</div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('child-invest')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-child-invest">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Child with Investment Income Over $1,350 <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Child with Investment Income Over $1,350">?</span></div>
+              <div class="prod-row-sublabel">Form 8814</div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('child-invest')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
-            <div class="income-item" data-label="Undistributed Long-Term Capital Gains" data-forms="2439 undistributed capital gains mutual fund">
-              <div>
-                <div class="income-item-label">Undistributed Long-Term Capital Gains</div>
-                <div class="income-item-sublabel">Form 2439</div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('undist-gains')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-undist-gains">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Undistributed Long-Term Capital Gains <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Undistributed Long-Term Capital Gains">?</span></div>
+              <div class="prod-row-sublabel">Form 2439</div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('undist-gains')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
-            <div class="income-item" data-label="Contracts and Straddles" data-forms="contracts straddles options futures section 1256">
-              <div>
-                <div class="income-item-label">Contracts and Straddles</div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('contracts')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-contracts">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Contracts and Straddles <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Contracts and Straddles">?</span></div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen('contracts')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
-            <div class="income-item" data-label="Other Income" data-forms="other miscellaneous income scholarship household employee">
-              <div>
-                <div class="income-item-label">Other Income</div>
-                <div class="income-item-sublabel">Includes taxable scholarship income, household employee wages, and other miscellaneous income</div>
-              </div>
-              <button class="btn-add" onclick="showGenericScreen('other')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add
-              </button>
+          <div class="prod-row" id="row-other">
+            <div class="prod-row-main">
+              <div class="prod-row-label">Other Income <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Other Income">?</span></div>
+              <div class="prod-row-sublabel">Includes taxable scholarship income, household employee wages, and other miscellaneous income</div>
             </div>
+            <div class="prod-row-amount col-current"></div>
+            <div class="prod-row-action col-actions"><button class="btn-add" onclick="showGenericScreen(\'other\')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add</button></div>
+          </div>
 
           </div></div>
         </div>
-
       </div><!-- /income-categories -->
 
       <!-- Helper links -->
@@ -1612,7 +1463,7 @@
       <span class="header-logo-year">2025</span>
     </a>
     <div class="header-center">
-      <div class="header-refund-item">Federal Refund: <span class="amount--refund">$413</span></div>
+      <div class="header-refund-item">Federal Refund: <span class="amount--refund">$5,484</span></div>
     </div>
     <div class="header-right">
       <button class="header-nav-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search</button>
@@ -1715,10 +1566,10 @@
 
 
 <!-- ═══ SCREEN: RETIREMENT INCOME REVIEW ═══ -->
-<div id="screen-retirement" class="sub-screen">
+<div id="screen-business" class="sub-screen">
   <header class="global-header">
     <a class="header-logo" href="#"><svg width="166" height="19" viewBox="0 0 212 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.13833 2.02319H0V23.6797H4.64346V15.0795H13.3373V11.0916H4.64346V6.20621H14.6328V2.02319H4.64346H2.13833Z" fill="#212352"/><path d="M24.9847 6.97888C24.1575 6.97888 23.3693 7.17399 22.6201 7.56419C21.8709 7.9544 21.2153 8.50069 20.6534 9.18745C20.4505 9.43718 20.271 9.70252 20.115 9.97567L20.0369 7.31446H15.7993V23.6797H20.2242V15.2044C20.2242 14.6894 20.3101 14.2133 20.4896 13.7841C20.6612 13.3549 20.9032 12.9725 21.2153 12.6525C21.5275 12.3325 21.8943 12.0828 22.3157 11.9111C22.7371 11.7394 23.1976 11.6458 23.6893 11.6458C24.0638 11.6458 24.4228 11.6926 24.774 11.7862C25.1252 11.8799 25.4218 11.9891 25.6715 12.114L26.8499 7.29105C26.6236 7.2052 26.3427 7.13496 26.0149 7.07253C25.6871 7.0101 25.3437 6.97888 24.9925 6.97888H24.9847Z" fill="#212352"/><path d="M40.8423 9.2811C40.1477 8.54751 39.3283 7.98562 38.384 7.5798C37.4319 7.17399 36.4017 6.97888 35.2935 6.97888C34.0995 6.97888 32.9913 7.18959 31.969 7.61102C30.9466 8.03244 30.0648 8.63336 29.3234 9.40597C28.582 10.1786 28.0045 11.0917 27.5908 12.1452C27.1772 13.1988 26.9743 14.3538 26.9743 15.6103C26.9743 17.2413 27.3489 18.6851 28.0903 19.9415C28.8317 21.198 29.8618 22.1891 31.1807 22.9149C32.4996 23.6329 34.0449 23.9997 35.8242 23.9997C36.5656 23.9997 37.3226 23.906 38.0796 23.7188C38.8444 23.5315 39.5858 23.2583 40.3038 22.8993C41.0218 22.5403 41.6851 22.0877 42.286 21.5492L40.1789 18.607C39.5 19.1611 38.86 19.5591 38.2591 19.7855C37.6582 20.0118 37.0026 20.1288 36.2768 20.1288C35.2233 20.1288 34.3102 19.9259 33.5376 19.5279C32.765 19.1299 32.1641 18.568 31.7426 17.8422C31.5007 17.4364 31.3368 16.976 31.2354 16.4843H42.8948L42.926 15.1264C42.965 13.948 42.8011 12.8632 42.4343 11.8799C42.0597 10.8888 41.529 10.0303 40.8423 9.29671V9.2811ZM33.0459 11.2477C33.6781 10.8966 34.4429 10.7249 35.3482 10.7249C35.9647 10.7249 36.5266 10.8497 37.0182 11.0995C37.5099 11.3492 37.9235 11.7004 38.2435 12.153C38.5635 12.6057 38.743 13.1129 38.782 13.667V13.7919H31.2666C31.3446 13.4329 31.4539 13.1051 31.6022 12.8008C31.9299 12.1218 32.4138 11.6067 33.0381 11.2555L33.0459 11.2477Z" fill="#212352"/><path d="M58.5613 9.2811C57.8667 8.54751 57.0473 7.98562 56.103 7.5798C55.1509 7.17399 54.1207 6.97888 53.0125 6.97888C51.8185 6.97888 50.7103 7.18959 49.688 7.61102C48.6656 8.03244 47.7837 8.63336 47.0424 9.40597C46.301 10.1786 45.7235 11.0917 45.3098 12.1452C44.8962 13.1988 44.6933 14.3538 44.6933 15.6103C44.6933 17.2413 45.0679 18.6851 45.8093 19.9415C46.5507 21.198 47.5808 22.1891 48.8997 22.9149C50.2186 23.6329 51.7639 23.9997 53.5432 23.9997C54.2846 23.9997 55.0416 23.906 55.7986 23.7188C56.5634 23.5315 57.3048 23.2583 58.0228 22.8993C58.7408 22.5403 59.4041 22.0877 60.005 21.5492L57.8979 18.607C57.219 19.1611 56.579 19.5591 55.9781 19.7855C55.3772 20.0118 54.7216 20.1288 53.9958 20.1288C52.9423 20.1288 52.0292 19.9259 51.2566 19.5279C50.484 19.1299 49.8831 18.568 49.4616 17.8422C49.2197 17.4364 49.0558 16.976 48.9544 16.4843H60.6137L60.645 15.1264C60.684 13.948 60.5201 12.8632 60.1533 11.8799C59.7787 10.8888 59.248 10.0303 58.5613 9.29671V9.2811ZM50.7649 11.2477C51.3971 10.8966 52.1619 10.7249 53.0671 10.7249C53.6837 10.7249 54.2456 10.8497 54.7372 11.0995C55.2289 11.3492 55.6425 11.7004 55.9625 12.153C56.2825 12.6057 56.4619 13.1129 56.501 13.667V13.7919H48.9856C49.0636 13.4329 49.1729 13.1051 49.3212 12.8008C49.6489 12.1218 50.1328 11.6067 50.7571 11.2555L50.7649 11.2477Z" fill="#212352"/><path d="M76.2998 2.02319H58.8497V6.20621H65.1633V23.6797H69.8068V6.20621H76.2998V2.02319Z" fill="#212352"/><path d="M86.1597 9.49211C85.8475 9.05508 85.4885 8.65707 85.0593 8.30588C84.552 7.89226 83.9667 7.57229 83.2956 7.33036C82.6244 7.09624 81.8908 6.97137 81.087 6.97137C79.6666 6.97137 78.3946 7.33817 77.2786 8.07176C76.1626 8.80535 75.2807 9.80428 74.633 11.0763C73.9852 12.3484 73.6574 13.8078 73.6574 15.4545C73.6574 17.1011 73.9774 18.5683 74.6174 19.8482C75.2573 21.1281 76.1236 22.1348 77.2161 22.884C78.3087 23.6254 79.534 24 80.8997 24C81.6645 24 82.3825 23.8829 83.0614 23.641C83.7404 23.4069 84.3569 23.0869 84.9032 22.6811C85.3714 22.3377 85.7539 21.9475 86.0972 21.5261V23.6878H90.5222V7.31476H86.1597V9.48431V9.49211ZM84.2711 19.5985C83.6545 19.9887 82.9288 20.1838 82.1093 20.1838C81.2899 20.1838 80.5953 19.9887 79.9866 19.5985C79.3779 19.2083 78.9018 18.6542 78.5506 17.944C78.1995 17.2338 78.0278 16.3988 78.0278 15.4545C78.0278 14.5102 78.1995 13.7141 78.5506 13.0118C78.9018 12.3094 79.3779 11.7553 79.9866 11.3573C80.5953 10.9515 81.3055 10.7564 82.1093 10.7564C82.9131 10.7564 83.6545 10.9593 84.2711 11.3573C84.8876 11.7553 85.3714 12.3094 85.707 13.0118C86.0504 13.7141 86.2143 14.5258 86.2143 15.4545C86.2143 16.3832 86.0426 17.2338 85.707 17.944C85.3636 18.6542 84.8876 19.2083 84.2711 19.5985Z" fill="#212352"/><path d="M109.068 7.3147H103.902L101.1 12.2313L97.627 7.3147H92.3046L98.3216 15.3608L92.2422 23.68H97.4085L100.608 18.537L104.214 23.68H109.474L103.402 15.3998L109.068 7.3147Z" fill="#212352"/><path d="M124.469 15.0798C124.469 15.946 124.266 16.7265 123.868 17.4132C123.47 18.1 122.916 18.6541 122.229 19.0677C121.535 19.4813 120.77 19.6842 119.927 19.6842C119.084 19.6842 118.351 19.4813 117.687 19.0677C117.016 18.6541 116.486 18.1078 116.095 17.4132C115.705 16.7187 115.51 15.946 115.51 15.0798V2.00006H110.835V15.3685C110.835 16.9996 111.226 18.459 112.014 19.7467C112.794 21.0343 113.879 22.0489 115.245 22.7825C116.618 23.5161 118.179 23.8829 119.935 23.8829C121.691 23.8829 123.221 23.5161 124.594 22.7825C125.968 22.0489 127.045 21.0421 127.825 19.7467C128.605 18.459 129.003 16.9996 129.003 15.3685V2.00006H124.485V15.0876L124.469 15.0798Z" fill="#212352"/><path d="M147.054 14.6661C146.703 13.9559 146.203 13.3394 145.556 12.8087C144.908 12.278 144.127 11.8332 143.222 11.4664C142.317 11.0918 141.295 10.7953 140.155 10.5689C139.554 10.4441 139.008 10.3036 138.516 10.1397C138.025 9.97582 137.595 9.78071 137.244 9.57C136.893 9.35929 136.628 9.10175 136.44 8.813C136.253 8.52425 136.159 8.19648 136.159 7.82188C136.159 7.34582 136.3 6.94781 136.581 6.61224C136.862 6.28446 137.244 6.02693 137.744 5.85523C138.235 5.68354 138.828 5.58989 139.507 5.58989C140.124 5.58989 140.733 5.69135 141.318 5.88645C141.903 6.08155 142.45 6.37811 142.957 6.76832C143.464 7.15852 143.932 7.64238 144.362 8.21989L147.304 5.37138C146.812 4.56755 146.196 3.88859 145.462 3.3267C144.728 2.7726 143.87 2.34337 142.879 2.03901C141.888 1.74246 140.733 1.59418 139.414 1.59418C138.345 1.59418 137.322 1.75026 136.37 2.05462C135.41 2.36679 134.567 2.81162 133.834 3.38913C133.1 3.96663 132.53 4.6534 132.117 5.44942C131.703 6.24544 131.5 7.1039 131.5 8.03259C131.5 8.96128 131.641 9.7573 131.922 10.4753C132.203 11.2011 132.624 11.841 133.209 12.4107C133.787 12.9804 134.505 13.4565 135.371 13.8311C136.237 14.2135 137.244 14.5412 138.399 14.8066C138.938 14.8924 139.429 14.9939 139.882 15.1344C140.335 15.267 140.748 15.4231 141.123 15.5948C141.497 15.7743 141.817 15.9694 142.083 16.1801C142.348 16.3908 142.559 16.6405 142.699 16.9215C142.84 17.2024 142.918 17.5068 142.918 17.8346C142.918 18.2872 142.769 18.6774 142.489 19.013C142.2 19.3408 141.802 19.5983 141.294 19.77C140.787 19.9417 140.218 20.0353 139.578 20.0353C138.399 20.0353 137.314 19.7856 136.315 19.2783C135.317 18.7711 134.31 17.819 133.303 16.4142L130.392 19.7232C131.071 20.6285 131.844 21.4089 132.694 22.041C133.553 22.681 134.528 23.1648 135.636 23.4926C136.737 23.8204 137.962 23.9842 139.304 23.9842C140.951 23.9842 142.395 23.7111 143.636 23.1648C144.877 22.6185 145.844 21.8303 146.547 20.8002C147.249 19.77 147.6 18.5213 147.6 17.0542C147.6 16.1645 147.421 15.3685 147.077 14.6583L147.054 14.6661Z" fill="#212352"/><path d="M163.661 23.6797H168.422L159.986 2.02319H155.842L147.366 23.6797H151.947L153.664 19.1299H161.976L163.677 23.6797H163.661ZM155.069 15.3917L156.302 12.1139C156.466 11.6379 156.645 11.154 156.825 10.6624C157.012 10.1707 157.184 9.65564 157.348 9.13276C157.512 8.60988 157.668 8.09481 157.824 7.59535C157.98 8.0792 158.136 8.58647 158.308 9.11715C158.495 9.69466 158.674 10.2409 158.846 10.756C159.018 11.2711 159.174 11.6925 159.291 12.0281L160.555 15.3995H155.053L155.069 15.3917Z" fill="#212352"/><path d="M206.305 6.1558H166.592L164.952 1.98059H206.305V6.1558Z" fill="#D11911"/><path d="M206.304 14.8887H170.002L168.397 10.7057L206.304 10.7057V14.8887Z" fill="#D11911"/><path d="M206.304 23.6214L173.426 23.6213L171.763 19.4071L206.304 19.4384V23.6214Z" fill="#D11911"/></svg><span class="header-logo-year">2025</span></a>
-    <div class="header-center"><div class="header-refund-item">Federal Refund: <span class="amount--refund">$413</span></div></div>
+    <div class="header-center"><div class="header-refund-item">Federal Refund: <span class="amount--refund">$5,484</span></div></div>
     <div class="header-right">
       <button class="header-nav-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search</button>
       <button class="header-nav-btn">Support <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
@@ -1740,7 +1591,7 @@
     <div class="content-box">
       <!-- Page actions -->
       <div class="page-actions">
-        <button class="icon-btn" onclick="markRetirementVisited()" title="Go back" aria-label="Go back">
+        <button class="icon-btn" onclick="markBusinessVisited()" title="Go back" aria-label="Go back">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m0 0 7 7m-7-7 7-7"/></svg>
         </button>
         <button class="icon-btn" title="Bookmark" aria-label="Bookmark">
@@ -1750,20 +1601,20 @@
 
       <div class="content-inner">
         <div class="page-header">
-          <h1>Your Retirement Income</h1>
-          <p>Review the 1099-R we imported. Edit or delete as needed.</p>
+          <h1>Your Business Income</h1>
+          <p>Review the Schedule C business we imported. Edit or delete as needed.</p>
         </div>
 
         <div class="w2-list">
           <div class="w2-card">
             <div class="w2-card-main">
               <div class="w2-card-cell">
-                <div class="w2-card-label">Payer</div>
-                <div class="w2-card-employer">Fidelity Investments</div>
+                <div class="w2-card-label">Business Name</div>
+                <div class="w2-card-employer">Jamie's Consulting</div>
               </div>
               <div class="w2-card-cell">
-                <div class="w2-card-label">Gross Distribution</div>
-                <div class="w2-card-amount">$24,500.00</div>
+                <div class="w2-card-label">Net Profit</div>
+                <div class="w2-card-amount">$34,600.00</div>
               </div>
             </div>
             <div class="w2-card-actions">
@@ -1781,18 +1632,18 @@
 
         <button class="w2-add-btn" onclick="return false;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Add a 1099-R
+          Add a Business
         </button>
 
         <p class="w2-body-text">
-          If you have additional 1099-R forms, add them here. You can come back later if you don't have them now.
+          If you have income from another business, add it here. You can come back later if you don't have your records now.
         </p>
       </div><!-- /content-inner -->
 
       <!-- Button row — inside content-box, matches wages -->
       <div class="button-row">
-        <button class="btn-prev" onclick="markRetirementVisited()">Previous Page</button>
-        <button class="btn-continue" onclick="markRetirementVisited()">Continue</button>
+        <button class="btn-prev" onclick="markBusinessVisited()">Previous Page</button>
+        <button class="btn-continue" onclick="markBusinessVisited()">Continue</button>
       </div>
     </div><!-- /content-box -->
   </div><!-- /page-body -->
@@ -1811,7 +1662,7 @@
       <svg width="166" height="19" viewBox="0 0 212 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.13833 2.02319H0V23.6797H4.64346V15.0795H13.3373V11.0916H4.64346V6.20621H14.6328V2.02319H4.64346H2.13833Z" fill="#212352"/><path d="M24.9847 6.97888C24.1575 6.97888 23.3693 7.17399 22.6201 7.56419C21.8709 7.9544 21.2153 8.50069 20.6534 9.18745C20.4505 9.43718 20.271 9.70252 20.115 9.97567L20.0369 7.31446H15.7993V23.6797H20.2242V15.2044C20.2242 14.6894 20.3101 14.2133 20.4896 13.7841C20.6612 13.3549 20.9032 12.9725 21.2153 12.6525C21.5275 12.3325 21.8943 12.0828 22.3157 11.9111C22.7371 11.7394 23.1976 11.6458 23.6893 11.6458C24.0638 11.6458 24.4228 11.6926 24.774 11.7862C25.1252 11.8799 25.4218 11.9891 25.6715 12.114L26.8499 7.29105C26.6236 7.2052 26.3427 7.13496 26.0149 7.07253C25.6871 7.0101 25.3437 6.97888 24.9925 6.97888H24.9847Z" fill="#212352"/><path d="M40.8423 9.2811C40.1477 8.54751 39.3283 7.98562 38.384 7.5798C37.4319 7.17399 36.4017 6.97888 35.2935 6.97888C34.0995 6.97888 32.9913 7.18959 31.969 7.61102C30.9466 8.03244 30.0648 8.63336 29.3234 9.40597C28.582 10.1786 28.0045 11.0917 27.5908 12.1452C27.1772 13.1988 26.9743 14.3538 26.9743 15.6103C26.9743 17.2413 27.3489 18.6851 28.0903 19.9415C28.8317 21.198 29.8618 22.1891 31.1807 22.9149C32.4996 23.6329 34.0449 23.9997 35.8242 23.9997C36.5656 23.9997 37.3226 23.906 38.0796 23.7188C38.8444 23.5315 39.5858 23.2583 40.3038 22.8993C41.0218 22.5403 41.6851 22.0877 42.286 21.5492L40.1789 18.607C39.5 19.1611 38.86 19.5591 38.2591 19.7855C37.6582 20.0118 37.0026 20.1288 36.2768 20.1288C35.2233 20.1288 34.3102 19.9259 33.5376 19.5279C32.765 19.1299 32.1641 18.568 31.7426 17.8422C31.5007 17.4364 31.3368 16.976 31.2354 16.4843H42.8948L42.926 15.1264C42.965 13.948 42.8011 12.8632 42.4343 11.8799C42.0597 10.8888 41.529 10.0303 40.8423 9.29671V9.2811ZM33.0459 11.2477C33.6781 10.8966 34.4429 10.7249 35.3482 10.7249C35.9647 10.7249 36.5266 10.8497 37.0182 11.0995C37.5099 11.3492 37.9235 11.7004 38.2435 12.153C38.5635 12.6057 38.743 13.1129 38.782 13.667V13.7919H31.2666C31.3446 13.4329 31.4539 13.1051 31.6022 12.8008C31.9299 12.1218 32.4138 11.6067 33.0381 11.2555L33.0459 11.2477Z" fill="#212352"/><path d="M58.5613 9.2811C57.8667 8.54751 57.0473 7.98562 56.103 7.5798C55.1509 7.17399 54.1207 6.97888 53.0125 6.97888C51.8185 6.97888 50.7103 7.18959 49.688 7.61102C48.6656 8.03244 47.7837 8.63336 47.0424 9.40597C46.301 10.1786 45.7235 11.0917 45.3098 12.1452C44.8962 13.1988 44.6933 14.3538 44.6933 15.6103C44.6933 17.2413 45.0679 18.6851 45.8093 19.9415C46.5507 21.198 47.5808 22.1891 48.8997 22.9149C50.2186 23.6329 51.7639 23.9997 53.5432 23.9997C54.2846 23.9997 55.0416 23.906 55.7986 23.7188C56.5634 23.5315 57.3048 23.2583 58.0228 22.8993C58.7408 22.5403 59.4041 22.0877 60.005 21.5492L57.8979 18.607C57.219 19.1611 56.579 19.5591 55.9781 19.7855C55.3772 20.0118 54.7216 20.1288 53.9958 20.1288C52.9423 20.1288 52.0292 19.9259 51.2566 19.5279C50.484 19.1299 49.8831 18.568 49.4616 17.8422C49.2197 17.4364 49.0558 16.976 48.9544 16.4843H60.6137L60.645 15.1264C60.684 13.948 60.5201 12.8632 60.1533 11.8799C59.7787 10.8888 59.248 10.0303 58.5613 9.29671V9.2811ZM50.7649 11.2477C51.3971 10.8966 52.1619 10.7249 53.0671 10.7249C53.6837 10.7249 54.2456 10.8497 54.7372 11.0995C55.2289 11.3492 55.6425 11.7004 55.9625 12.153C56.2825 12.6057 56.4619 13.1129 56.501 13.667V13.7919H48.9856C49.0636 13.4329 49.1729 13.1051 49.3212 12.8008C49.6489 12.1218 50.1328 11.6067 50.7571 11.2555L50.7649 11.2477Z" fill="#212352"/><path d="M76.2998 2.02319H58.8497V6.20621H65.1633V23.6797H69.8068V6.20621H76.2998V2.02319Z" fill="#212352"/><path d="M86.1597 9.49211C85.8475 9.05508 85.4885 8.65707 85.0593 8.30588C84.552 7.89226 83.9667 7.57229 83.2956 7.33036C82.6244 7.09624 81.8908 6.97137 81.087 6.97137C79.6666 6.97137 78.3946 7.33817 77.2786 8.07176C76.1626 8.80535 75.2807 9.80428 74.633 11.0763C73.9852 12.3484 73.6574 13.8078 73.6574 15.4545C73.6574 17.1011 73.9774 18.5683 74.6174 19.8482C75.2573 21.1281 76.1236 22.1348 77.2161 22.884C78.3087 23.6254 79.534 24 80.8997 24C81.6645 24 82.3825 23.8829 83.0614 23.641C83.7404 23.4069 84.3569 23.0869 84.9032 22.6811C85.3714 22.3377 85.7539 21.9475 86.0972 21.5261V23.6878H90.5222V7.31476H86.1597V9.48431V9.49211ZM84.2711 19.5985C83.6545 19.9887 82.9288 20.1838 82.1093 20.1838C81.2899 20.1838 80.5953 19.9887 79.9866 19.5985C79.3779 19.2083 78.9018 18.6542 78.5506 17.944C78.1995 17.2338 78.0278 16.3988 78.0278 15.4545C78.0278 14.5102 78.1995 13.7141 78.5506 13.0118C78.9018 12.3094 79.3779 11.7553 79.9866 11.3573C80.5953 10.9515 81.3055 10.7564 82.1093 10.7564C82.9131 10.7564 83.6545 10.9593 84.2711 11.3573C84.8876 11.7553 85.3714 12.3094 85.707 13.0118C86.0504 13.7141 86.2143 14.5258 86.2143 15.4545C86.2143 16.3832 86.0426 17.2338 85.707 17.944C85.3636 18.6542 84.8876 19.2083 84.2711 19.5985Z" fill="#212352"/><path d="M109.068 7.3147H103.902L101.1 12.2313L97.627 7.3147H92.3046L98.3216 15.3608L92.2422 23.68H97.4085L100.608 18.537L104.214 23.68H109.474L103.402 15.3998L109.068 7.3147Z" fill="#212352"/><path d="M124.469 15.0798C124.469 15.946 124.266 16.7265 123.868 17.4132C123.47 18.1 122.916 18.6541 122.229 19.0677C121.535 19.4813 120.77 19.6842 119.927 19.6842C119.084 19.6842 118.351 19.4813 117.687 19.0677C117.016 18.6541 116.486 18.1078 116.095 17.4132C115.705 16.7187 115.51 15.946 115.51 15.0798V2.00006H110.835V15.3685C110.835 16.9996 111.226 18.459 112.014 19.7467C112.794 21.0343 113.879 22.0489 115.245 22.7825C116.618 23.5161 118.179 23.8829 119.935 23.8829C121.691 23.8829 123.221 23.5161 124.594 22.7825C125.968 22.0489 127.045 21.0421 127.825 19.7467C128.605 18.459 129.003 16.9996 129.003 15.3685V2.00006H124.485V15.0876L124.469 15.0798Z" fill="#212352"/><path d="M147.054 14.6661C146.703 13.9559 146.203 13.3394 145.556 12.8087C144.908 12.278 144.127 11.8332 143.222 11.4664C142.317 11.0918 141.295 10.7953 140.155 10.5689C139.554 10.4441 139.008 10.3036 138.516 10.1397C138.025 9.97582 137.595 9.78071 137.244 9.57C136.893 9.35929 136.628 9.10175 136.44 8.813C136.253 8.52425 136.159 8.19648 136.159 7.82188C136.159 7.34582 136.3 6.94781 136.581 6.61224C136.862 6.28446 137.244 6.02693 137.744 5.85523C138.235 5.68354 138.828 5.58989 139.507 5.58989C140.124 5.58989 140.733 5.69135 141.318 5.88645C141.903 6.08155 142.45 6.37811 142.957 6.76832C143.464 7.15852 143.932 7.64238 144.362 8.21989L147.304 5.37138C146.812 4.56755 146.196 3.88859 145.462 3.3267C144.728 2.7726 143.87 2.34337 142.879 2.03901C141.888 1.74246 140.733 1.59418 139.414 1.59418C138.345 1.59418 137.322 1.75026 136.37 2.05462C135.41 2.36679 134.567 2.81162 133.834 3.38913C133.1 3.96663 132.53 4.6534 132.117 5.44942C131.703 6.24544 131.5 7.1039 131.5 8.03259C131.5 8.96128 131.641 9.7573 131.922 10.4753C132.203 11.2011 132.624 11.841 133.209 12.4107C133.787 12.9804 134.505 13.4565 135.371 13.8311C136.237 14.2135 137.244 14.5412 138.399 14.8066C138.938 14.8924 139.429 14.9939 139.882 15.1344C140.335 15.267 140.748 15.4231 141.123 15.5948C141.497 15.7743 141.817 15.9694 142.083 16.1801C142.348 16.3908 142.559 16.6405 142.699 16.9215C142.84 17.2024 142.918 17.5068 142.918 17.8346C142.918 18.2872 142.769 18.6774 142.489 19.013C142.2 19.3408 141.802 19.5983 141.294 19.77C140.787 19.9417 140.218 20.0353 139.578 20.0353C138.399 20.0353 137.314 19.7856 136.315 19.2783C135.317 18.7711 134.31 17.819 133.303 16.4142L130.392 19.7232C131.071 20.6285 131.844 21.4089 132.694 22.041C133.553 22.681 134.528 23.1648 135.636 23.4926C136.737 23.8204 137.962 23.9842 139.304 23.9842C140.951 23.9842 142.395 23.7111 143.636 23.1648C144.877 22.6185 145.844 21.8303 146.547 20.8002C147.249 19.77 147.6 18.5213 147.6 17.0542C147.6 16.1645 147.421 15.3685 147.077 14.6583L147.054 14.6661Z" fill="#212352"/><path d="M163.661 23.6797H168.422L159.986 2.02319H155.842L147.366 23.6797H151.947L153.664 19.1299H161.976L163.677 23.6797H163.661ZM155.069 15.3917L156.302 12.1139C156.466 11.6379 156.645 11.154 156.825 10.6624C157.012 10.1707 157.184 9.65564 157.348 9.13276C157.512 8.60988 157.668 8.09481 157.824 7.59535C157.98 8.0792 158.136 8.58647 158.308 9.11715C158.495 9.69466 158.674 10.2409 158.846 10.756C159.018 11.2711 159.174 11.6925 159.291 12.0281L160.555 15.3995H155.053L155.069 15.3917Z" fill="#212352"/><path d="M206.305 6.1558H166.592L164.952 1.98059H206.305V6.1558Z" fill="#D11911"/><path d="M206.304 14.8887H170.002L168.397 10.7057L206.304 10.7057V14.8887Z" fill="#D11911"/><path d="M206.304 23.6214L173.426 23.6213L171.763 19.4071L206.304 19.4384V23.6214Z" fill="#D11911"/></svg>
       <span class="header-logo-year">2025</span>
     </a>
-    <div class="header-center"><div class="header-refund-item">Federal Refund: <span class="amount--refund">$413</span></div></div>
+    <div class="header-center"><div class="header-refund-item">Federal Refund: <span class="amount--refund">$5,484</span></div></div>
     <div class="header-right">
       <button class="header-nav-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search</button>
       <button class="header-nav-btn">Support <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
@@ -1866,7 +1717,7 @@
       <span class="header-logo-year">2025</span>
     </a>
     <div class="header-center">
-      <div class="header-refund-item">Federal Refund: <span class="amount--refund">$413</span></div>
+      <div class="header-refund-item">Federal Refund: <span class="amount--refund">$5,484</span></div>
     </div>
     <div class="header-right">
       <button class="header-nav-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search</button>
@@ -1918,7 +1769,7 @@
       <span class="header-logo-year">2025</span>
     </a>
     <div class="header-center">
-      <div class="header-refund-item">Federal Refund: <span class="amount--refund">$413</span></div>
+      <div class="header-refund-item">Federal Refund: <span class="amount--refund">$5,484</span></div>
     </div>
     <div class="header-right">
       <button class="header-nav-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search</button>
@@ -1988,7 +1839,7 @@
     goToIncomeScreen();
     const row = document.getElementById('row-wages');
     if (!row) return;
-    row.querySelector('.col-current').innerHTML = '$82,760';
+    row.querySelector('.col-current').innerHTML = '$68,500';
     row.querySelector('.col-actions').innerHTML =
       '<button class="btn-edit-add" onclick="goBackToWages()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit/Add</button>';
     setTimeout(function() {
@@ -2008,6 +1859,7 @@
     retirement:        { title: 'Retirement Income',           form: 'Form 1099-R',                prevAmount: '$623'   },
     unemployment:      { title: 'Unemployment Compensation',   form: 'Form 1099-G',                prevAmount: '—'      },
     'social-security': { title: 'Social Security Benefits',    form: 'Form SSA-1099',              prevAmount: '—'      },
+    'taxable-ss':      { title: 'Taxable Social Security Benefits', form: '',                      prevAmount: '—'      },
     'state-refund':    { title: 'Taxable State Refund',        form: 'Form 1099-G',                prevAmount: '—'      },
     'capital-loss':    { title: 'Capital Loss Carryovers',     form: '',                           prevAmount: '—'      },
     'nec-misc':         { title: 'Form 1099-NEC and Form 1099-MISC Income', form: 'Form 1099-NEC / 1099-MISC', prevAmount: '—' },
@@ -2038,7 +1890,7 @@
   };
 
   const mockAmounts = {
-    unemployment: '$4,800', 'social-security': '$18,240', 'state-refund': '$312',
+    unemployment: '$4,800', 'social-security': '$18,240', 'taxable-ss': '$15,504', 'state-refund': '$312',
     'capital-loss': '$2,500', 'nec-misc': '$12,400', '1099k': '$8,750',
     business: '$34,600', partnership: '$8,900', 's-corp': '$22,300',
     rental: '$14,400', farm: '$18,600', 'farm-rental': '$9,200', 'business-assets': '$5,800',
@@ -2423,21 +2275,21 @@
     clearSearch();
   }
 
-  // ── RETIREMENT REVIEW SCREEN (dedicated, modeled on Investments) ──
-  function showRetirementScreen() {
-    document.getElementById('screen-retirement').classList.add('active');
-    document.getElementById('screen-retirement').scrollTop = 0;
+  // ── BUSINESS (SCHEDULE C) REVIEW SCREEN (dedicated, modeled on Investments) ──
+  function showBusinessScreen() {
+    document.getElementById('screen-business').classList.add('active');
+    document.getElementById('screen-business').scrollTop = 0;
   }
-  // Visiting the retirement review screen counts as reviewed.
+  // Visiting the business review screen counts as reviewed.
   // Any exit (back / Previous / Continue) closes the screen and updates the
   // income row: clears the needs-review badge and swaps Review → Edit/Add.
-  function markRetirementVisited() {
-    document.getElementById('screen-retirement').classList.remove('active');
-    const row = document.getElementById('row-retirement');
+  function markBusinessVisited() {
+    document.getElementById('screen-business').classList.remove('active');
+    const row = document.getElementById('row-business');
     if (!row) return;
-    row.querySelector('.col-current').innerHTML = '$24,500';
+    row.querySelector('.col-current').innerHTML = '$34,600';
     row.querySelector('.col-actions').innerHTML =
-      '<button class="btn-edit-add" onclick="showRetirementScreen()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit/Add</button>';
+      '<button class="btn-edit-add" onclick="showBusinessScreen()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit/Add</button>';
     setTimeout(function() {
       row.classList.add('added-income-row--completing');
       row.addEventListener('animationend', function() { row.classList.remove('added-income-row--completing'); }, { once: true });
@@ -2474,6 +2326,7 @@
     'unemployment':     { title: 'Your Unemployment Compensation',         desc: 'If you received unemployment benefits in 2025, you\'ll need to enter the amount shown on your <strong>Form 1099-G</strong>.', question: 'Do you need to enter any unemployment compensation for 2025?',           addLabel: 'Add Unemployment Compensation', congrats: 'Nice job! You entered your 1099-G.' },
     'social-security':  { title: 'Your Social Security Benefits',          desc: 'Enter the information from your <strong>Form SSA-1099</strong> or <strong>RRB-1099</strong> showing the total Social Security benefits you received.', question: 'Do you need to enter any Social Security benefits for 2025?',           addLabel: 'Add Social Security Benefits',   congrats: 'Nice job! You entered your SSA-1099.' },
     'retirement':       { title: 'Your Retirement Income',                 desc: 'Include distributions from pensions, annuities, IRAs, and other retirement plans reported on <strong>Form 1099-R</strong>, <strong>CSA-1099-R</strong>, <strong>CSF-1099-R</strong>, or <strong>RRB-1099-R</strong>.', question: 'Do you need to enter any retirement income for 2025?',                  addLabel: 'Add a 1099-R',                   congrats: 'Nice job! You entered your 1099-R.' },
+    'taxable-ss':       { title: 'Your Taxable Social Security Benefits',    desc: 'Depending on your other income, up to 85% of your Social Security benefits may be taxable. We\'ll calculate the taxable portion from your <strong>SSA-1099</strong>.', question: 'Do you need to enter any taxable Social Security benefits for 2025?', addLabel: 'Add Taxable Social Security Benefits', congrats: 'Nice job! You entered your taxable Social Security benefits.' },
     'state-refund':     { title: 'Your Taxable State Refund',              desc: 'If you itemized deductions last year and received a state tax refund, part or all of it may be taxable. Check <strong>Form 1099-G</strong> from your state.', question: 'Do you need to enter a taxable state refund for 2025?',              addLabel: 'Add a State Refund',             congrats: 'Nice job! You entered your state refund.' },
     'capital-loss':     { title: 'Your Capital Loss Carryovers',           desc: 'If you had a net capital loss in a prior year that exceeded the annual deduction limit, you can carry the remainder forward to offset gains or income this year.', question: 'Do you have any capital loss carryovers to enter for 2025?',          addLabel: 'Add a Capital Loss Carryover',   congrats: 'Nice job! You entered your capital loss carryover.' },
     '1099k':            { title: 'Your Form 1099-K Income',                desc: 'You may receive a <strong>Form 1099-K</strong> from payment apps, online marketplaces, or credit card processors. Enter income from personal item sales separately from business income.', question: 'Do you need to enter any 1099-K income for 2025?',                  addLabel: 'Add a 1099-K',                   congrats: 'Nice job! You entered your 1099-K.',      helper: 'Where do I enter my 1099-K from selling personal items?' },
@@ -2666,6 +2519,7 @@
 
   function clearSearch() {
     const input = document.getElementById('incomeSearch');
+    if (!input) return;
     input.value = '';
     filterIncome('');
     input.focus();
@@ -2736,7 +2590,7 @@
     }
 
     if (sessionStorage.getItem('reviewed-wages') === '1') {
-      markRowReviewed('row-wages', '$82,760', 'goBackToWages()');
+      markRowReviewed('row-wages', '$68,500', 'goBackToWages()');
     }
     if (sessionStorage.getItem('reviewed-investments') === '1') {
       markRowReviewed('row-investments', '$1,599', 'showInvestmentsScreen()');
@@ -2748,8 +2602,8 @@
         catBtn.innerHTML = editIconSvg + ' Edit/Add';
       }
     }
-    if (sessionStorage.getItem('reviewed-retirement') === '1') {
-      markRowReviewed('row-retirement', '$24,500', 'showRetirementScreen()');
+    if (sessionStorage.getItem('reviewed-business') === '1') {
+      markRowReviewed('row-business', '$34,600', 'showBusinessScreen()');
     }
   })();
 
@@ -2759,7 +2613,7 @@
     var routes = {
       'review-wages': goBackToWages,
       'review-investments': showInvestmentsScreen,
-      'review-retirement': showRetirementScreen
+      'review-business': showBusinessScreen
     };
     var fn = routes[(location.hash || '').replace('#', '')];
     if (fn) fn();

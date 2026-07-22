@@ -413,18 +413,18 @@
           </div>
         </div>
         <div class="summary-card">
-          <div class="form-badge-wrap"><span class="form-badge">1099-R</span></div>
+          <div class="form-badge-wrap"><span class="form-badge">Schedule C</span></div>
           <div class="field">
-            <div class="field-label">Payer</div>
-            <div class="field-value">Fidelity Investments</div>
+            <div class="field-label">Business Name</div>
+            <div class="field-value">Jamie's Consulting</div>
           </div>
           <div class="field">
             <div class="field-label">Belongs to</div>
             <div class="field-value">Jamie</div>
           </div>
           <div class="field">
-            <div class="field-label">Gross Distribution</div>
-            <div class="field-value">$24,500</div>
+            <div class="field-label">Net Profit</div>
+            <div class="field-value">$34,600</div>
           </div>
         </div>
       </div>
@@ -506,7 +506,7 @@
     // may have left in sessionStorage so page3 doesn't show stale state.
     sessionStorage.removeItem('reviewed-wages');
     sessionStorage.removeItem('reviewed-investments');
-    sessionStorage.removeItem('reviewed-retirement');
+    sessionStorage.removeItem('reviewed-business');
 
     // ── REVIEW ROUTING ──
     // The reviewable income types in this import batch. (1098-T / College
@@ -514,7 +514,7 @@
     // count toward income review routing.) For this demo the batch spans
     // multiple types, so Review lands on the income dive. If a batch were a
     // single type, Review would jump straight into that type's review screen.
-    var unreviewedTypes = ['wages', 'investments', 'retirement'];
+    var unreviewedTypes = ['wages', 'investments', 'business'];
 
     function goToReview() {
       if (unreviewedTypes.length === 1) {
