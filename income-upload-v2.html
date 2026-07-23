@@ -107,6 +107,12 @@
       text-align: center; margin-bottom: 32px;
     }
 
+    /* ── UPLOAD HELP TEXT ── */
+    .upload-help-text {
+      font-size: 14px; line-height: 20px; color: #667285;
+      text-align: left; margin-bottom: 4px;
+    }
+
     /* ── UPLOAD ZONE ── */
     .upload-zone {
       width: 100%;
@@ -433,6 +439,68 @@
     .footer-links a { color: #667285; text-decoration: none; }
     .footer-links a:hover { text-decoration: underline; }
     .footer-copyright { text-align: center; font-size: 12px; color: #667285; padding: 4px 0; }
+
+    /* ── FAKE SYSTEM FILE PICKER ── */
+    .picker-overlay {
+      position: fixed; inset: 0; background: rgba(33,47,69,0.35);
+      display: none; align-items: center; justify-content: center; z-index: 300;
+    }
+    .picker-overlay.open { display: flex; }
+    .picker-window {
+      width: 560px; max-width: calc(100vw - 40px);
+      background: #f6f6f8; border-radius: 10px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.35), 0 0 0 1px rgba(0,0,0,0.08);
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    .picker-titlebar {
+      position: relative; height: 40px; display: flex; align-items: center; justify-content: center;
+    }
+    .picker-dots { position: absolute; left: 14px; display: flex; gap: 8px; }
+    .picker-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .picker-dot--r { background: #ff5f57; }
+    .picker-dot--y { background: #febc2e; }
+    .picker-dot--g { background: #28c840; }
+    .picker-title { font-size: 13px; font-weight: 600; color: #3c3c43; }
+    .picker-list {
+      margin: 0 10px; padding: 4px;
+      background: #ffffff; border: 1px solid #e3e3e6; border-radius: 8px;
+      max-height: 260px; overflow-y: auto;
+    }
+    .picker-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 4px 8px; min-height: 28px;
+      border-radius: 5px; cursor: default; user-select: none;
+    }
+    .picker-item:nth-child(even):not(.selected) { background: #f5f5f7; }
+    .picker-item-icon { width: 15px; height: 19px; flex-shrink: 0; display: flex; }
+    .picker-item-icon svg { width: 100%; height: 100%; }
+    .picker-item-name {
+      font-size: 13px; color: #1d1d1f; flex: 1; min-width: 0;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .picker-item-meta { font-size: 12px; color: #86868b; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+    .picker-item.selected { background: #0a60ff; }
+    /* adjacent selected rows merge into one continuous highlight, like Finder */
+    .picker-item.selected:has(+ .picker-item.selected) { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+    .picker-item.selected + .picker-item.selected { border-top-left-radius: 0; border-top-right-radius: 0; }
+    .picker-item.selected .picker-item-name,
+    .picker-item.selected .picker-item-meta { color: #ffffff; }
+    .picker-item.uploaded { opacity: 0.4; pointer-events: none; }
+    .picker-footer {
+      display: flex; align-items: center; justify-content: flex-end; gap: 10px;
+      padding: 12px 14px;
+    }
+    .picker-btn {
+      min-width: 72px; padding: 4px 12px; border-radius: 6px; font-size: 13px;
+      font-family: inherit; cursor: pointer;
+      box-shadow: 0 0.5px 1px rgba(0,0,0,0.12);
+    }
+    .picker-btn--cancel { background: #ffffff; border: 1px solid #d2d2d7; color: #1d1d1f; }
+    .picker-btn--cancel:hover { background: #f0f0f2; }
+    .picker-btn--open { background: #0a60ff; border: 1px solid #0a60ff; color: #ffffff; }
+    .picker-btn--open:hover:not(:disabled) { background: #0850d6; }
+    .picker-btn--open:disabled { opacity: 0.4; cursor: default; }
   </style>
 </head>
 <body>
@@ -501,6 +569,9 @@
         <span class="info-alert-text">Make sure each form is classified as the right form type before importing.</span>
       </div>
 
+      <!-- Upload help text -->
+      <p class="upload-help-text">You can upload PDF, JPG, JPEG, or PNG files.</p>
+
       <!-- Upload zone -->
       <div class="upload-zone" id="upload-zone">
         <svg class="upload-zone-icon" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v1.2c0 1.68 0 2.52-.327 3.162a3 3 0 0 1-1.311 1.311C18.72 21 17.88 21 16.2 21H7.8c-1.68 0-2.52 0-3.162-.327a3 3 0 0 1-1.311-1.311C3 18.72 3 17.88 3 16.2V15m14-7-5-5m0 0L7 8m5-5v12"></path></svg>
@@ -529,6 +600,22 @@
       &copy; 2002-2025 FreeTaxUSA, a TaxHawk, Inc. owned and operated website - All Rights Reserved
     </div>
   </footer>
+
+
+  <!-- Fake system file picker -->
+  <div class="picker-overlay" id="pickerOverlay">
+    <div class="picker-window" role="dialog" aria-label="Choose files to upload">
+      <div class="picker-titlebar">
+        <div class="picker-dots"><span class="picker-dot picker-dot--r"></span><span class="picker-dot picker-dot--y"></span><span class="picker-dot picker-dot--g"></span></div>
+        <div class="picker-title">Tax Documents</div>
+      </div>
+      <div class="picker-list" id="pickerList"></div>
+      <div class="picker-footer">
+        <button class="picker-btn picker-btn--cancel" id="pickerCancel">Cancel</button>
+        <button class="picker-btn picker-btn--open" id="pickerOpen" disabled>Open</button>
+      </div>
+    </div>
+  </div>
 
   <script>
     var uploadZone = document.getElementById('upload-zone');
@@ -574,9 +661,10 @@
 
     var closeIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg>';
 
-    function addFile() {
-      var file = sampleFiles[fileCount % sampleFiles.length];
-      fileCount++;
+    function addFile(fileIndex) {
+      var idx = (fileIndex !== undefined) ? fileIndex : (fileCount % sampleFiles.length);
+      var file = sampleFiles[idx];
+      fileCount = idx + 1;
 
       // Create uploading card (matches pdf-import pattern)
       var card = document.createElement('div');
@@ -639,7 +727,7 @@
               '<button class="file-card-close" title="Remove file">' + closeIcon + '</button>';
 
             errorCard.querySelector('.file-card-close').addEventListener('click', function() {
-              wrapper.remove();
+              wrapper.remove(); delete uploadedIdx[idx];
               updateButtons();
             });
 
@@ -717,7 +805,7 @@
           wrapper.appendChild(warningMsg);
 
           complete.querySelector('.complete-card-close').addEventListener('click', function() {
-            wrapper.remove();
+            wrapper.remove(); delete uploadedIdx[idx];
             updateButtons();
           });
 
@@ -781,7 +869,7 @@
           wrapper.appendChild(complete);
 
           complete.querySelector('.complete-card-close').addEventListener('click', function() {
-            wrapper.remove();
+            wrapper.remove(); delete uploadedIdx[idx];
             updateButtons();
           });
 
@@ -802,9 +890,59 @@
       }, 2700);
     }
 
+    // ── FAKE FILE PICKER ──
+    // Clicking the drop zone opens a system-style file dialog listing the
+    // sample documents. Click selects/deselects (multi allowed), double-click
+    // opens immediately, Open uploads everything selected.
+    var pickerOverlay = document.getElementById('pickerOverlay');
+    var pickerList = document.getElementById('pickerList');
+    var pickerOpenBtn = document.getElementById('pickerOpen');
+    var pickerSelected = [];
+    var uploadedIdx = {};
+    var pickerMeta = ['245 KB', '1.2 MB', '890 KB', '156 KB', '2.4 MB', '3.1 MB'];
+
+    function buildPicker() {
+      pickerSelected = [];
+      pickerOpenBtn.disabled = true;
+      pickerList.innerHTML = '';
+      sampleFiles.forEach(function(f, i) {
+        var item = document.createElement('div');
+        item.className = 'picker-item' + (uploadedIdx[i] ? ' uploaded' : '');
+        item.innerHTML =
+          '<span class="picker-item-icon">' + (/\.jpe?g$/i.test(f.name) ? jpgSvg : pdfSvg) + '</span>' +
+          '<span class="picker-item-name">' + f.name + '</span>' +
+          '<span class="picker-item-meta">' + pickerMeta[i % pickerMeta.length] + '</span>';
+        item.addEventListener('click', function() {
+          var at = pickerSelected.indexOf(i);
+          if (at === -1) { pickerSelected.push(i); item.classList.add('selected'); }
+          else { pickerSelected.splice(at, 1); item.classList.remove('selected'); }
+          pickerOpenBtn.disabled = pickerSelected.length === 0;
+        });
+        item.addEventListener('dblclick', function() {
+          if (pickerSelected.indexOf(i) === -1) pickerSelected.push(i);
+          confirmPicker();
+        });
+        pickerList.appendChild(item);
+      });
+    }
+    function openPicker() { buildPicker(); pickerOverlay.classList.add('open'); }
+    function closePicker() { pickerOverlay.classList.remove('open'); }
+    function confirmPicker() {
+      var picks = pickerSelected.slice().sort(function(a, b) { return a - b; });
+      closePicker();
+      picks.forEach(function(idx, n) {
+        uploadedIdx[idx] = true;
+        setTimeout(function() { addFile(idx); }, n * 250);
+      });
+    }
+    pickerOpenBtn.addEventListener('click', confirmPicker);
+    document.getElementById('pickerCancel').addEventListener('click', closePicker);
+    pickerOverlay.addEventListener('click', function(e) { if (e.target === pickerOverlay) closePicker(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closePicker(); });
+
     uploadZone.addEventListener('click', function(e) {
       e.preventDefault();
-      addFile();
+      openPicker();
     });
   </script>
 
