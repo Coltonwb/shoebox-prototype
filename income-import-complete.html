@@ -293,6 +293,36 @@
     .footer-links a { color: #667285; text-decoration: none; }
     .footer-links a:hover { text-decoration: underline; }
     .footer-copyright { text-align: center; font-size: 12px; color: #667285; padding: 4px 0; }
+
+    /* ── MY TAX FILES TILES ── */
+    .file-tile-grid { display: flex; flex-wrap: wrap; gap: 24px; }
+    .file-tile {
+      width: 272px; min-height: 160px; background: #ffffff;
+      border: 1px solid #e2e5e9; border-radius: 8px; padding: 24px;
+      position: relative; display: flex; flex-direction: column; gap: 16px;
+      box-shadow: 0px 1px 1px 0px rgba(33, 47, 69, 0.05);
+    }
+    .file-tile-top { display: flex; gap: 8px; align-items: flex-start; }
+    .file-tile-icon { width: 40px; height: 40px; flex-shrink: 0; display: flex; justify-content: center; }
+    .file-tile-icon svg { width: 32px; height: 40px; }
+    .file-tile-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: #f9f9f9; border-radius: 16px; padding: 2px 10px;
+      font-size: 12px; line-height: 18px; font-weight: 500; color: #465163;
+      white-space: nowrap;
+    }
+    .file-tile-name {
+      font-size: 18px; line-height: 28px; font-weight: 400; color: #212f45;
+      word-break: break-word;
+    }
+    .file-tile-menu {
+      position: absolute; top: 6px; right: 8px; width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      background: none; border: none; cursor: pointer; border-radius: 50%;
+      color: #212f45; transition: background 0.15s;
+    }
+    .file-tile-menu:hover { background: #f4f9ff; }
+    .btn-sm { padding: 8px 14px; font-size: 14px; line-height: 20px; gap: 6px; }
   </style>
 </head>
 <body>
@@ -365,95 +395,10 @@
         </div>
       </div>
 
-      <!-- READY TO REVIEW SECTION -->
-      <div class="section">
-        <h2 class="section-heading">Imported and ready</h2>
-        <div class="summary-card">
-          <div class="form-badge-wrap"><span class="form-badge">W-2</span></div>
-          <div class="field">
-            <div class="field-label">Employer</div>
-            <div class="field-value">Acme Corporation</div>
-          </div>
-          <div class="field">
-            <div class="field-label">Belongs to</div>
-            <div class="field-value">Alex</div>
-          </div>
-          <div class="field">
-            <div class="field-label">Total wages</div>
-            <div class="field-value">$68,500</div>
-          </div>
-        </div>
-        <div class="institution-wrapper">
-          <div class="institution-header">
-            <span class="institution-name">CHASE BANK</span>
-          </div>
-          <div class="institution-inner">
-            <div class="institution-card">
-              <div class="form-badge-wrap"><span class="form-badge">1099-INT</span></div>
-              <div class="field">
-                <div class="field-label">Belongs to</div>
-                <div class="field-value">Alex</div>
-              </div>
-              <div class="field">
-                <div class="field-label">Total</div>
-                <div class="field-value">$352</div>
-              </div>
-            </div>
-            <div class="institution-card">
-              <div class="form-badge-wrap"><span class="form-badge">1099-DIV</span></div>
-              <div class="field">
-                <div class="field-label">Belongs to</div>
-                <div class="field-value">Both</div>
-              </div>
-              <div class="field">
-                <div class="field-label">Total</div>
-                <div class="field-value">$1,247</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="summary-card">
-          <div class="form-badge-wrap"><span class="form-badge">Schedule C</span></div>
-          <div class="field">
-            <div class="field-label">Business Name</div>
-            <div class="field-value">Jamie's Consulting</div>
-          </div>
-          <div class="field">
-            <div class="field-label">Belongs to</div>
-            <div class="field-value">Jamie</div>
-          </div>
-          <div class="field">
-            <div class="field-label">Net Profit</div>
-            <div class="field-value">$34,600</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- REVIEW LATER SECTION -->
-      <div class="section">
-        <h2 class="section-heading">We'll review these later</h2>
-        <p class="uncategorized-text">You'll have a chance to review these documents when you reach this step in your return.</p>
-        <div class="summary-card">
-          <div class="form-badge-wrap"><span class="form-badge">1098-T</span></div>
-          <div class="field">
-            <div class="field-label">School</div>
-            <div class="field-value">Lakeside University</div>
-          </div>
-          <div class="field">
-            <div class="field-label">Belongs to</div>
-            <div class="field-value">Alex</div>
-          </div>
-          <div class="field">
-            <div class="field-label">Payments Received</div>
-            <div class="field-value">$8,500</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- FAILED EXTRACTIONS SECTION -->
+      <!-- FAILED EXTRACTIONS SECTION (moved to top) -->
       <div class="section">
         <h2 class="section-heading">We couldn't read these</h2>
-        <p class="failed-text">We weren't able to pull the information from the documents below. This usually happens when an image is blurry, cropped, or too dark. Add these forms again and we'll give them another try.</p>
+        <p class="failed-text">This usually happens when an image is blurry, cropped, or too dark. Add these forms again and we'll give them another try.</p>
 
         <div class="file-card file-card--error">
           <div class="file-card-content">
@@ -465,27 +410,60 @@
           </div>
         </div>
         <div class="failed-actions">
-          <button class="btn btn-secondary btn-md" onclick="window.location.href='income-upload.html'">
+          <button class="btn btn-secondary btn-sm" onclick="window.location.href='income-upload.html'">
             Add more documents
           </button>
         </div>
       </div>
 
-      <!-- UNCATEGORIZED DOCUMENTS SECTION -->
+      <!-- IMPORTED AND READY (My Tax Files tiles) -->
       <div class="section">
-        <h2 class="section-heading">Uncategorized Documents</h2>
-        <p class="uncategorized-text">The following documents successfully saved in <a href="#">My Tax Files</a>, which you can find in the account menu.</p>
-
-        <div class="file-card">
-          <div class="file-card-content">
-            <svg class="file-card-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H8.8c-1.68 0-2.52 0-3.162.327a3 3 0 0 0-1.311 1.311C4 4.28 4 5.12 4 6.8v10.4c0 1.68 0 2.52.327 3.162a3 3 0 0 0 1.311 1.311C6.28 22 7.12 22 8.8 22h6.4c1.68 0 2.52 0 3.162-.327a3 3 0 0 0 1.311-1.311C20 19.72 20 18.88 20 17.2V8m-6-6 6 6m-6-6v4.8c0 .56 0 .84.109 1.054a1 1 0 0 0 .437.437C14.76 8 15.04 8 15.6 8H20"/></svg>
-            <div class="file-card-text">
-              <span class="file-card-name">kfcreceipt.jpg</span>
-              <span class="file-card-status">Saved to My Tax Files</span>
+        <h2 class="section-heading">Imported and ready</h2>
+        <p class="uncategorized-text">You'll have a chance to review these documents when you reach the related step in your return. The documents have been saved in <a href="#">My Tax Files</a>, which you can find in the account menu.</p>
+        <div class="file-tile-grid">
+          <div class="file-tile">
+            <div class="file-tile-top">
+              <span class="file-tile-icon"><svg width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#016EE6" stroke="#016EE6"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#4B9AEE"/><text x="16" y="34" text-anchor="middle" font-family="Lexend, sans-serif" font-size="12" font-weight="400" fill="#ffffff">PDF</text></svg></span>
+              <span class="file-tile-badge"><svg class="badge-check" width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>W-2</span>
             </div>
+            <div class="file-tile-name">myworkW2.pdf</div>
+            <button class="file-tile-menu" title="File options" aria-label="File options"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+          <div class="file-tile">
+            <div class="file-tile-top">
+              <span class="file-tile-icon"><svg width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#016EE6" stroke="#016EE6"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#4B9AEE"/><text x="16" y="34" text-anchor="middle" font-family="Lexend, sans-serif" font-size="12" font-weight="400" fill="#ffffff">PDF</text></svg></span>
+              <span class="file-tile-badge"><svg class="badge-check" width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Cons. 1099</span>
+            </div>
+            <div class="file-tile-name">chase-consolidated-1099-2025.pdf</div>
+            <button class="file-tile-menu" title="File options" aria-label="File options"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+          <div class="file-tile">
+            <div class="file-tile-top">
+              <span class="file-tile-icon"><svg width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#016EE6" stroke="#016EE6"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#4B9AEE"/><text x="16" y="34" text-anchor="middle" font-family="Lexend, sans-serif" font-size="12" font-weight="400" fill="#ffffff">PDF</text></svg></span>
+              <span class="file-tile-badge"><svg class="badge-check" width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Schedule C</span>
+            </div>
+            <div class="file-tile-name">schedule-c-business-2025.pdf</div>
+            <button class="file-tile-menu" title="File options" aria-label="File options"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+          <div class="file-tile">
+            <div class="file-tile-top">
+              <span class="file-tile-icon"><svg width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#016EE6" stroke="#016EE6"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#4B9AEE"/><text x="16" y="34" text-anchor="middle" font-family="Lexend, sans-serif" font-size="12" font-weight="400" fill="#ffffff">PDF</text></svg></span>
+              <span class="file-tile-badge"><svg class="badge-check" width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>1098-T</span>
+            </div>
+            <div class="file-tile-name">university-1098T-2025.pdf</div>
+            <button class="file-tile-menu" title="File options" aria-label="File options"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+          <div class="file-tile">
+            <div class="file-tile-top">
+              <span class="file-tile-icon"><svg width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#832AE4" stroke="#832AE4"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#AA6DED"/><text x="16.5" y="34" text-anchor="middle" font-family="Lexend, sans-serif" font-size="12" font-weight="400" fill="#ffffff">JPG</text></svg></span>
+              <span class="file-tile-badge">Uncategorized</span>
+            </div>
+            <div class="file-tile-name">kfcreceipt.jpg</div>
+            <button class="file-tile-menu" title="File options" aria-label="File options"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           </div>
         </div>
       </div>
+
 
     </div>
 
