@@ -147,12 +147,41 @@
     }
     .upload-zone-text a:hover { text-decoration: underline; }
 
+    /* ── FORM TYPE TOOLTIP (SWOOP detailed tooltip, dark) ── */
+    .form-type-tooltip {
+      position: absolute; z-index: 50; width: 280px;
+      background: #212f45; color: #ffffff;
+      border-radius: 8px; padding: 12px 36px 12px 16px;
+      box-shadow: 0px 4px 16px rgba(33, 47, 69, 0.25);
+    }
+    .form-type-tooltip p {
+      font-size: 14px; line-height: 20px; font-weight: 400; margin: 0;
+    }
+    .form-type-tooltip .arrow-tip {
+      position: absolute; left: -5px; top: 50%; margin-top: -5px;
+      width: 10px; height: 10px; background: #212f45; transform: rotate(45deg);
+    }
+    .form-type-tooltip .tooltip-close {
+      position: absolute; top: 6px; right: 6px; width: 24px; height: 24px;
+      display: flex; align-items: center; justify-content: center;
+      background: none; border: none; color: #ffffff; cursor: pointer;
+      border-radius: 50%; opacity: 0.8;
+    }
+    .form-type-tooltip .tooltip-close:hover { opacity: 1; }
+    .form-type-tooltip .tooltip-close svg { width: 14px; height: 14px; }
+
+    /* ── DIVIDER (SWOOP border-default line, shown once uploads exist) ── */
+    .upload-divider {
+      height: 1px; background: #e2e5e9;
+      margin: 32px 0; display: none;
+    }
+    .upload-divider.is-visible { display: block; }
+
     /* ── FILE LIST ── */
     .file-list {
       display: flex;
       flex-direction: column;
       gap: 8px;
-      margin-top: 12px;
     }
 
     /* ── FILE CARD (uploading state) ── */
@@ -573,12 +602,6 @@
       <h1 class="page-title">Import all your 2025 tax documents in one place</h1>
       <p class="page-subtitle">This could include W-2s, 1099s, or any other tax documents you've received.</p>
 
-      <!-- Form type alert (shown once a form has uploaded) -->
-      <div class="info-alert" id="form-type-alert">
-        <svg class="info-alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg>
-        <span class="info-alert-text">Make sure each form is classified as the right form type before importing.</span>
-      </div>
-
       <!-- Upload help text -->
       <p class="upload-help-text">You can upload PDF, JPG, or PNG files.</p>
 
@@ -587,6 +610,9 @@
         <svg class="upload-zone-icon" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v1.2c0 1.68 0 2.52-.327 3.162a3 3 0 0 1-1.311 1.311C18.72 21 17.88 21 16.2 21H7.8c-1.68 0-2.52 0-3.162-.327a3 3 0 0 1-1.311-1.311C3 18.72 3 17.88 3 16.2V15m14-7-5-5m0 0L7 8m5-5v12"></path></svg>
         <p class="upload-zone-text">Drop your files here or <a href="#" id="choose-file-link">select files</a></p>
       </div>
+
+      <!-- Divider (appears once a file is uploading) -->
+      <div class="upload-divider" id="upload-divider"></div>
 
       <!-- File list (dynamically populated) -->
       <div class="file-list" id="file-list"></div>
@@ -631,13 +657,31 @@
     var uploadZone = document.getElementById('upload-zone');
     var fileList = document.getElementById('file-list');
     var importBtn = document.getElementById('import-btn');
-    var formTypeAlert = document.getElementById('form-type-alert');
+    var uploadDivider = document.getElementById('upload-divider');
     var fileCount = 0;
+
+    var formTooltipShown = false;
+    function showFormTypeTooltip(wrapper) {
+      var badge = wrapper.querySelector('.complete-card-badge');
+      if (!badge || formTooltipShown) return;
+      formTooltipShown = true;
+      wrapper.style.position = 'relative';
+      var tip = document.createElement('div');
+      tip.className = 'form-type-tooltip';
+      tip.innerHTML = '<p>Make sure each form is classified as the right form type before importing.</p>' +
+        '<button class="tooltip-close" aria-label="Dismiss"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
+        '<div class="arrow-tip"></div>';
+      wrapper.appendChild(tip);
+      var b = badge.getBoundingClientRect(), w = wrapper.getBoundingClientRect();
+      tip.style.left = (b.right - w.left + 12) + 'px';
+      tip.style.top = (b.top - w.top + b.height / 2 - tip.offsetHeight / 2) + 'px';
+      tip.querySelector('.tooltip-close').addEventListener('click', function() { tip.remove(); });
+    }
 
     function updateButtons() {
       var hasImportable = fileList.querySelector('.complete-card') !== null;
       importBtn.style.display = hasImportable ? '' : 'none';
-      formTypeAlert.classList.toggle('is-visible', hasImportable);
+      uploadDivider.classList.toggle('is-visible', fileList.children.length > 0);
     }
 
     var sampleFiles = [
@@ -690,7 +734,8 @@
         '</div>' +
         '<div class="file-card-spinner">' + spinnerSvg + '</div>';
 
-      fileList.prepend(card);
+      fileList.appendChild(card);
+      uploadDivider.classList.add('is-visible');
 
       var progressDiv = card.querySelector('.file-card-progress');
 
@@ -897,6 +942,7 @@
 
         card.replaceWith(wrapper);
         updateButtons();
+        showFormTypeTooltip(wrapper);
       }, 2700);
     }
 
