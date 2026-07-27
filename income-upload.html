@@ -668,7 +668,10 @@
       wrapper.style.position = 'relative';
       var tip = document.createElement('div');
       tip.className = 'form-type-tooltip';
-      tip.innerHTML = '<p>Make sure each form is classified as the right form type before importing.</p>' +
+      tip.setAttribute('role', 'tooltip');
+      tip.setAttribute('aria-live', 'polite');
+      tip.setAttribute('aria-atomic', 'false');
+      tip.innerHTML = '<p>Make sure each form has the right form type.</p>' +
         '<button class="tooltip-close" aria-label="Dismiss"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
         '<div class="arrow-tip"></div>';
       wrapper.appendChild(tip);
