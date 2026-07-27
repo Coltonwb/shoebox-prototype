@@ -375,7 +375,7 @@
       <p class="page-subtitle">Review each form below — we'll cover the rest later in your return.</p>
 
       <!-- SUCCESS ALERT -->
-      <div class="success-alert">
+      <div class="success-alert" id="importSuccessAlert">
         <svg class="success-alert-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M7.5 12L10.5 15L16.5 9M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#15aa51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
@@ -385,9 +385,9 @@
       </div>
 
       <!-- IMPORTED AND READY SECTION -->
-      <div class="section">
+      <div class="section" data-doc-section="imported">
         <h2 class="section-heading">Imported and ready to review</h2>
-        <div class="summary-card">
+        <div class="summary-card" data-doc="w2">
           <div class="form-badge-wrap"><span class="form-badge">W-2</span></div>
           <div class="field">
             <div class="field-label">Employer</div>
@@ -403,7 +403,7 @@
           </div>
           <button class="btn btn-primary btn-sm" style="margin-left: auto;" data-review-key="wages">Review</button>
         </div>
-        <div class="institution-wrapper">
+        <div class="institution-wrapper" data-doc="cons1099">
           <div class="institution-header">
             <span class="institution-name">CHASE BANK</span>
           </div>
@@ -434,7 +434,7 @@
             </div>
           </div>
         </div>
-        <div class="summary-card">
+        <div class="summary-card" data-doc="schedc">
           <div class="form-badge-wrap"><span class="form-badge">Schedule C</span></div>
           <div class="field">
             <div class="field-label">Business Name</div>
@@ -453,7 +453,7 @@
       </div>
 
       <!-- REVIEW LATER SECTION -->
-      <div class="section">
+      <div class="section" data-doc-section="t1098">
         <h2 class="section-heading">We'll review these later</h2>
         <p class="uncategorized-text">You'll have a chance to review these documents when you reach this step in your return.</p>
         <div class="summary-card">
@@ -474,7 +474,7 @@
       </div>
 
       <!-- FAILED EXTRACTIONS SECTION -->
-      <div class="section">
+      <div class="section" data-doc-section="failed">
         <h2 class="section-heading">We couldn't read these</h2>
         <p class="failed-text">We weren't able to pull the information from the documents below. This usually happens when an image is blurry, cropped, or too dark. Add these forms again and we'll give them another try.</p>
 
@@ -495,7 +495,7 @@
       </div>
 
       <!-- UNCATEGORIZED DOCUMENTS SECTION -->
-      <div class="section">
+      <div class="section" data-doc-section="kfc">
         <h2 class="section-heading">Uncategorized Documents</h2>
         <p class="uncategorized-text">The following documents successfully saved in <a href="#">My Tax Files</a>, which you can find in the account menu.</p>
 
@@ -517,13 +517,52 @@
       <button class="btn btn-secondary btn-md" onclick="window.location.href='income-upload-v2.html'">
         Add more documents
       </button>
-      <button class="btn btn-primary btn-md" onclick="sessionStorage.setItem('reviewed-wages','1'); sessionStorage.setItem('reviewed-investments','1'); sessionStorage.setItem('reviewed-business','1'); window.location.href='income-page3.html';">
+      <button class="btn btn-primary btn-md" onclick="saveAndContinue()">
         Save and continue
       </button>
     </div>
   </main>
 
   <script>
+    // ── UPLOAD SELECTION ──
+    // Show only what was actually uploaded (sessionStorage set by the upload
+    // page). No stored selection (direct visit) = show everything.
+    var shoeboxUploads = null;
+    (function applyUploadSelection() {
+      var raw = sessionStorage.getItem('shoebox-uploads');
+      if (!raw) return;
+      try { shoeboxUploads = JSON.parse(raw); } catch (e) { return; }
+      if (!shoeboxUploads || !shoeboxUploads.length) { shoeboxUploads = null; return; }
+      var has = function(k) { return shoeboxUploads.indexOf(k) !== -1; };
+      document.querySelectorAll('[data-doc]').forEach(function(el) {
+        if (!has(el.getAttribute('data-doc'))) el.style.display = 'none';
+      });
+      ['t1098', 'failed', 'kfc'].forEach(function(k) {
+        if (!has(k)) {
+          var sec = document.querySelector('[data-doc-section="' + k + '"]');
+          if (sec) sec.style.display = 'none';
+        }
+      });
+      if (has('failed')) {
+        var alertEl = document.getElementById('importSuccessAlert');
+        if (alertEl) alertEl.style.display = 'none';
+      }
+      if (!['w2', 'cons1099', 'schedc'].some(has)) {
+        var imp = document.querySelector('[data-doc-section="imported"]');
+        if (imp) imp.style.display = 'none';
+      }
+    })();
+
+    function saveAndContinue() {
+      var typeMap = { w2: 'wages', cons1099: 'investments', schedc: 'business' };
+      var keys = shoeboxUploads || Object.keys(typeMap);
+      Object.keys(typeMap).forEach(function(k) {
+        if (keys.indexOf(k) !== -1) sessionStorage.setItem('reviewed-' + typeMap[k], '1');
+        else sessionStorage.removeItem('reviewed-' + typeMap[k]);
+      });
+      window.location.href = 'income-page3.html';
+    }
+
     // Clicking a per-row Review button swaps it for Edit / Delete actions,
     // matching the record-actions pattern on the income dive screen.
     var editIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 6H6.5c-1.4 0-2.1 0-2.63.27a2.5 2.5 0 0 0-1.1 1.1C2.5 7.9 2.5 8.6 2.5 10v7.5c0 1.4 0 2.1.27 2.63a2.5 2.5 0 0 0 1.1 1.1c.53.27 1.23.27 2.63.27H14c1.4 0 2.1 0 2.63-.27a2.5 2.5 0 0 0 1.1-1.1c.27-.53.27-1.23.27-2.63V13.5M7 17h1.67c.49 0 .74 0 .97-.06.2-.04.4-.13.58-.24.2-.12.37-.3.72-.66L21 6a2.12 2.12 0 0 0-3-3l-10.06 10.06c-.35.35-.52.52-.64.72-.1.18-.19.37-.24.58-.05.23-.05.48-.05.97V17Z"/></svg>';

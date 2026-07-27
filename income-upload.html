@@ -621,7 +621,7 @@
     <!-- Button row -->
     <div class="button-row">
       <button class="btn btn-secondary btn-md" onclick="window.location.href='income-import.html'">Previous Page</button>
-      <button class="btn btn-primary btn-md" id="import-btn" style="display:none;" onclick="window.location.href='income-importing.html'">Import</button>
+      <button class="btn btn-primary btn-md" id="import-btn" style="display:none;" onclick="startImport()">Import</button>
     </div>
   </main>
 
@@ -955,6 +955,17 @@
     var pickerOpenBtn = document.getElementById('pickerOpen');
     var pickerSelected = [];
     var uploadedIdx = {};
+    // Doc keys by sampleFiles index; stored on Import so the rest of the
+    // prototype can show only what was actually uploaded.
+    var DOC_KEYS = ['w2', 'cons1099', 'schedc', 't1098', 'kfc', 'failed'];
+    function startImport() {
+      var keys = Object.keys(uploadedIdx).map(function(i) { return DOC_KEYS[i]; });
+      var prev = [];
+      try { prev = JSON.parse(sessionStorage.getItem('shoebox-uploads')) || []; } catch (e) {}
+      prev.forEach(function(k) { if (keys.indexOf(k) === -1) keys.push(k); });
+      sessionStorage.setItem('shoebox-uploads', JSON.stringify(keys));
+      window.location.href = 'income-importing.html';
+    }
     var pickerMeta = ['245 KB', '1.2 MB', '890 KB', '156 KB', '2.4 MB', '3.1 MB'];
 
     function buildPicker() {
@@ -1000,6 +1011,7 @@
       e.preventDefault();
       openPicker();
     });
+
   </script>
 
 </body>
