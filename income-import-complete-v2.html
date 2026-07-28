@@ -127,6 +127,7 @@
       font-size: 24px; font-weight: 400; line-height: 32px; color: #212f45;
       margin-bottom: 16px;
     }
+    /* Tighten the gap when a heading is immediately followed by a subheader */
     .section-heading:has(+ .uncategorized-text) {
       margin-bottom: 4px;
     }
@@ -135,7 +136,7 @@
     .summary-card {
       border: 1px solid #e2e5e9; border-radius: 4px; padding: 24px;
       margin-bottom: 16px; position: relative;
-      display: flex; align-items: center; gap: 24px;
+      display: flex; align-items: center; gap: 48px;
     }
     .field { flex: 0 0 auto; min-width: 140px; }
     .field-label {
@@ -149,7 +150,7 @@
 
     /* ── FORM BADGE (leading element in record cards) ── */
     .form-badge-wrap {
-      flex: 0 0 auto; min-width: 100px;
+      flex: 0 0 auto; min-width: 140px;
       display: flex; align-items: center; justify-content: flex-start;
     }
     .form-badge {
@@ -215,12 +216,11 @@
     }
     .institution-card {
       padding: 20px 24px; display: flex; align-items: center;
-      gap: 24px; border: 1px solid #e2e5e9; border-radius: 4px;
+      gap: 48px; border: 1px solid #e2e5e9; border-radius: 4px;
       background: #ffffff;
     }
 
-    /* ── FILE CARDS (UNCATEGORIZED) ── */
-    /* ── FILE CARDS (UNCATEGORIZED / FAILED) — mirrors the upload screen ── */
+    /* ── FILE CARDS (UNCATEGORIZED) — mirrors the upload screen ── */
     .file-card {
       width: 100%; min-height: 72px; border: 1px solid #e2e5e9; border-radius: 4px;
       background: #ffffff; margin-bottom: 12px;
@@ -236,34 +236,16 @@
     .file-card-status {
       display: block; font-size: 14px; font-weight: 400; line-height: 20px; color: #667285;
     }
-    .file-card--error { background: #fef6f6; border-color: #fecbc9; }
-    .file-card--error .file-card-icon { color: #d11911; }
-    .file-card--error .file-card-status { color: #d11911; }
+
+    /* ── FAILED EXTRACTIONS SECTION ── */
     .failed-text {
       font-size: 16px; font-weight: 400; color: #212f45; line-height: 24px;
       margin-bottom: 20px;
     }
+    .file-card--error { background: #fef6f6; border-color: #fecbc9; }
+    .file-card--error .file-card-icon { color: #d11911; }
+    .file-card--error .file-card-status { color: #d11911; }
     .failed-actions { margin-top: 4px; }
-    .card-actions {
-      margin-left: auto;
-      display: flex; gap: 16px; align-items: center;
-      flex-shrink: 0; white-space: nowrap;
-    }
-    .edit-link,
-    .delete-link {
-      display: flex; align-items: center; gap: 8px;
-      color: #016ee6; font-size: 14px; font-weight: 500;
-      text-decoration: none; cursor: pointer;
-      transition: color 0.15s;
-    }
-    .edit-link:hover,
-    .delete-link:hover {
-      color: #0850c4; text-decoration: underline;
-    }
-    .edit-link svg,
-    .delete-link svg {
-      width: 20px; height: 20px; flex-shrink: 0;
-    }
 
     /* ── UNCATEGORIZED SECTION TEXT ── */
     .uncategorized-text {
@@ -298,7 +280,6 @@
     }
     .btn-secondary:hover { background: #f4f9ff; }
     .btn-md { padding: 10px 18px; font-size: 16px; line-height: 24px; gap: 8px; }
-    .btn-sm { padding: 6px 12px; font-size: 14px; line-height: 20px; gap: 6px; flex-shrink: 0; white-space: nowrap; }
 
     /* ── FOOTER ── */
     .footer {
@@ -312,6 +293,61 @@
     .footer-links a { color: #667285; text-decoration: none; }
     .footer-links a:hover { text-decoration: underline; }
     .footer-copyright { text-align: center; font-size: 12px; color: #667285; padding: 4px 0; }
+
+    /* ── MY TAX FILES TILES ── */
+    .file-tile-grid { display: flex; flex-wrap: wrap; gap: 24px; }
+    .file-tile {
+      width: 272px; min-height: 160px; background: #ffffff;
+      border: 1px solid #e2e5e9; border-radius: 8px; padding: 24px;
+      position: relative; display: flex; flex-direction: column; gap: 16px;
+      box-shadow: 0px 1px 1px 0px rgba(33, 47, 69, 0.05);
+    }
+    .file-tile-top { display: flex; gap: 8px; align-items: flex-start; }
+    .file-tile-icon { width: 40px; height: 40px; flex-shrink: 0; display: flex; justify-content: center; }
+    .file-tile-icon svg { width: 32px; height: 40px; }
+    .file-tile-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: #f9f9f9; border-radius: 16px; padding: 2px 10px;
+      font-size: 12px; line-height: 18px; font-weight: 500; color: #465163;
+      white-space: nowrap;
+    }
+    .file-tile-name {
+      font-size: 18px; line-height: 28px; font-weight: 400; color: #212f45;
+      word-break: break-word;
+    }
+    .file-tile-menu {
+      position: absolute; top: 6px; right: 8px; width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      background: none; border: none; cursor: pointer; border-radius: 50%;
+      color: #212f45; transition: background 0.15s;
+    }
+    .file-tile-menu:hover { background: #f4f9ff; }
+    .btn-sm { padding: 8px 14px; font-size: 14px; line-height: 20px; gap: 6px; }
+
+    /* ── TILE MENU (open state + dropdown) ── */
+    .tile-menu-dots { display: flex; }
+    .file-tile-menu .tile-menu-close { display: none; }
+    .file-tile.menu-open { z-index: 30; }
+    .file-tile.menu-open .file-tile-menu,
+    .file-tile.menu-open .file-tile-menu:hover { background: #212f45; color: #ffffff; }
+    .file-tile.menu-open .tile-menu-dots { display: none; }
+    .file-tile.menu-open .tile-menu-close { display: block; }
+    .file-tile-dropdown {
+      position: absolute; top: 50px; right: 8px; z-index: 40;
+      min-width: 150px; padding: 8px 0; display: none;
+      background: #ffffff; border-radius: 8px;
+      box-shadow: 0px 4px 16px rgba(33, 47, 69, 0.15), 0px 0px 0px 1px rgba(33, 47, 69, 0.04);
+    }
+    .file-tile.menu-open .file-tile-dropdown { display: block; }
+    .file-tile-dropdown-item {
+      display: flex; align-items: center; gap: 8px;
+      width: calc(100% - 16px); margin: 0 8px; border-radius: 100px;
+      padding: 8px 12px; background: none; border: none; cursor: pointer;
+      font-family: 'Lexend', sans-serif; font-size: 14px; line-height: 20px;
+      color: #212f45; text-align: left;
+    }
+    .file-tile-dropdown-item:hover { background: #f4f9ff; }
+    .file-tile-dropdown-item svg { color: #667285; flex-shrink: 0; }
   </style>
 </head>
 <body>
@@ -361,7 +397,7 @@
   <main class="content-box">
     <!-- PAGE ACTIONS (Back + Bookmark) -->
     <div class="page-actions">
-      <button class="icon-btn" onclick="window.location.href='income-upload-v2.html'" title="Go back">
+      <button class="icon-btn" onclick="window.location.href='income-importing-v2.html'" title="Go back">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m0 0 7 7m-7-7 7-7"/></svg>
       </button>
       <button class="icon-btn" title="Bookmark">
@@ -372,10 +408,10 @@
     <div class="content-inner">
       <!-- PAGE TITLE & SUBTITLE -->
       <h1 class="page-title">Here's a look at what we got.</h1>
-      <p class="page-subtitle">Review each form below — we'll cover the rest later in your return.</p>
+      <p class="page-subtitle">You'll review these as you work through your return.</p>
 
-      <!-- SUCCESS ALERT -->
-      <div class="success-alert" id="importSuccessAlert">
+      <!-- Success alert: shown only when every uploaded file imported cleanly -->
+      <div class="success-alert" id="importSuccessAlert" style="display:none;">
         <svg class="success-alert-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M7.5 12L10.5 15L16.5 9M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#15aa51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
@@ -384,99 +420,10 @@
         </div>
       </div>
 
-      <!-- IMPORTED AND READY SECTION -->
-      <div class="section" data-doc-section="imported">
-        <h2 class="section-heading">Imported and ready to review</h2>
-        <div class="summary-card" data-doc="w2">
-          <div class="form-badge-wrap"><span class="form-badge">W-2</span></div>
-          <div class="field">
-            <div class="field-label">Employer</div>
-            <div class="field-value">Acme Corporation</div>
-          </div>
-          <div class="field">
-            <div class="field-label">Name</div>
-            <div class="field-value">Alex</div>
-          </div>
-          <div class="field">
-            <div class="field-label">Total wages</div>
-            <div class="field-value">$68,500</div>
-          </div>
-          <button class="btn btn-primary btn-sm" style="margin-left: auto;" data-review-key="wages">Review</button>
-        </div>
-        <div class="institution-wrapper" data-doc="cons1099">
-          <div class="institution-header">
-            <span class="institution-name">CHASE BANK</span>
-          </div>
-          <div class="institution-inner">
-            <div class="institution-card">
-              <div class="form-badge-wrap"><span class="form-badge">1099-INT</span></div>
-              <div class="field">
-                <div class="field-label">Name</div>
-                <div class="field-value">Alex</div>
-              </div>
-              <div class="field">
-                <div class="field-label">Total</div>
-                <div class="field-value">$352</div>
-              </div>
-              <button class="btn btn-primary btn-sm" style="margin-left: auto;" data-review-key="investments">Review</button>
-            </div>
-            <div class="institution-card">
-              <div class="form-badge-wrap"><span class="form-badge">1099-DIV</span></div>
-              <div class="field">
-                <div class="field-label">Name</div>
-                <div class="field-value">Alex and Jamie</div>
-              </div>
-              <div class="field">
-                <div class="field-label">Total</div>
-                <div class="field-value">$1,247</div>
-              </div>
-              <button class="btn btn-primary btn-sm" style="margin-left: auto;" data-review-key="investments">Review</button>
-            </div>
-          </div>
-        </div>
-        <div class="summary-card" data-doc="schedc">
-          <div class="form-badge-wrap"><span class="form-badge">Schedule C</span></div>
-          <div class="field">
-            <div class="field-label">Business Name</div>
-            <div class="field-value">Jamie's Consulting</div>
-          </div>
-          <div class="field">
-            <div class="field-label">Name</div>
-            <div class="field-value">Jamie</div>
-          </div>
-          <div class="field">
-            <div class="field-label">Net Profit</div>
-            <div class="field-value">$34,600</div>
-          </div>
-          <button class="btn btn-primary btn-sm" style="margin-left: auto;" data-review-key="business">Review</button>
-        </div>
-      </div>
-
-      <!-- REVIEW LATER SECTION -->
-      <div class="section" data-doc-section="t1098">
-        <h2 class="section-heading">We'll review these later</h2>
-        <p class="uncategorized-text">You'll have a chance to review these documents when you reach this step in your return.</p>
-        <div class="summary-card">
-          <div class="form-badge-wrap"><span class="form-badge">1098-T</span></div>
-          <div class="field">
-            <div class="field-label">School</div>
-            <div class="field-value">Lakeside University</div>
-          </div>
-          <div class="field">
-            <div class="field-label">Name</div>
-            <div class="field-value">Alex</div>
-          </div>
-          <div class="field">
-            <div class="field-label">Payments Received</div>
-            <div class="field-value">$8,500</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- FAILED EXTRACTIONS SECTION -->
+      <!-- FAILED EXTRACTIONS SECTION (moved to top) -->
       <div class="section" data-doc-section="failed">
         <h2 class="section-heading">We couldn't read these</h2>
-        <p class="failed-text">We weren't able to pull the information from the documents below. This usually happens when an image is blurry, cropped, or too dark. Add these forms again and we'll give them another try.</p>
+        <p class="failed-text">These were too blurry, cropped, or dark to read. Add them again to retry.</p>
 
         <div class="file-card file-card--error">
           <div class="file-card-content">
@@ -488,27 +435,119 @@
           </div>
         </div>
         <div class="failed-actions">
-          <button class="btn btn-secondary btn-md" onclick="window.location.href='income-upload-v2.html'">
+          <button class="btn btn-secondary btn-sm" onclick="window.location.href='income-upload-v2.html'">
             Add more documents
           </button>
         </div>
       </div>
 
-      <!-- UNCATEGORIZED DOCUMENTS SECTION -->
-      <div class="section" data-doc-section="kfc">
-        <h2 class="section-heading">Uncategorized Documents</h2>
-        <p class="uncategorized-text">The following documents successfully saved in <a href="#">My Tax Files</a>, which you can find in the account menu.</p>
-
-        <div class="file-card">
-          <div class="file-card-content">
-            <svg class="file-card-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H8.8c-1.68 0-2.52 0-3.162.327a3 3 0 0 0-1.311 1.311C4 4.28 4 5.12 4 6.8v10.4c0 1.68 0 2.52.327 3.162a3 3 0 0 0 1.311 1.311C6.28 22 7.12 22 8.8 22h6.4c1.68 0 2.52 0 3.162-.327a3 3 0 0 0 1.311-1.311C20 19.72 20 18.88 20 17.2V8m-6-6 6 6m-6-6v4.8c0 .56 0 .84.109 1.054a1 1 0 0 0 .437.437C14.76 8 15.04 8 15.6 8H20"/></svg>
-            <div class="file-card-text">
-              <span class="file-card-name">kfcreceipt.jpg</span>
-              <span class="file-card-status">Saved to My Tax Files</span>
+      <!-- IMPORTED AND READY (My Tax Files tiles) -->
+      <div class="section" data-doc-section="imported">
+        <h2 class="section-heading">Imported and ready</h2>
+        <p class="uncategorized-text">These are saved in <a href="#">My Tax Files</a>. You'll review each one at the related step in your return.</p>
+        <div class="file-tile-grid">
+          <div class="file-tile" data-doc="w2">
+            <div class="file-tile-top">
+              <span class="file-tile-icon"><svg width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#016EE6" stroke="#016EE6"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#4B9AEE"/><text x="16" y="34" text-anchor="middle" font-family="Lexend, sans-serif" font-size="12" font-weight="400" fill="#ffffff">PDF</text></svg></span>
+              <span class="file-tile-badge"><svg class="badge-check" width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>W-2</span>
+            </div>
+            <div class="file-tile-name">myworkW2.pdf</div>
+            <button class="file-tile-menu" title="File options" aria-label="File options" aria-expanded="false"><span class="tile-menu-dots"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><svg class="tile-menu-close" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="file-tile-dropdown">
+              <button class="file-tile-dropdown-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.42012 12.7132C2.28394 12.4975 2.21584 12.3897 2.17772 12.2234C2.14909 12.0985 2.14909 11.9015 2.17772 11.7766C2.21584 11.6103 2.28394 11.5025 2.42012 11.2868C3.54553 9.50484 6.8954 5 12.0004 5C17.1054 5 20.4553 9.50484 21.5807 11.2868C21.7169 11.5025 21.785 11.6103 21.8231 11.7766C21.8517 11.9015 21.8517 12.0985 21.8231 12.2234C21.785 12.3897 21.7169 12.4975 21.5807 12.7132C20.4553 14.4952 17.1054 19 12.0004 19C6.8954 19 3.54553 14.4952 2.42012 12.7132Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.0004 15C13.6573 15 15.0004 13.6569 15.0004 12C15.0004 10.3431 13.6573 9 12.0004 9C10.3435 9 9.0004 10.3431 9.0004 12C9.0004 13.6569 10.3435 15 12.0004 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Preview</button>
+            </div>
+          </div>
+          <div class="file-tile" data-doc="cons1099">
+            <div class="file-tile-top">
+              <span class="file-tile-icon"><svg width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#016EE6" stroke="#016EE6"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#4B9AEE"/><text x="16" y="34" text-anchor="middle" font-family="Lexend, sans-serif" font-size="12" font-weight="400" fill="#ffffff">PDF</text></svg></span>
+              <span class="file-tile-badge"><svg class="badge-check" width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Cons. 1099</span>
+            </div>
+            <div class="file-tile-name">chase-consolidated-1099-2025.pdf</div>
+            <button class="file-tile-menu" title="File options" aria-label="File options" aria-expanded="false"><span class="tile-menu-dots"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><svg class="tile-menu-close" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="file-tile-dropdown">
+              <button class="file-tile-dropdown-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.42012 12.7132C2.28394 12.4975 2.21584 12.3897 2.17772 12.2234C2.14909 12.0985 2.14909 11.9015 2.17772 11.7766C2.21584 11.6103 2.28394 11.5025 2.42012 11.2868C3.54553 9.50484 6.8954 5 12.0004 5C17.1054 5 20.4553 9.50484 21.5807 11.2868C21.7169 11.5025 21.785 11.6103 21.8231 11.7766C21.8517 11.9015 21.8517 12.0985 21.8231 12.2234C21.785 12.3897 21.7169 12.4975 21.5807 12.7132C20.4553 14.4952 17.1054 19 12.0004 19C6.8954 19 3.54553 14.4952 2.42012 12.7132Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.0004 15C13.6573 15 15.0004 13.6569 15.0004 12C15.0004 10.3431 13.6573 9 12.0004 9C10.3435 9 9.0004 10.3431 9.0004 12C9.0004 13.6569 10.3435 15 12.0004 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Preview</button>
+            </div>
+          </div>
+          <div class="file-tile" data-doc="schedc">
+            <div class="file-tile-top">
+              <span class="file-tile-icon"><svg width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#016EE6" stroke="#016EE6"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#4B9AEE"/><text x="16" y="34" text-anchor="middle" font-family="Lexend, sans-serif" font-size="12" font-weight="400" fill="#ffffff">PDF</text></svg></span>
+              <span class="file-tile-badge"><svg class="badge-check" width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Schedule C</span>
+            </div>
+            <div class="file-tile-name">schedule-c-business-2025.pdf</div>
+            <button class="file-tile-menu" title="File options" aria-label="File options" aria-expanded="false"><span class="tile-menu-dots"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><svg class="tile-menu-close" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="file-tile-dropdown">
+              <button class="file-tile-dropdown-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.42012 12.7132C2.28394 12.4975 2.21584 12.3897 2.17772 12.2234C2.14909 12.0985 2.14909 11.9015 2.17772 11.7766C2.21584 11.6103 2.28394 11.5025 2.42012 11.2868C3.54553 9.50484 6.8954 5 12.0004 5C17.1054 5 20.4553 9.50484 21.5807 11.2868C21.7169 11.5025 21.785 11.6103 21.8231 11.7766C21.8517 11.9015 21.8517 12.0985 21.8231 12.2234C21.785 12.3897 21.7169 12.4975 21.5807 12.7132C20.4553 14.4952 17.1054 19 12.0004 19C6.8954 19 3.54553 14.4952 2.42012 12.7132Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.0004 15C13.6573 15 15.0004 13.6569 15.0004 12C15.0004 10.3431 13.6573 9 12.0004 9C10.3435 9 9.0004 10.3431 9.0004 12C9.0004 13.6569 10.3435 15 12.0004 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Preview</button>
+            </div>
+          </div>
+          <div class="file-tile" data-doc="t1098">
+            <div class="file-tile-top">
+              <span class="file-tile-icon"><svg width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#016EE6" stroke="#016EE6"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#4B9AEE"/><text x="16" y="34" text-anchor="middle" font-family="Lexend, sans-serif" font-size="12" font-weight="400" fill="#ffffff">PDF</text></svg></span>
+              <span class="file-tile-badge"><svg class="badge-check" width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>1098-T</span>
+            </div>
+            <div class="file-tile-name">university-1098T-2025.pdf</div>
+            <button class="file-tile-menu" title="File options" aria-label="File options" aria-expanded="false"><span class="tile-menu-dots"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><svg class="tile-menu-close" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="file-tile-dropdown">
+              <button class="file-tile-dropdown-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.42012 12.7132C2.28394 12.4975 2.21584 12.3897 2.17772 12.2234C2.14909 12.0985 2.14909 11.9015 2.17772 11.7766C2.21584 11.6103 2.28394 11.5025 2.42012 11.2868C3.54553 9.50484 6.8954 5 12.0004 5C17.1054 5 20.4553 9.50484 21.5807 11.2868C21.7169 11.5025 21.785 11.6103 21.8231 11.7766C21.8517 11.9015 21.8517 12.0985 21.8231 12.2234C21.785 12.3897 21.7169 12.4975 21.5807 12.7132C20.4553 14.4952 17.1054 19 12.0004 19C6.8954 19 3.54553 14.4952 2.42012 12.7132Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.0004 15C13.6573 15 15.0004 13.6569 15.0004 12C15.0004 10.3431 13.6573 9 12.0004 9C10.3435 9 9.0004 10.3431 9.0004 12C9.0004 13.6569 10.3435 15 12.0004 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Preview</button>
+            </div>
+          </div>
+          <div class="file-tile" data-doc="kfc">
+            <div class="file-tile-top">
+              <span class="file-tile-icon"><svg width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#832AE4" stroke="#832AE4"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#AA6DED"/><text x="16.5" y="34" text-anchor="middle" font-family="Lexend, sans-serif" font-size="12" font-weight="400" fill="#ffffff">JPG</text></svg></span>
+              <span class="file-tile-badge">Uncategorized</span>
+            </div>
+            <div class="file-tile-name">kfcreceipt.jpg</div>
+            <button class="file-tile-menu" title="File options" aria-label="File options" aria-expanded="false"><span class="tile-menu-dots"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><svg class="tile-menu-close" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="file-tile-dropdown">
+              <button class="file-tile-dropdown-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.42012 12.7132C2.28394 12.4975 2.21584 12.3897 2.17772 12.2234C2.14909 12.0985 2.14909 11.9015 2.17772 11.7766C2.21584 11.6103 2.28394 11.5025 2.42012 11.2868C3.54553 9.50484 6.8954 5 12.0004 5C17.1054 5 20.4553 9.50484 21.5807 11.2868C21.7169 11.5025 21.785 11.6103 21.8231 11.7766C21.8517 11.9015 21.8517 12.0985 21.8231 12.2234C21.785 12.3897 21.7169 12.4975 21.5807 12.7132C20.4553 14.4952 17.1054 19 12.0004 19C6.8954 19 3.54553 14.4952 2.42012 12.7132Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.0004 15C13.6573 15 15.0004 13.6569 15.0004 12C15.0004 10.3431 13.6573 9 12.0004 9C10.3435 9 9.0004 10.3431 9.0004 12C9.0004 13.6569 10.3435 15 12.0004 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Preview</button>
+            </div>
+          </div>
+          <div class="file-tile" data-doc="xmas" style="display:none;">
+            <div class="file-tile-top">
+              <span class="file-tile-icon"><svg width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#008936" stroke="#008936"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#15AA51"/><text x="16.5" y="34" text-anchor="middle" font-family="Lexend, sans-serif" font-size="12" font-weight="400" fill="#ffffff">xlsx</text></svg></span>
+              <span class="file-tile-badge">Uncategorized</span>
+            </div>
+            <div class="file-tile-name">christmas-gift-list.xlsx</div>
+            <button class="file-tile-menu" title="File options" aria-label="File options" aria-expanded="false"><span class="tile-menu-dots"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><svg class="tile-menu-close" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="file-tile-dropdown">
+              <button class="file-tile-dropdown-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.42012 12.7132C2.28394 12.4975 2.21584 12.3897 2.17772 12.2234C2.14909 12.0985 2.14909 11.9015 2.17772 11.7766C2.21584 11.6103 2.28394 11.5025 2.42012 11.2868C3.54553 9.50484 6.8954 5 12.0004 5C17.1054 5 20.4553 9.50484 21.5807 11.2868C21.7169 11.5025 21.785 11.6103 21.8231 11.7766C21.8517 11.9015 21.8517 12.0985 21.8231 12.2234C21.785 12.3897 21.7169 12.4975 21.5807 12.7132C20.4553 14.4952 17.1054 19 12.0004 19C6.8954 19 3.54553 14.4952 2.42012 12.7132Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.0004 15C13.6573 15 15.0004 13.6569 15.0004 12C15.0004 10.3431 13.6573 9 12.0004 9C10.3435 9 9.0004 10.3431 9.0004 12C9.0004 13.6569 10.3435 15 12.0004 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Preview</button>
+            </div>
+          </div>
+          <div class="file-tile" data-doc="img" style="display:none;">
+            <div class="file-tile-top">
+              <span class="file-tile-icon"><svg width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#832AE4" stroke="#832AE4"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#AA6DED"/><text x="16.5" y="34" text-anchor="middle" font-family="Lexend, sans-serif" font-size="12" font-weight="400" fill="#ffffff">JPG</text></svg></span>
+              <span class="file-tile-badge">Uncategorized</span>
+            </div>
+            <div class="file-tile-name">IMG_8842.jpg</div>
+            <button class="file-tile-menu" title="File options" aria-label="File options" aria-expanded="false"><span class="tile-menu-dots"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><svg class="tile-menu-close" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="file-tile-dropdown">
+              <button class="file-tile-dropdown-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.42012 12.7132C2.28394 12.4975 2.21584 12.3897 2.17772 12.2234C2.14909 12.0985 2.14909 11.9015 2.17772 11.7766C2.21584 11.6103 2.28394 11.5025 2.42012 11.2868C3.54553 9.50484 6.8954 5 12.0004 5C17.1054 5 20.4553 9.50484 21.5807 11.2868C21.7169 11.5025 21.785 11.6103 21.8231 11.7766C21.8517 11.9015 21.8517 12.0985 21.8231 12.2234C21.785 12.3897 21.7169 12.4975 21.5807 12.7132C20.4553 14.4952 17.1054 19 12.0004 19C6.8954 19 3.54553 14.4952 2.42012 12.7132Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.0004 15C13.6573 15 15.0004 13.6569 15.0004 12C15.0004 10.3431 13.6573 9 12.0004 9C10.3435 9 9.0004 10.3431 9.0004 12C9.0004 13.6569 10.3435 15 12.0004 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Preview</button>
+            </div>
+          </div>
+          <div class="file-tile" data-doc="shot" style="display:none;">
+            <div class="file-tile-top">
+              <span class="file-tile-icon"><svg width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#832AE4" stroke="#832AE4"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#AA6DED"/><text x="16.5" y="34" text-anchor="middle" font-family="Lexend, sans-serif" font-size="12" font-weight="400" fill="#ffffff">PNG</text></svg></span>
+              <span class="file-tile-badge">Uncategorized</span>
+            </div>
+            <div class="file-tile-name">Screenshot 2025-04-11 at 2.31.09 PM.png</div>
+            <button class="file-tile-menu" title="File options" aria-label="File options" aria-expanded="false"><span class="tile-menu-dots"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><svg class="tile-menu-close" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="file-tile-dropdown">
+              <button class="file-tile-dropdown-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.42012 12.7132C2.28394 12.4975 2.21584 12.3897 2.17772 12.2234C2.14909 12.0985 2.14909 11.9015 2.17772 11.7766C2.21584 11.6103 2.28394 11.5025 2.42012 11.2868C3.54553 9.50484 6.8954 5 12.0004 5C17.1054 5 20.4553 9.50484 21.5807 11.2868C21.7169 11.5025 21.785 11.6103 21.8231 11.7766C21.8517 11.9015 21.8517 12.0985 21.8231 12.2234C21.785 12.3897 21.7169 12.4975 21.5807 12.7132C20.4553 14.4952 17.1054 19 12.0004 19C6.8954 19 3.54553 14.4952 2.42012 12.7132Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.0004 15C13.6573 15 15.0004 13.6569 15.0004 12C15.0004 10.3431 13.6573 9 12.0004 9C10.3435 9 9.0004 10.3431 9.0004 12C9.0004 13.6569 10.3435 15 12.0004 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Preview</button>
+            </div>
+          </div>
+          <div class="file-tile" data-doc="soccer" style="display:none;">
+            <div class="file-tile-top">
+              <span class="file-tile-icon"><svg width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#016EE6" stroke="#016EE6"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#4B9AEE"/><text x="16" y="34" text-anchor="middle" font-family="Lexend, sans-serif" font-size="12" font-weight="400" fill="#ffffff">PDF</text></svg></span>
+              <span class="file-tile-badge">Uncategorized</span>
+            </div>
+            <div class="file-tile-name">soccer-carpool-schedule.pdf</div>
+            <button class="file-tile-menu" title="File options" aria-label="File options" aria-expanded="false"><span class="tile-menu-dots"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><svg class="tile-menu-close" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="file-tile-dropdown">
+              <button class="file-tile-dropdown-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.42012 12.7132C2.28394 12.4975 2.21584 12.3897 2.17772 12.2234C2.14909 12.0985 2.14909 11.9015 2.17772 11.7766C2.21584 11.6103 2.28394 11.5025 2.42012 11.2868C3.54553 9.50484 6.8954 5 12.0004 5C17.1054 5 20.4553 9.50484 21.5807 11.2868C21.7169 11.5025 21.785 11.6103 21.8231 11.7766C21.8517 11.9015 21.8517 12.0985 21.8231 12.2234C21.785 12.3897 21.7169 12.4975 21.5807 12.7132C20.4553 14.4952 17.1054 19 12.0004 19C6.8954 19 3.54553 14.4952 2.42012 12.7132Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.0004 15C13.6573 15 15.0004 13.6569 15.0004 12C15.0004 10.3431 13.6573 9 12.0004 9C10.3435 9 9.0004 10.3431 9.0004 12C9.0004 13.6569 10.3435 15 12.0004 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Preview</button>
             </div>
           </div>
         </div>
       </div>
+
 
     </div>
 
@@ -517,73 +556,94 @@
       <button class="btn btn-secondary btn-md" onclick="window.location.href='income-upload-v2.html'">
         Add more documents
       </button>
-      <button class="btn btn-primary btn-md" onclick="saveAndContinue()">
-        Save and continue
+      <button class="btn btn-primary btn-md" onclick="goToReview()">
+        Continue to review
       </button>
     </div>
   </main>
 
   <script>
+    // Flow 1 has no per-row Review action, so the user reaches income-page3
+    // un-reviewed. Wipe any "reviewed-*" flags that a prior Flow 2 session
+    // may have left in sessionStorage so page3 doesn't show stale state.
+    sessionStorage.removeItem('reviewed-wages');
+    sessionStorage.removeItem('reviewed-investments');
+    sessionStorage.removeItem('reviewed-business');
+
+    // ── REVIEW ROUTING ──
+    // The reviewable income types in this import batch. (1098-T / College
+    // expenses are reviewed later under Deductions & Credits, so they don't
+    // count toward income review routing.) For this demo the batch spans
+    // multiple types, so Review lands on the income dive. If a batch were a
+    // single type, Review would jump straight into that type's review screen.
+    var unreviewedTypes = ['wages', 'investments', 'business'];
+
     // ── UPLOAD SELECTION ──
     // Show only what was actually uploaded (sessionStorage set by the upload
     // page). No stored selection (direct visit) = show everything.
-    var shoeboxUploads = null;
     (function applyUploadSelection() {
       var raw = sessionStorage.getItem('shoebox-uploads');
       if (!raw) return;
-      try { shoeboxUploads = JSON.parse(raw); } catch (e) { return; }
-      if (!shoeboxUploads || !shoeboxUploads.length) { shoeboxUploads = null; return; }
-      var has = function(k) { return shoeboxUploads.indexOf(k) !== -1; };
+      var ups; try { ups = JSON.parse(raw); } catch (e) { return; }
+      if (!ups || !ups.length) return;
+      var has = function(k) { return ups.indexOf(k) !== -1; };
       document.querySelectorAll('[data-doc]').forEach(function(el) {
-        if (!has(el.getAttribute('data-doc'))) el.style.display = 'none';
+        el.style.display = has(el.getAttribute('data-doc')) ? '' : 'none';
       });
-      ['t1098', 'failed', 'kfc'].forEach(function(k) {
-        if (!has(k)) {
-          var sec = document.querySelector('[data-doc-section="' + k + '"]');
-          if (sec) sec.style.display = 'none';
-        }
-      });
-      if (has('failed')) {
+      if (!has('failed')) {
+        var fs = document.querySelector('[data-doc-section="failed"]');
+        if (fs) fs.style.display = 'none';
         var alertEl = document.getElementById('importSuccessAlert');
-        if (alertEl) alertEl.style.display = 'none';
+        if (alertEl) alertEl.style.display = '';
       }
-      if (!['w2', 'cons1099', 'schedc'].some(has)) {
+      if (!['w2', 'cons1099', 'schedc', 't1098', 'kfc', 'xmas', 'img', 'shot', 'soccer'].some(has)) {
         var imp = document.querySelector('[data-doc-section="imported"]');
         if (imp) imp.style.display = 'none';
       }
+      var typeMap = { w2: 'wages', cons1099: 'investments', schedc: 'business' };
+      unreviewedTypes = Object.keys(typeMap).filter(has).map(function(k) { return typeMap[k]; });
     })();
 
-    function saveAndContinue() {
-      var typeMap = { w2: 'wages', cons1099: 'investments', schedc: 'business' };
-      var keys = shoeboxUploads || Object.keys(typeMap);
-      Object.keys(typeMap).forEach(function(k) {
-        if (keys.indexOf(k) !== -1) sessionStorage.setItem('reviewed-' + typeMap[k], '1');
-        else sessionStorage.removeItem('reviewed-' + typeMap[k]);
-      });
-      window.location.href = 'income-page3.html';
+    function goToReview() {
+      if (unreviewedTypes.length === 0) {
+        window.location.href = 'income-page3-v2.html';
+      } else if (unreviewedTypes.length === 1) {
+        // Single income type → straight into that type's review screen.
+        window.location.href = 'income-page3-v2.html#review-' + unreviewedTypes[0];
+      } else {
+        // Multiple income types → income dive, which shows a blue "Review"
+        // button next to each type that still needs review.
+        window.location.href = 'income-page3-v2.html';
+      }
     }
 
-    // Clicking a per-row Review button swaps it for Edit / Delete actions,
-    // matching the record-actions pattern on the income dive screen.
-    var editIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 6H6.5c-1.4 0-2.1 0-2.63.27a2.5 2.5 0 0 0-1.1 1.1C2.5 7.9 2.5 8.6 2.5 10v7.5c0 1.4 0 2.1.27 2.63a2.5 2.5 0 0 0 1.1 1.1c.53.27 1.23.27 2.63.27H14c1.4 0 2.1 0 2.63-.27a2.5 2.5 0 0 0 1.1-1.1c.27-.53.27-1.23.27-2.63V13.5M7 17h1.67c.49 0 .74 0 .97-.06.2-.04.4-.13.58-.24.2-.12.37-.3.72-.66L21 6a2.12 2.12 0 0 0-3-3l-10.06 10.06c-.35.35-.52.52-.64.72-.1.18-.19.37-.24.58-.05.23-.05.48-.05.97V17Z"/></svg>';
-    var deleteIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 6V5.2c0-1.12 0-1.68-.218-2.108a2 2 0 0 0-.874-.874C14.48 2 13.92 2 12.8 2h-1.6c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874C8 3.52 8 4.08 8 5.2V6M10 11v6M14 11v6M3 6h18M19 6v11.8c0 1.12 0 1.68-.218 2.108a2 2 0 0 1-.874.874C17.48 21 16.92 21 15.8 21H8.2c-1.12 0-1.68 0-2.108-.218a2 2 0 0 1-.874-.874C5 19.48 5 18.92 5 17.8V6"/></svg>';
-
-    document.querySelectorAll('button.btn.btn-primary.btn-sm').forEach(function(btn) {
-      if (btn.textContent.trim() !== 'Review') return;
-      btn.addEventListener('click', function() {
-        // If this row maps to a page3 income row, remember it so page3 can
-        // skip the "Needs review" state on next visit.
-        var key = btn.getAttribute('data-review-key');
-        if (key) sessionStorage.setItem('reviewed-' + key, '1');
-
-        var actions = document.createElement('div');
-        actions.className = 'card-actions';
-        actions.innerHTML =
-          '<a class="edit-link" href="#">' + editIcon + 'Edit</a>' +
-          '<a class="delete-link" href="#">' + deleteIcon + 'Delete</a>';
-        btn.replaceWith(actions);
+    // ── TILE MENUS ──
+    // The dots button flips to a dark close button and shows the dropdown
+    // (Preview only for now). One menu open at a time; outside click closes.
+    function closeAllTileMenus() {
+      document.querySelectorAll('.file-tile.menu-open').forEach(function(t) {
+        t.classList.remove('menu-open');
+        var b = t.querySelector('.file-tile-menu');
+        if (b) b.setAttribute('aria-expanded', 'false');
+      });
+    }
+    document.querySelectorAll('.file-tile-menu').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var tile = btn.closest('.file-tile');
+        var wasOpen = tile.classList.contains('menu-open');
+        closeAllTileMenus();
+        if (!wasOpen) {
+          tile.classList.add('menu-open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
       });
     });
+    document.querySelectorAll('.file-tile-dropdown').forEach(function(dd) {
+      dd.addEventListener('click', function(e) { e.stopPropagation(); });
+    });
+    document.addEventListener('click', closeAllTileMenus);
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeAllTileMenus(); });
   </script>
 
   <!-- ══════════ FOOTER ══════════ -->

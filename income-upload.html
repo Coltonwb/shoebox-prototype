@@ -643,7 +643,7 @@
     <div class="picker-window" role="dialog" aria-label="Choose files to upload">
       <div class="picker-titlebar">
         <div class="picker-dots"><span class="picker-dot picker-dot--r"></span><span class="picker-dot picker-dot--y"></span><span class="picker-dot picker-dot--g"></span></div>
-        <div class="picker-title">Tax Documents</div>
+        <div class="picker-title">Desktop</div>
       </div>
       <div class="picker-list" id="pickerList"></div>
       <div class="picker-footer">
@@ -693,7 +693,10 @@
       { name: 'schedule-c-business-2025.pdf', badge: 'Schedule C', state: 'ok' },
       { name: 'university-1098T-2025.pdf', badge: '1098-T', state: 'ok' },
       { name: 'kfcreceipt.jpg', badge: 'Uncategorized', state: 'warning' },
-      { name: 'w-2-employer2.jpg', badge: 'W-2', state: 'ok' }
+      { name: 'christmas-gift-list.xlsx', badge: 'Uncategorized', state: 'warning' },
+      { name: 'IMG_8842.jpg', badge: 'Uncategorized', state: 'warning' },
+      { name: 'Screenshot 2025-04-11 at 2.31.09 PM.png', badge: 'Uncategorized', state: 'warning' },
+      { name: 'soccer-carpool-schedule.pdf', badge: 'Uncategorized', state: 'warning' }
     ];
 
     var formTypes = [
@@ -712,11 +715,22 @@
 
     var pdfSvg = '<svg class="complete-card-pdf-svg" width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#016EE6" stroke="#016EE6"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#4B9AEE"/><path d="M5.27561 34V25.6H8.69561C9.15161 25.6 9.56361 25.716 9.93161 25.948C10.3076 26.172 10.6076 26.48 10.8316 26.872C11.0556 27.264 11.1676 27.7 11.1676 28.18C11.1676 28.66 11.0556 29.096 10.8316 29.488C10.6076 29.88 10.3076 30.196 9.93161 30.436C9.56361 30.668 9.15161 30.784 8.69561 30.784H6.57161V34H5.27561ZM6.57161 29.536H8.67161C8.88761 29.536 9.08361 29.476 9.25961 29.356C9.43561 29.228 9.57561 29.064 9.67961 28.864C9.79161 28.656 9.84761 28.428 9.84761 28.18C9.84761 27.932 9.79161 27.708 9.67961 27.508C9.57561 27.308 9.43561 27.148 9.25961 27.028C9.08361 26.908 8.88761 26.848 8.67161 26.848H6.57161V29.536ZM12.8811 34V25.6H16.1691C16.7691 25.6 17.3091 25.7 17.7891 25.9C18.2771 26.1 18.6931 26.388 19.0371 26.764C19.3811 27.14 19.6451 27.584 19.8291 28.096C20.0131 28.608 20.1051 29.176 20.1051 29.8C20.1051 30.424 20.0131 30.996 19.8291 31.516C19.6451 32.028 19.3811 32.472 19.0371 32.848C18.7011 33.216 18.2891 33.5 17.8011 33.7C17.3131 33.9 16.7691 34 16.1691 34H12.8811ZM14.1771 32.884L14.1411 32.752H16.1091C16.5331 32.752 16.9091 32.684 17.2371 32.548C17.5731 32.412 17.8531 32.22 18.0771 31.972C18.3091 31.716 18.4851 31.404 18.6051 31.036C18.7251 30.668 18.7851 30.256 18.7851 29.8C18.7851 29.344 18.7251 28.936 18.6051 28.576C18.4851 28.208 18.3091 27.896 18.0771 27.64C17.8451 27.384 17.5651 27.188 17.2371 27.052C16.9091 26.916 16.5331 26.848 16.1091 26.848H14.1051L14.1771 26.74V32.884ZM21.8576 34V25.6H23.1536V34H21.8576ZM22.4336 30.424V29.176H26.7656V30.424H22.4336ZM22.4336 26.848V25.6H27.3056V26.848H22.4336Z" fill="white"/></svg>';
 
-    var jpgSvg = '<svg class="complete-card-pdf-svg" width="32" height="40" viewBox="4 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 0.5H24.793L35.5 11.207V38C35.5 38.8284 34.8284 39.5 34 39.5H6C5.17157 39.5 4.5 38.8284 4.5 38V2C4.5 1.17157 5.17157 0.5 6 0.5Z" fill="#91C2F4" stroke="#91C2F4"/><path d="M25 0L36 11H27C25.8954 11 25 10.1046 25 9V0Z" fill="#BAD9F7"/><path d="M11.3259 34.12C11.0539 34.12 10.7939 34.084 10.5459 34.012C10.2979 33.94 10.0659 33.836 9.84991 33.7C9.64191 33.564 9.45391 33.404 9.28591 33.22C9.11791 33.028 8.97391 32.82 8.85391 32.596L9.66991 31.744C9.83791 31.984 9.98991 32.176 10.1259 32.32C10.2699 32.464 10.4059 32.576 10.5339 32.656C10.6619 32.736 10.7899 32.792 10.9179 32.824C11.0459 32.848 11.1819 32.86 11.3259 32.86C11.6139 32.86 11.8659 32.796 12.0819 32.668C12.2979 32.532 12.4659 32.348 12.5859 32.116C12.7059 31.884 12.7659 31.62 12.7659 31.324V26.8H11.2299V25.6H15.3579V26.8H14.0619V31.444C14.0619 31.828 13.9939 32.184 13.8579 32.512C13.7299 32.832 13.5419 33.112 13.2939 33.352C13.0539 33.592 12.7659 33.78 12.4299 33.916C12.1019 34.052 11.7339 34.12 11.3259 34.12ZM17.1291 34V25.6H20.5491C21.0051 25.6 21.4171 25.716 21.7851 25.948C22.1611 26.172 22.4611 26.48 22.6851 26.872C22.9091 27.264 23.0211 27.7 23.0211 28.18C23.0211 28.66 22.9091 29.096 22.6851 29.488C22.4611 29.88 22.1611 30.196 21.7851 30.436C21.4171 30.668 21.0051 30.784 20.5491 30.784H18.4251V34H17.1291ZM18.4251 29.536H20.5251C20.7411 29.536 20.9371 29.476 21.1131 29.356C21.2891 29.228 21.4291 29.064 21.5331 28.864C21.6451 28.656 21.7011 28.428 21.7011 28.18C21.7011 27.932 21.6451 27.708 21.5331 27.508C21.4291 27.308 21.2891 27.148 21.1131 27.028C20.9371 26.908 20.7411 26.848 20.5251 26.848H18.4251V29.536ZM28.4906 34.12C27.8826 34.12 27.3146 34.012 26.7866 33.796C26.2586 33.572 25.7946 33.264 25.3946 32.872C24.9946 32.48 24.6826 32.024 24.4586 31.504C24.2426 30.976 24.1346 30.408 24.1346 29.8C24.1346 29.2 24.2426 28.64 24.4586 28.12C24.6826 27.6 24.9906 27.148 25.3826 26.764C25.7826 26.372 26.2466 26.068 26.7746 25.852C27.3026 25.636 27.8706 25.528 28.4786 25.528C28.9026 25.528 29.3146 25.588 29.7146 25.708C30.1226 25.828 30.4906 25.996 30.8186 26.212C31.1466 26.428 31.4146 26.676 31.6226 26.956L30.7826 27.832C30.5426 27.6 30.2946 27.408 30.0386 27.256C29.7906 27.104 29.5346 26.988 29.2706 26.908C29.0066 26.828 28.7426 26.788 28.4786 26.788C28.0466 26.788 27.6466 26.864 27.2786 27.016C26.9186 27.168 26.5986 27.38 26.3186 27.652C26.0466 27.924 25.8346 28.244 25.6826 28.612C25.5306 28.972 25.4546 29.368 25.4546 29.8C25.4546 30.216 25.5346 30.612 25.6946 30.988C25.8546 31.356 26.0746 31.68 26.3546 31.96C26.6426 32.24 26.9706 32.46 27.3386 32.62C27.7146 32.78 28.1106 32.86 28.5266 32.86C28.8386 32.86 29.1346 32.816 29.4146 32.728C29.6946 32.632 29.9426 32.5 30.1586 32.332C30.3746 32.164 30.5426 31.972 30.6626 31.756C30.7826 31.532 30.8426 31.296 30.8426 31.048V30.808L31.0226 30.976H28.4546V29.692H32.1746C32.1906 29.78 32.2026 29.868 32.2106 29.956C32.2186 30.036 32.2226 30.116 32.2226 30.196C32.2306 30.268 32.2346 30.34 32.2346 30.412C32.2346 30.964 32.1386 31.468 31.9466 31.924C31.7546 32.372 31.4866 32.76 31.1426 33.088C30.8066 33.416 30.4106 33.672 29.9546 33.856C29.5066 34.032 29.0186 34.12 28.4906 34.12Z" fill="white"/></svg>';
+    var jpgSvg = '<svg class="complete-card-pdf-svg" width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#832AE4" stroke="#832AE4"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#AA6DED"/><text x="16.5" y="34" text-anchor="middle" font-family="Lexend, sans-serif" font-size="12" font-weight="400" fill="#ffffff">JPG</text></svg>';
+
+    var pngSvg = '<svg class="complete-card-pdf-svg" width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#832AE4" stroke="#832AE4"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#AA6DED"/><text x="16.5" y="34" text-anchor="middle" font-family="Lexend, sans-serif" font-size="12" font-weight="400" fill="#ffffff">PNG</text></svg>';
+
+    var xlsxSvg = '<svg class="complete-card-pdf-svg" width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#008936" stroke="#008936"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#15AA51"/><text x="16.5" y="34" text-anchor="middle" font-family="Lexend, sans-serif" font-size="12" font-weight="400" fill="#ffffff">xlsx</text></svg>';
 
     var retryIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8m0 0V3m0 5h-5M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16m0 0v5m0-5h5"/></svg>';
 
     var closeIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg>';
+
+    function iconForFile(name) {
+      if (/\.jpe?g$/i.test(name)) return jpgSvg;
+      if (/\.png$/i.test(name)) return pngSvg;
+      if (/\.xlsx$/i.test(name)) return xlsxSvg;
+      return pdfSvg;
+    }
 
     function addFile(fileIndex) {
       var idx = (fileIndex !== undefined) ? fileIndex : (fileCount % sampleFiles.length);
@@ -759,7 +773,7 @@
         complete.className = 'complete-card';
 
         var chevronSvg = '<svg class="badge-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
-        var typeIcon = /\.jpe?g$/i.test(file.name) ? jpgSvg : pdfSvg;
+        var typeIcon = iconForFile(file.name);
 
         // ── ERROR STATE ──
         if (file.state === 'error') {
@@ -960,7 +974,7 @@
     var uploadedIdx = {};
     // Doc keys by sampleFiles index; stored on Import so the rest of the
     // prototype can show only what was actually uploaded.
-    var DOC_KEYS = ['w2', 'cons1099', 'schedc', 't1098', 'kfc', 'failed'];
+    var DOC_KEYS = ['w2', 'cons1099', 'schedc', 't1098', 'kfc', 'xmas', 'img', 'shot', 'soccer'];
     function startImport() {
       var keys = Object.keys(uploadedIdx).map(function(i) { return DOC_KEYS[i]; });
       var prev = [];
@@ -969,7 +983,7 @@
       sessionStorage.setItem('shoebox-uploads', JSON.stringify(keys));
       window.location.href = 'income-importing.html';
     }
-    var pickerMeta = ['245 KB', '1.2 MB', '890 KB', '156 KB', '2.4 MB', '3.1 MB'];
+    var pickerMeta = ['245 KB', '1.2 MB', '890 KB', '156 KB', '2.4 MB', '18 KB', '3.4 MB', '1.1 MB', '96 KB'];
 
     function buildPicker() {
       pickerSelected = [];
@@ -979,7 +993,7 @@
         var item = document.createElement('div');
         item.className = 'picker-item' + (uploadedIdx[i] ? ' uploaded' : '');
         item.innerHTML =
-          '<span class="picker-item-icon">' + (/\.jpe?g$/i.test(f.name) ? jpgSvg : pdfSvg) + '</span>' +
+          '<span class="picker-item-icon">' + iconForFile(f.name) + '</span>' +
           '<span class="picker-item-name">' + f.name + '</span>' +
           '<span class="picker-item-meta">' + pickerMeta[i % pickerMeta.length] + '</span>';
         item.addEventListener('click', function() {
