@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FreeTaxUSA 2025 — Your Income</title>
+  <title>FreeTaxUSA 2025 — Your Income (No Search)</title>
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; color: inherit; }
@@ -85,8 +85,7 @@
       gap: 6px; cursor: pointer; white-space: nowrap;
     }
     .tab--active { background: #212f45; color: #ffffff; border-color: #212f45; }
-    .tab--complete { background: #ffffff; color: #212f45; border-color: transparent; }
-    .tab--disabled { background: none; border: none; color: #667285; pointer-events: none; cursor: default; }
+    .tab--disabled { background: none; border: none; color: #8f99a7; pointer-events: none; cursor: default; }
 
     /* ── PAGE ── */
     .page-body { background: #f9f9f9; padding-bottom: 48px; }
@@ -95,24 +94,14 @@
       background: #ffffff; border: none; border-radius: 8px;
       position: relative; padding: 40px 48px 0;
     }
-    .page-actions {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 0; width: 100%;
-    }
-    .icon-btn {
-      width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
-      background: none; border: none; cursor: pointer; border-radius: 50%;
-      color: #212f45; transition: background 0.15s, color 0.15s;
-    }
-    .icon-btn:hover { background: #f4f9ff; color: #016ee6; }
-    .icon-btn svg { width: 24px; height: 24px; }
-    /* Legacy back-btn / more-btn — kept for sub-screen modals that still use them */
     .back-btn {
+      position: absolute; top: 24px; left: 40px;
       background: none; border: none; color: #016ee6;
       cursor: pointer; padding: 4px; border-radius: 50%; display: flex; align-items: center;
     }
     .back-btn:hover { background: #f4f9ff; }
     .more-btn {
+      position: absolute; top: 24px; right: 40px;
       background: none; border: none; color: #212f45;
       cursor: pointer; padding: 4px; border-radius: 50%; display: flex; align-items: center;
     }
@@ -121,15 +110,12 @@
     .content-inner { padding: 0 96px; }
 
     /* ── PAGE HEADER ── */
-    .page-header { text-align: center; margin-bottom: 32px; padding-top: 16px; }
+    .page-header { text-align: center; margin-bottom: 28px; padding-top: 24px; }
     .page-header h1 {
-      font-size: 30px; font-weight: 600; line-height: 38px; color: #212f45;
+      font-size: 24px; font-weight: 600; line-height: 32px; color: #212f45;
       display: inline-flex; align-items: center; gap: 8px;
-      margin-bottom: 8px;
     }
-    .page-header p {
-      font-size: 16px; font-weight: 500; line-height: 24px; color: #212f45;
-    }
+    .page-header p { font-size: 14px; color: #212F45; margin-top: 4px; }
 
     /* ── FAQ ICON ── */
     .faq-icon {
@@ -239,33 +225,7 @@
       font-size: 20px; font-weight: 400; color: #212f45;
     }
 
-    /* ── SEARCH BAR ── */
-    .search-wrapper {
-      position: relative; margin-bottom: 24px;
-      max-width: 480px; margin-left: auto; margin-right: auto;
-    }
-    .search-input {
-      width: 100%; height: 42px;
-      border: 1px solid #bec4cc; border-radius: 4px;
-      padding: 0 36px 0 40px;
-      font-family: 'Lexend', sans-serif; font-size: 14px; color: #212f45;
-      background: #fff; outline: none;
-    }
-    .search-input::placeholder { color: #8f99a7; }
-    .search-input:focus { border-color: #91c2f4; box-shadow: 0 0 0 4px #daebff; }
-    .search-icon {
-      position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
-      color: #8f99a7; pointer-events: none; display: flex;
-    }
-    .search-clear {
-      position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-      display: none; align-items: center; justify-content: center;
-      width: 22px; height: 22px; border-radius: 50%;
-      background: none; border: none; cursor: pointer; padding: 0;
-      line-height: 1;
-    }
-    .search-clear:hover svg path:first-child { fill: #ddeeff; }
-    .search-clear svg { display: block; }
+
 
     /* ── INCOME CATEGORIES ── */
     .income-categories {
@@ -414,97 +374,6 @@
       font-size: 14px; text-decoration: none;
     }
     .sub-screen-helper-link:hover { text-decoration: underline; }
-
-    /* ── SECTION (reused on investments sub-screen) ── */
-    .section { margin-bottom: 32px; }
-    .section-heading {
-      font-size: 24px; font-weight: 400; line-height: 32px; color: #212f45;
-      margin-bottom: 16px;
-    }
-
-    /* ── SUMMARY CARD ── */
-    .summary-card {
-      border: 1px solid #e2e5e9; border-radius: 4px; padding: 24px;
-      margin-bottom: 16px; position: relative;
-      display: flex; align-items: center; gap: 48px;
-    }
-    .field { flex: 0 0 auto; min-width: 140px; }
-    .field-label {
-      font-size: 14px; font-weight: 500; color: #667285;
-      line-height: 20px; margin-bottom: 2px;
-    }
-    .field-value {
-      font-size: 16px; font-weight: 400; color: #212f45;
-      line-height: 24px;
-    }
-
-    /* ── FORM SELECT ── */
-    .form-field { display: flex; flex-direction: column; gap: 4px; margin-left: auto; }
-    .form-field-label {
-      display: flex; align-items: center; gap: 4px;
-      font-size: 14px; font-weight: 500; color: #667285; line-height: 20px;
-    }
-    .tooltip-icon {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 16px; height: 16px; border-radius: 50%; background: #daebff;
-      border: 1.5px solid transparent; color: #016ee6; font-size: 10px; font-weight: 600;
-      cursor: default; vertical-align: middle; margin-left: 4px; flex-shrink: 0;
-    }
-    .tooltip-icon:hover { background: #bad9f7; }
-    .form-select {
-      width: 100%; height: 40px; border: 1px solid #bec4cc; border-radius: 4px;
-      padding: 6px 12px; font-size: 16px; color: #212f45; background: #ffffff;
-      display: flex; align-items: center; justify-content: space-between; cursor: pointer;
-      box-shadow: 0px 1px 2px rgba(33,47,69,0.05); min-width: 220px;
-      font-family: 'Lexend', sans-serif; position: relative;
-    }
-    .form-select select {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      opacity: 0; cursor: pointer; font-size: 16px;
-    }
-    .form-select svg { width: 16px; height: 16px; color: #667285; flex-shrink: 0; }
-
-    /* ── INSTITUTION WRAPPER ── */
-    .institution-wrapper {
-      border: 1px solid #e2e5e9; border-radius: 4px; overflow: hidden;
-      margin-bottom: 12px; background: #f9fafb;
-    }
-    .institution-header {
-      padding: 16px 20px; display: flex; justify-content: space-between;
-      align-items: center;
-    }
-    .institution-name {
-      font-size: 14px; font-weight: 600; text-transform: uppercase; color: #212f45;
-    }
-    .institution-inner {
-      display: flex; flex-direction: column; gap: 12px;
-      padding: 0 20px 20px;
-    }
-    .institution-card {
-      padding: 20px 24px; display: flex; align-items: center;
-      gap: 48px; border: 1px solid #e2e5e9; border-radius: 4px;
-      background: #ffffff;
-    }
-
-    /* ── EDIT / DELETE LINKS (used on institution cards) ── */
-    .card-actions {
-      margin-left: auto;
-      display: flex; gap: 16px; align-items: center;
-    }
-    .edit-link,
-    .delete-link {
-      display: flex; align-items: center; gap: 8px;
-      color: #016ee6; font-size: 14px; font-weight: 500;
-      text-decoration: none; cursor: pointer;
-      transition: color 0.15s;
-    }
-    .edit-link:hover,
-    .delete-link:hover {
-      color: #0850c4; text-decoration: underline;
-    }
-    .edit-link svg,
-    .delete-link svg { width: 20px; height: 20px; flex-shrink: 0; }
-
     /* Congrats screen */
     .congrats-body {
       display: flex; flex-direction: column; align-items: center;
@@ -528,47 +397,19 @@
 
     /* ── FOOTER ── */
     .footer {
-      width: 100%; background: #f9f9f9;
-      margin-top: 48px; padding: 16px 0 24px;
+      background: #f9f9f9; border-top: 1px solid #e2e5e9;
+      padding: 20px 0; margin-top: 0; text-align: center;
     }
-    .footer-links {
-      display: flex; justify-content: center; gap: 24px; font-size: 12px;
-      color: #667285; padding: 8px 0;
+    .footer-links { display: flex; justify-content: center; gap: 0; margin-bottom: 8px; }
+    .footer-links a {
+      font-size: 14px; color: #667285; text-decoration: none; padding: 0 12px;
+      border-right: 1px solid #bec4cc;
     }
-    .footer-links a { color: #667285; text-decoration: none; padding: 0; border-right: none; }
+    .footer-links a:last-child { border-right: none; }
     .footer-links a:hover { text-decoration: underline; }
-    .footer-copyright { text-align: center; font-size: 12px; color: #667285; padding: 4px 0; }
+    .footer-copy { font-size: 12px; color: #8f99a7; }
 
-    /* ── NO RESULTS ── */
-    .no-results {
-      display: none; flex-direction: column; align-items: center;
-      padding: 16px 20px 40px; gap: 12px; text-align: center;
-    }
-    .no-results-icon {
-      width: 56px; height: 56px; border-radius: 50%;
-      background: #eaf4ff; display: flex; align-items: center; justify-content: center;
-      margin-bottom: 4px;
-    }
-    .no-results-title {
-      font-size: 16px; font-weight: 600; color: #212f45; margin: 0;
-    }
-    .no-results-sub {
-      font-size: 14px; color: #667285; margin: 0;
-    }
-    .no-results-clear {
-      margin-top: 8px; padding: 10px 20px; font-size: 14px;
-      color: #016ee6; background: #fff; border: 1px solid #016ee6;
-      border-radius: 4px; cursor: pointer; font-family: 'Lexend', sans-serif;
-    }
-    .no-results-clear:hover { background: #f4f9ff; }
-    .no-results-path {
-      display: none; margin: 4px 0 0;
-      font-size: 14px; color: #667285; line-height: 20px;
-    }
-    .no-results-illustration {
-      display: none;
-      margin-bottom: 4px;
-    }
+
 
     /* ── MODAL OVERLAY ── */
     .modal-overlay {
@@ -625,8 +466,7 @@
     }
     .modal-actions .btn-modal-cancel:hover { background: #f9f9f9; }
 
-    /* ── HIGHLIGHT (search match) ── */
-    mark { background: #fff2ba; color: #212f45; border-radius: 2px; }
+
 
     /* ── ROLLOVER TAG ── */
     .rollover-tag {
@@ -641,61 +481,6 @@
     .mobile-hamburger, .mobile-account {
       background: none; border: none; cursor: pointer; padding: 4px;
     }
-
-    /* ══════════════════════════════════════════════
-       W-2 INTRO SCREEN (wages list)
-       ══════════════════════════════════════════════ */
-    .w2-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
-    .w2-card {
-      border: 1px solid #e2e5e9; border-radius: 6px;
-      padding: 16px 20px;
-      display: flex; align-items: center; justify-content: space-between;
-      background: #fff;
-    }
-    .w2-card-main {
-      display: flex; align-items: flex-start; gap: 64px;
-    }
-    .w2-card-cell { display: flex; flex-direction: column; gap: 4px; }
-    .w2-card-label {
-      font-size: 14px; color: #667285; font-weight: 400; line-height: 20px;
-    }
-    .w2-card-employer {
-      font-size: 16px; font-weight: 400; color: #212f45; line-height: 24px;
-      text-transform: uppercase;
-    }
-    .w2-card-amount {
-      font-size: 16px; color: #212f45; font-weight: 400; line-height: 24px;
-      white-space: nowrap;
-    }
-    .w2-card-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
-    .w2-card-btn {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: none; border: none; color: #016ee6;
-      font-family: 'Lexend', sans-serif; font-size: 14px; font-weight: 500;
-      padding: 6px 10px; border-radius: 4px; cursor: pointer;
-      transition: color 0.15s ease;
-    }
-    .w2-card-btn:hover { color: #0850c4; }
-    .w2-card-btn svg { width: 16px; height: 16px; }
-
-    .w2-add-btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 10px 22px; font-size: 14px; font-weight: 500;
-      color: #016ee6; border: 1px solid #016ee6; border-radius: 4px;
-      background: #fff; cursor: pointer; font-family: 'Lexend', sans-serif;
-      margin-bottom: 28px;
-    }
-    .w2-add-btn:hover { background: #eaf4ff; }
-    .w2-add-btn svg { width: 16px; height: 16px; }
-
-    .w2-body-text {
-      font-size: 14px; color: #212f45; line-height: 22px;
-      margin-bottom: 14px;
-    }
-    .w2-body-text:last-of-type { margin-bottom: 32px; }
-
-    /* Screen toggles */
-    .screen-hidden { display: none !important; }
 
     /* ══════════════════════════════════════════════
        RESPONSIVE — TABLET (≤1200px)
@@ -742,8 +527,7 @@
       .content-box > .back-btn,
       .content-box > .more-btn { display: none; }
 
-      /* ── SEARCH ── */
-      .search-wrapper { margin-bottom: 20px; }
+
 
       /* ── INCOME TABLE ── */
       .added-income-table { margin-bottom: 24px; }
@@ -811,13 +595,159 @@
       .added-income-row .col-current { padding-left: 4px; padding-right: 4px; font-size: 12px; }
       .sub-screen .content-box { margin: 0; border-radius: 0; }
     }
+
+    /* ── PORTED: review screens (wages / investments / business) ── */
+    .edit-link,
+    .delete-link {
+      display: flex; align-items: center; gap: 8px;
+      color: #016ee6; font-size: 14px; font-weight: 500;
+      text-decoration: none; cursor: pointer;
+      transition: color 0.15s;
+    }
+    .edit-link:hover,
+    .delete-link:hover {
+      color: #0850c4; text-decoration: underline;
+    }
+    .edit-link svg,
+    .delete-link svg { width: 20px; height: 20px; flex-shrink: 0; }
+    .form-field { display: flex; flex-direction: column; gap: 4px; margin-left: auto; }
+    .form-field-label {
+      display: flex; align-items: center; gap: 4px;
+      font-size: 14px; font-weight: 500; color: #667285; line-height: 20px;
+    }
+    .page-actions {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 0; width: 100%;
+    }
+    .icon-btn {
+      width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+      background: none; border: none; cursor: pointer; border-radius: 50%;
+      color: #212f45; transition: background 0.15s, color 0.15s;
+    }
+    .icon-btn:hover { background: #f4f9ff; color: #016ee6; }
+    .icon-btn svg { width: 24px; height: 24px; }
+    .field { flex: 0 0 auto; min-width: 140px; }
+    .field-label {
+      font-size: 14px; font-weight: 500; color: #667285;
+      line-height: 20px; margin-bottom: 2px;
+    }
+    .field-value {
+      font-size: 16px; font-weight: 400; color: #212f45;
+      line-height: 24px;
+    }
+    .institution-wrapper {
+      border: 1px solid #e2e5e9; border-radius: 4px; overflow: hidden;
+      margin-bottom: 12px; background: #f9fafb;
+    }
+    .institution-header {
+      padding: 16px 20px; display: flex; justify-content: space-between;
+      align-items: center;
+    }
+    .institution-name {
+      font-size: 14px; font-weight: 600; text-transform: uppercase; color: #212f45;
+    }
+    .institution-inner {
+      display: flex; flex-direction: column; gap: 12px;
+      padding: 0 20px 20px;
+    }
+    .institution-card {
+      padding: 20px 24px; display: flex; align-items: center;
+      gap: 48px; border: 1px solid #e2e5e9; border-radius: 4px;
+      background: #ffffff;
+    }
+    .card-actions {
+      margin-left: auto;
+      display: flex; gap: 16px; align-items: center;
+    }
+    .delete-link {
+      display: flex; align-items: center; gap: 8px;
+      color: #016ee6; font-size: 14px; font-weight: 500;
+      text-decoration: none; cursor: pointer;
+      transition: color 0.15s;
+    }
+    .delete-link:hover {
+      color: #0850c4; text-decoration: underline;
+    }
+    .delete-link svg { width: 20px; height: 20px; flex-shrink: 0; }
+    .w2-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+    .w2-card {
+      border: 1px solid #e2e5e9; border-radius: 6px;
+      padding: 16px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: #fff;
+    }
+    .w2-card-main {
+      display: flex; align-items: flex-start; gap: 64px;
+    }
+    .w2-card-cell { display: flex; flex-direction: column; gap: 4px; }
+    .w2-card-label {
+      font-size: 14px; color: #667285; font-weight: 400; line-height: 20px;
+    }
+    .w2-card-employer {
+      font-size: 16px; font-weight: 400; color: #212f45; line-height: 24px;
+      text-transform: uppercase;
+    }
+    .w2-card-amount {
+      font-size: 16px; color: #212f45; font-weight: 400; line-height: 24px;
+      white-space: nowrap;
+    }
+    .w2-card-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+    .w2-card-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: none; border: none; color: #016ee6;
+      font-family: 'Lexend', sans-serif; font-size: 14px; font-weight: 500;
+      padding: 6px 10px; border-radius: 4px; cursor: pointer;
+      transition: color 0.15s ease;
+    }
+    .w2-card-btn:hover { color: #0850c4; }
+    .w2-card-btn svg { width: 16px; height: 16px; }
+    .w2-add-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 22px; font-size: 14px; font-weight: 500;
+      color: #016ee6; border: 1px solid #016ee6; border-radius: 4px;
+      background: #fff; cursor: pointer; font-family: 'Lexend', sans-serif;
+      margin-bottom: 28px;
+    }
+    .w2-add-btn:hover { background: #eaf4ff; }
+    .w2-add-btn svg { width: 16px; height: 16px; }
+    .w2-body-text {
+      font-size: 14px; color: #212f45; line-height: 22px;
+      margin-bottom: 14px;
+    }
+    .w2-body-text:last-of-type { margin-bottom: 32px; }
+    .screen-hidden { display: none !important; }
+    .review-hidden { display: none !important; }
   </style>
 </head>
 <body>
 
 <!-- ═══ GLOBAL HEADER ═══ -->
 <header class="global-header">
-  <a class="header-logo" href="personal-summary.html">
+  <!-- Mobile-only: hamburger menu -->
+  <button class="mobile-hamburger" aria-label="Menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#212f45" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <!-- Mobile-only: flag logo -->
+  <a class="mobile-logo" href="#">
+    <svg width="36" height="24" viewBox="0 0 36 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="36" height="24" rx="2" fill="#212352"/>
+      <rect x="0" y="0" width="36" height="3.43" rx="0" fill="#fff"/>
+      <rect x="0" y="6.86" width="36" height="3.43" fill="#fff"/>
+      <rect x="0" y="13.71" width="36" height="3.43" fill="#fff"/>
+      <rect x="0" y="20.57" width="36" height="3.43" fill="#fff"/>
+      <rect x="0" y="0" width="15" height="13.71" fill="#212352"/>
+      <rect x="0" y="3.43" width="36" height="3.43" fill="#D11911"/>
+      <rect x="0" y="10.29" width="36" height="3.43" fill="#D11911"/>
+      <rect x="0" y="17.14" width="36" height="3.43" fill="#D11911"/>
+      <rect x="0" y="0" width="15" height="13.71" fill="#212352"/>
+    </svg>
+    <span class="header-logo-year">2025</span>
+  </a>
+  <!-- Mobile-only: person icon -->
+  <button class="mobile-account" aria-label="Account">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#212f45" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+  </button>
+  <a class="header-logo" href="progress-personal.html" onclick="sessionStorage.clear()" title="Restart prototype">
     <!-- FreeTaxUSA Wordmark -->
     <svg width="166" height="19" viewBox="0 0 212 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M2.13833 2.02319H0V23.6797H4.64346V15.0795H13.3373V11.0916H4.64346V6.20621H14.6328V2.02319H4.64346H2.13833Z" fill="#212352"/>
@@ -838,7 +768,11 @@
     <span class="header-logo-year">2025</span>
   </a>
 
-  <div class="header-center"></div>
+  <div class="header-center">
+    <div class="header-refund-item">
+      Federal Refund: <span class="amount--refund">$5,484</span>
+    </div>
+  </div>
 
   <div class="header-right">
     <button class="header-nav-btn">
@@ -862,12 +796,27 @@
   </div>
 </header>
 
+<!-- Mobile refund bar -->
+<div class="mobile-refund-bar">
+  <button class="back-btn mobile-back" aria-label="Go back">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <div class="mobile-refund-pill">
+    <span>Fed</span> <span class="amount--refund">$5,484</span>
+    <span style="color:#667285;margin:0 4px;">UT</span> <span>$0</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:2px;"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <button class="more-btn mobile-bookmark" aria-label="Bookmark" style="position:static;top:auto;right:auto;">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 7.8C5 6.11984 5 5.27976 5.32698 4.63803C5.6146 4.07354 6.07354 3.6146 6.63803 3.32698C7.27976 3 8.11984 3 9.8 3H14.2C15.8802 3 16.7202 3 17.362 3.32698C17.9265 3.6146 18.3854 4.07354 18.673 4.63803C19 5.27976 19 6.11984 19 7.8V21L12 17L5 21V7.8Z" stroke="#212F45" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</div>
+
 <!-- ═══ TAB NAV ═══ -->
 <div class="tab-nav-wrapper">
   <nav class="tab-nav">
     <!-- Completed -->
-    <button class="tab tab--complete">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#15aa51" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    <button class="tab" style="border:none;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#027932" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       Personal
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
     </button>
@@ -902,7 +851,6 @@
 
 <!-- ═══ MAIN CONTENT ═══ -->
 <div class="page-body">
-
   <!-- ─── SCREEN 1: YOUR WAGES (W-2) INTRO ─── -->
   <div class="content-box screen-hidden" id="screen-wages">
 
@@ -932,44 +880,27 @@
               <div class="w2-card-employer">Acme Corporation</div>
             </div>
             <div class="w2-card-cell">
+              <div class="w2-card-label">Belongs to</div>
+              <div class="w2-card-employer">Alex</div>
+            </div>
+            <div class="w2-card-cell">
               <div class="w2-card-label">Wages</div>
               <div class="w2-card-amount">$68,500.00</div>
             </div>
           </div>
           <div class="w2-card-actions">
-            <button class="w2-card-btn" onclick="return false;">
+            <button class="btn-start card-review-btn" type="button">Review</button>
+            <button class="w2-card-btn review-hidden" onclick="return false;">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
               Edit
             </button>
-            <button class="w2-card-btn" onclick="return false;">
+            <button class="w2-card-btn review-hidden" onclick="return false;">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
               Delete
             </button>
           </div>
         </div>
 
-        <div class="w2-card">
-          <div class="w2-card-main">
-            <div class="w2-card-cell">
-              <div class="w2-card-label">Employer</div>
-              <div class="w2-card-employer">Lumen Logistics LLC</div>
-            </div>
-            <div class="w2-card-cell">
-              <div class="w2-card-label">Wages</div>
-              <div class="w2-card-amount">$14,260.00</div>
-            </div>
-          </div>
-          <div class="w2-card-actions">
-            <button class="w2-card-btn" onclick="return false;">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              Edit
-            </button>
-            <button class="w2-card-btn" onclick="return false;">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-              Delete
-            </button>
-          </div>
-        </div>
       </div>
 
       <button class="w2-add-btn" onclick="return false;">
@@ -994,18 +925,17 @@
   </div><!-- /content-box #screen-wages -->
 
 
-  <!-- ─── SCREEN 2: YOUR INCOME (hidden until Continue is clicked) ─── -->
   <div class="content-box" id="screen-income">
 
-    <!-- Page actions -->
-    <div class="page-actions">
-      <button class="icon-btn" onclick="window.location.href='income-import-complete-v2.html'" title="Go back">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m0 0 7 7m-7-7 7-7"/></svg>
-      </button>
-      <button class="icon-btn" title="Bookmark">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7.8c0-1.68 0-2.52.327-3.162a3 3 0 0 1 1.311-1.311C7.28 3 8.12 3 9.8 3h4.4c1.68 0 2.52 0 3.162.327a3 3 0 0 1 1.311 1.311C19 5.28 19 6.12 19 7.8V21l-7-4-7 4V7.8Z"/></svg>
-      </button>
-    </div>
+    <!-- Back & More buttons -->
+    <button class="back-btn" aria-label="Go back" onclick="window.location.href='income-import-complete-v2.html'">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+    </button>
+    <button class="more-btn" aria-label="More options">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 7.8C5 6.11984 5 5.27976 5.32698 4.63803C5.6146 4.07354 6.07354 3.6146 6.63803 3.32698C7.27976 3 8.11984 3 9.8 3H14.2C15.8802 3 16.7202 3 17.362 3.32698C17.9265 3.6146 18.3854 4.07354 18.673 4.63803C19 5.27976 19 6.11984 19 7.8V21L12 17L5 21V7.8Z" stroke="#212F45" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
 
     <div class="content-inner">
       <!-- Page Header -->
@@ -1014,7 +944,7 @@
           Your income
           <span class="faq-icon" style="font-size:10px;width:16px;height:16px;" title="Learn more about income types">?</span>
         </h1>
-        <p>This is the income we've collected from you so far.</p>
+        <p>Click on any income items that may apply to you.</p>
       </div>
 
       <!-- ── ADDED INCOME TABLE ── -->
@@ -1089,49 +1019,6 @@
       <!-- ── ADD MORE INCOME ── -->
       <div class="section-divider">Add more income</div>
 
-      <!-- Search -->
-      <div class="search-wrapper">
-        <div class="search-icon">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-          </svg>
-        </div>
-        <input
-          type="text"
-          class="search-input"
-          id="incomeSearch"
-          placeholder="Search forms or kinds of income..."
-          oninput="filterIncome(this.value)"
-          autocomplete="off"
-        />
-        <button class="search-clear" id="searchClear" onclick="clearSearch()" aria-label="Clear search">
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 11C0 4.92487 4.92487 0 11 0C17.0751 0 22 4.92487 22 11C22 17.0751 17.0751 22 11 22C4.92487 22 0 17.0751 0 11Z" fill="#F4F9FF"/>
-            <path d="M14 8L8 14M8 8L14 14" stroke="#016EE6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
-
-      <!-- No results empty state -->
-      <div class="no-results" id="noResults">
-        <div class="no-results-illustration" id="noResultsIllustration">
-          <svg width="162" height="104" viewBox="0 0 162 104" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect y="5.09" width="156.53" height="98.37" fill="#016EE6"/>
-            <rect x="5.09" width="156.53" height="98.37" fill="#E1EFFF"/>
-            <text id="noResultsFormText" x="83" y="46" text-anchor="middle" font-family="Lexend, sans-serif" font-size="24" font-weight="600" fill="#0850C4"></text>
-            <path d="M22.45 75.006L145.148 74.298M22.327 59.476L145.025 58.768" stroke="#59B7FF" stroke-width="3.48" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div class="no-results-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#016ee6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-          </svg>
-        </div>
-        <p class="no-results-title" id="noResultsTitle">No results found</p>
-        <p class="no-results-sub" id="noResultsSub">Try searching for a form number, income type, or source.</p>
-        <div class="no-results-path" id="noResultsPath"></div>
-        <button class="no-results-clear" onclick="clearSearch()">Clear search</button>
-      </div>
 
       <!-- ── CATEGORIES ── -->
       <div class="income-categories" id="categoriesContainer">
@@ -1282,8 +1169,8 @@
                 <div class="income-item-sublabel">Schedule C, including consulting, freelancing, or contracting income</div>
               </div>
               <button class="btn-edit-add" onclick="showBusinessScreen()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                Edit/Add
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
               </button>
             </div>
 
@@ -1514,7 +1401,7 @@
               </button>
             </div>
 
-            <div class="income-item" data-label="Undistributed Long-Term Capital Gains" data-forms="2439 undistributed capital gains mutual fund">
+            <div class="income-item" data-label="Undistributed Long-Term Capital Gains" data-forms="2439 undistributed capital gains">
               <div>
                 <div class="income-item-label">Undistributed Long-Term Capital Gains</div>
                 <div class="income-item-sublabel">Form 2439</div>
@@ -1575,7 +1462,7 @@
     <a href="#">Security</a>
     <a href="#">Accessibility</a>
   </div>
-  <div class="footer-copyright">© 2002-2025 FreeTaxUSA, a TaxHawk, Inc. owned and operated website - All Rights Reserved</div>
+  <div class="footer-copy">© 2002–2025 FreeTaxUSA, a TaxHawk, Inc. owned and operated website – All Rights Reserved</div>
 </footer>
 
 <!-- ═══ INFO MODALS ═══ -->
@@ -1607,7 +1494,7 @@
 <!-- ═══ SCREEN: ADD INVESTMENTS ═══ -->
 <div id="screen-investments" class="sub-screen">
   <header class="global-header">
-    <a class="header-logo" href="#">
+    <a class="header-logo" href="progress-personal.html" onclick="sessionStorage.clear()" title="Restart prototype">
       <svg width="166" height="19" viewBox="0 0 212 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.13833 2.02319H0V23.6797H4.64346V15.0795H13.3373V11.0916H4.64346V6.20621H14.6328V2.02319H4.64346H2.13833Z" fill="#212352"/><path d="M24.9847 6.97888C24.1575 6.97888 23.3693 7.17399 22.6201 7.56419C21.8709 7.9544 21.2153 8.50069 20.6534 9.18745C20.4505 9.43718 20.271 9.70252 20.115 9.97567L20.0369 7.31446H15.7993V23.6797H20.2242V15.2044C20.2242 14.6894 20.3101 14.2133 20.4896 13.7841C20.6612 13.3549 20.9032 12.9725 21.2153 12.6525C21.5275 12.3325 21.8943 12.0828 22.3157 11.9111C22.7371 11.7394 23.1976 11.6458 23.6893 11.6458C24.0638 11.6458 24.4228 11.6926 24.774 11.7862C25.1252 11.8799 25.4218 11.9891 25.6715 12.114L26.8499 7.29105C26.6236 7.2052 26.3427 7.13496 26.0149 7.07253C25.6871 7.0101 25.3437 6.97888 24.9925 6.97888H24.9847Z" fill="#212352"/><path d="M40.8423 9.2811C40.1477 8.54751 39.3283 7.98562 38.384 7.5798C37.4319 7.17399 36.4017 6.97888 35.2935 6.97888C34.0995 6.97888 32.9913 7.18959 31.969 7.61102C30.9466 8.03244 30.0648 8.63336 29.3234 9.40597C28.582 10.1786 28.0045 11.0917 27.5908 12.1452C27.1772 13.1988 26.9743 14.3538 26.9743 15.6103C26.9743 17.2413 27.3489 18.6851 28.0903 19.9415C28.8317 21.198 29.8618 22.1891 31.1807 22.9149C32.4996 23.6329 34.0449 23.9997 35.8242 23.9997C36.5656 23.9997 37.3226 23.906 38.0796 23.7188C38.8444 23.5315 39.5858 23.2583 40.3038 22.8993C41.0218 22.5403 41.6851 22.0877 42.286 21.5492L40.1789 18.607C39.5 19.1611 38.86 19.5591 38.2591 19.7855C37.6582 20.0118 37.0026 20.1288 36.2768 20.1288C35.2233 20.1288 34.3102 19.9259 33.5376 19.5279C32.765 19.1299 32.1641 18.568 31.7426 17.8422C31.5007 17.4364 31.3368 16.976 31.2354 16.4843H42.8948L42.926 15.1264C42.965 13.948 42.8011 12.8632 42.4343 11.8799C42.0597 10.8888 41.529 10.0303 40.8423 9.29671V9.2811ZM33.0459 11.2477C33.6781 10.8966 34.4429 10.7249 35.3482 10.7249C35.9647 10.7249 36.5266 10.8497 37.0182 11.0995C37.5099 11.3492 37.9235 11.7004 38.2435 12.153C38.5635 12.6057 38.743 13.1129 38.782 13.667V13.7919H31.2666C31.3446 13.4329 31.4539 13.1051 31.6022 12.8008C31.9299 12.1218 32.4138 11.6067 33.0381 11.2555L33.0459 11.2477Z" fill="#212352"/><path d="M58.5613 9.2811C57.8667 8.54751 57.0473 7.98562 56.103 7.5798C55.1509 7.17399 54.1207 6.97888 53.0125 6.97888C51.8185 6.97888 50.7103 7.18959 49.688 7.61102C48.6656 8.03244 47.7837 8.63336 47.0424 9.40597C46.301 10.1786 45.7235 11.0917 45.3098 12.1452C44.8962 13.1988 44.6933 14.3538 44.6933 15.6103C44.6933 17.2413 45.0679 18.6851 45.8093 19.9415C46.5507 21.198 47.5808 22.1891 48.8997 22.9149C50.2186 23.6329 51.7639 23.9997 53.5432 23.9997C54.2846 23.9997 55.0416 23.906 55.7986 23.7188C56.5634 23.5315 57.3048 23.2583 58.0228 22.8993C58.7408 22.5403 59.4041 22.0877 60.005 21.5492L57.8979 18.607C57.219 19.1611 56.579 19.5591 55.9781 19.7855C55.3772 20.0118 54.7216 20.1288 53.9958 20.1288C52.9423 20.1288 52.0292 19.9259 51.2566 19.5279C50.484 19.1299 49.8831 18.568 49.4616 17.8422C49.2197 17.4364 49.0558 16.976 48.9544 16.4843H60.6137L60.645 15.1264C60.684 13.948 60.5201 12.8632 60.1533 11.8799C59.7787 10.8888 59.248 10.0303 58.5613 9.29671V9.2811ZM50.7649 11.2477C51.3971 10.8966 52.1619 10.7249 53.0671 10.7249C53.6837 10.7249 54.2456 10.8497 54.7372 11.0995C55.2289 11.3492 55.6425 11.7004 55.9625 12.153C56.2825 12.6057 56.4619 13.1129 56.501 13.667V13.7919H48.9856C49.0636 13.4329 49.1729 13.1051 49.3212 12.8008C49.6489 12.1218 50.1328 11.6067 50.7571 11.2555L50.7649 11.2477Z" fill="#212352"/><path d="M76.2998 2.02319H58.8497V6.20621H65.1633V23.6797H69.8068V6.20621H76.2998V2.02319Z" fill="#212352"/><path d="M86.1597 9.49211C85.8475 9.05508 85.4885 8.65707 85.0593 8.30588C84.552 7.89226 83.9667 7.57229 83.2956 7.33036C82.6244 7.09624 81.8908 6.97137 81.087 6.97137C79.6666 6.97137 78.3946 7.33817 77.2786 8.07176C76.1626 8.80535 75.2807 9.80428 74.633 11.0763C73.9852 12.3484 73.6574 13.8078 73.6574 15.4545C73.6574 17.1011 73.9774 18.5683 74.6174 19.8482C75.2573 21.1281 76.1236 22.1348 77.2161 22.884C78.3087 23.6254 79.534 24 80.8997 24C81.6645 24 82.3825 23.8829 83.0614 23.641C83.7404 23.4069 84.3569 23.0869 84.9032 22.6811C85.3714 22.3377 85.7539 21.9475 86.0972 21.5261V23.6878H90.5222V7.31476H86.1597V9.48431V9.49211ZM84.2711 19.5985C83.6545 19.9887 82.9288 20.1838 82.1093 20.1838C81.2899 20.1838 80.5953 19.9887 79.9866 19.5985C79.3779 19.2083 78.9018 18.6542 78.5506 17.944C78.1995 17.2338 78.0278 16.3988 78.0278 15.4545C78.0278 14.5102 78.1995 13.7141 78.5506 13.0118C78.9018 12.3094 79.3779 11.7553 79.9866 11.3573C80.5953 10.9515 81.3055 10.7564 82.1093 10.7564C82.9131 10.7564 83.6545 10.9593 84.2711 11.3573C84.8876 11.7553 85.3714 12.3094 85.707 13.0118C86.0504 13.7141 86.2143 14.5258 86.2143 15.4545C86.2143 16.3832 86.0426 17.2338 85.707 17.944C85.3636 18.6542 84.8876 19.2083 84.2711 19.5985Z" fill="#212352"/><path d="M109.068 7.3147H103.902L101.1 12.2313L97.627 7.3147H92.3046L98.3216 15.3608L92.2422 23.68H97.4085L100.608 18.537L104.214 23.68H109.474L103.402 15.3998L109.068 7.3147Z" fill="#212352"/><path d="M124.469 15.0798C124.469 15.946 124.266 16.7265 123.868 17.4132C123.47 18.1 122.916 18.6541 122.229 19.0677C121.535 19.4813 120.77 19.6842 119.927 19.6842C119.084 19.6842 118.351 19.4813 117.687 19.0677C117.016 18.6541 116.486 18.1078 116.095 17.4132C115.705 16.7187 115.51 15.946 115.51 15.0798V2.00006H110.835V15.3685C110.835 16.9996 111.226 18.459 112.014 19.7467C112.794 21.0343 113.879 22.0489 115.245 22.7825C116.618 23.5161 118.179 23.8829 119.935 23.8829C121.691 23.8829 123.221 23.5161 124.594 22.7825C125.968 22.0489 127.045 21.0421 127.825 19.7467C128.605 18.459 129.003 16.9996 129.003 15.3685V2.00006H124.485V15.0876L124.469 15.0798Z" fill="#212352"/><path d="M147.054 14.6661C146.703 13.9559 146.203 13.3394 145.556 12.8087C144.908 12.278 144.127 11.8332 143.222 11.4664C142.317 11.0918 141.295 10.7953 140.155 10.5689C139.554 10.4441 139.008 10.3036 138.516 10.1397C138.025 9.97582 137.595 9.78071 137.244 9.57C136.893 9.35929 136.628 9.10175 136.44 8.813C136.253 8.52425 136.159 8.19648 136.159 7.82188C136.159 7.34582 136.3 6.94781 136.581 6.61224C136.862 6.28446 137.244 6.02693 137.744 5.85523C138.235 5.68354 138.828 5.58989 139.507 5.58989C140.124 5.58989 140.733 5.69135 141.318 5.88645C141.903 6.08155 142.45 6.37811 142.957 6.76832C143.464 7.15852 143.932 7.64238 144.362 8.21989L147.304 5.37138C146.812 4.56755 146.196 3.88859 145.462 3.3267C144.728 2.7726 143.87 2.34337 142.879 2.03901C141.888 1.74246 140.733 1.59418 139.414 1.59418C138.345 1.59418 137.322 1.75026 136.37 2.05462C135.41 2.36679 134.567 2.81162 133.834 3.38913C133.1 3.96663 132.53 4.6534 132.117 5.44942C131.703 6.24544 131.5 7.1039 131.5 8.03259C131.5 8.96128 131.641 9.7573 131.922 10.4753C132.203 11.2011 132.624 11.841 133.209 12.4107C133.787 12.9804 134.505 13.4565 135.371 13.8311C136.237 14.2135 137.244 14.5412 138.399 14.8066C138.938 14.8924 139.429 14.9939 139.882 15.1344C140.335 15.267 140.748 15.4231 141.123 15.5948C141.497 15.7743 141.817 15.9694 142.083 16.1801C142.348 16.3908 142.559 16.6405 142.699 16.9215C142.84 17.2024 142.918 17.5068 142.918 17.8346C142.918 18.2872 142.769 18.6774 142.489 19.013C142.2 19.3408 141.802 19.5983 141.294 19.77C140.787 19.9417 140.218 20.0353 139.578 20.0353C138.399 20.0353 137.314 19.7856 136.315 19.2783C135.317 18.7711 134.31 17.819 133.303 16.4142L130.392 19.7232C131.071 20.6285 131.844 21.4089 132.694 22.041C133.553 22.681 134.528 23.1648 135.636 23.4926C136.737 23.8204 137.962 23.9842 139.304 23.9842C140.951 23.9842 142.395 23.7111 143.636 23.1648C144.877 22.6185 145.844 21.8303 146.547 20.8002C147.249 19.77 147.6 18.5213 147.6 17.0542C147.6 16.1645 147.421 15.3685 147.077 14.6583L147.054 14.6661Z" fill="#212352"/><path d="M163.661 23.6797H168.422L159.986 2.02319H155.842L147.366 23.6797H151.947L153.664 19.1299H161.976L163.677 23.6797H163.661ZM155.069 15.3917L156.302 12.1139C156.466 11.6379 156.645 11.154 156.825 10.6624C157.012 10.1707 157.184 9.65564 157.348 9.13276C157.512 8.60988 157.668 8.09481 157.824 7.59535C157.98 8.0792 158.136 8.58647 158.308 9.11715C158.495 9.69466 158.674 10.2409 158.846 10.756C159.018 11.2711 159.174 11.6925 159.291 12.0281L160.555 15.3995H155.053L155.069 15.3917Z" fill="#212352"/><path d="M206.305 6.1558H166.592L164.952 1.98059H206.305V6.1558Z" fill="#D11911"/><path d="M206.304 14.8887H170.002L168.397 10.7057L206.304 10.7057V14.8887Z" fill="#D11911"/><path d="M206.304 23.6214L173.426 23.6213L171.763 19.4071L206.304 19.4384V23.6214Z" fill="#D11911"/></svg>
       <span class="header-logo-year">2025</span>
     </a>
@@ -1661,15 +1548,20 @@
                   <div class="field-value">Interest / 1099-INT</div>
                 </div>
                 <div class="field">
+                  <div class="field-label">Belongs to</div>
+                  <div class="field-value">Alex</div>
+                </div>
+                <div class="field">
                   <div class="field-label">Total</div>
                   <div class="field-value">$352</div>
                 </div>
                 <div class="card-actions">
-                  <a class="edit-link" href="#">
+                  <button class="btn-start card-review-btn" type="button">Review</button>
+                  <a class="edit-link review-hidden" href="#">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 6H6.5c-1.4 0-2.1 0-2.63.27a2.5 2.5 0 0 0-1.1 1.1C2.5 7.9 2.5 8.6 2.5 10v7.5c0 1.4 0 2.1.27 2.63a2.5 2.5 0 0 0 1.1 1.1c.53.27 1.23.27 2.63.27H14c1.4 0 2.1 0 2.63-.27a2.5 2.5 0 0 0 1.1-1.1c.27-.53.27-1.23.27-2.63V13.5M7 17h1.67c.49 0 .74 0 .97-.06.2-.04.4-.13.58-.24.2-.12.37-.3.72-.66L21 6a2.12 2.12 0 0 0-3-3l-10.06 10.06c-.35.35-.52.52-.64.72-.1.18-.19.37-.24.58-.05.23-.05.48-.05.97V17Z"/></svg>
                     Edit
                   </a>
-                  <a class="delete-link" href="#">
+                  <a class="delete-link review-hidden" href="#">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 6V5.2c0-1.12 0-1.68-.218-2.108a2 2 0 0 0-.874-.874C14.48 2 13.92 2 12.8 2h-1.6c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874C8 3.52 8 4.08 8 5.2V6M10 11v6M14 11v6M3 6h18M19 6v11.8c0 1.12 0 1.68-.218 2.108a2 2 0 0 1-.874.874C17.48 21 16.92 21 15.8 21H8.2c-1.12 0-1.68 0-2.108-.218a2 2 0 0 1-.874-.874C5 19.48 5 18.92 5 17.8V6"/></svg>
                     Delete
                   </a>
@@ -1681,15 +1573,20 @@
                   <div class="field-value">Dividends / 1099-DIV</div>
                 </div>
                 <div class="field">
+                  <div class="field-label">Belongs to</div>
+                  <div class="field-value">Both</div>
+                </div>
+                <div class="field">
                   <div class="field-label">Total</div>
                   <div class="field-value">$1,247</div>
                 </div>
                 <div class="card-actions">
-                  <a class="edit-link" href="#">
+                  <button class="btn-start card-review-btn" type="button">Review</button>
+                  <a class="edit-link review-hidden" href="#">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 6H6.5c-1.4 0-2.1 0-2.63.27a2.5 2.5 0 0 0-1.1 1.1C2.5 7.9 2.5 8.6 2.5 10v7.5c0 1.4 0 2.1.27 2.63a2.5 2.5 0 0 0 1.1 1.1c.53.27 1.23.27 2.63.27H14c1.4 0 2.1 0 2.63-.27a2.5 2.5 0 0 0 1.1-1.1c.27-.53.27-1.23.27-2.63V13.5M7 17h1.67c.49 0 .74 0 .97-.06.2-.04.4-.13.58-.24.2-.12.37-.3.72-.66L21 6a2.12 2.12 0 0 0-3-3l-10.06 10.06c-.35.35-.52.52-.64.72-.1.18-.19.37-.24.58-.05.23-.05.48-.05.97V17Z"/></svg>
                     Edit
                   </a>
-                  <a class="delete-link" href="#">
+                  <a class="delete-link review-hidden" href="#">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 6V5.2c0-1.12 0-1.68-.218-2.108a2 2 0 0 0-.874-.874C14.48 2 13.92 2 12.8 2h-1.6c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874C8 3.52 8 4.08 8 5.2V6M10 11v6M14 11v6M3 6h18M19 6v11.8c0 1.12 0 1.68-.218 2.108a2 2 0 0 1-.874.874C17.48 21 16.92 21 15.8 21H8.2c-1.12 0-1.68 0-2.108-.218a2 2 0 0 1-.874-.874C5 19.48 5 18.92 5 17.8V6"/></svg>
                     Delete
                   </a>
@@ -1713,11 +1610,9 @@
   </footer>
 </div>
 
-
-<!-- ═══ SCREEN: RETIREMENT INCOME REVIEW ═══ -->
 <div id="screen-business" class="sub-screen">
   <header class="global-header">
-    <a class="header-logo" href="#"><svg width="166" height="19" viewBox="0 0 212 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.13833 2.02319H0V23.6797H4.64346V15.0795H13.3373V11.0916H4.64346V6.20621H14.6328V2.02319H4.64346H2.13833Z" fill="#212352"/><path d="M24.9847 6.97888C24.1575 6.97888 23.3693 7.17399 22.6201 7.56419C21.8709 7.9544 21.2153 8.50069 20.6534 9.18745C20.4505 9.43718 20.271 9.70252 20.115 9.97567L20.0369 7.31446H15.7993V23.6797H20.2242V15.2044C20.2242 14.6894 20.3101 14.2133 20.4896 13.7841C20.6612 13.3549 20.9032 12.9725 21.2153 12.6525C21.5275 12.3325 21.8943 12.0828 22.3157 11.9111C22.7371 11.7394 23.1976 11.6458 23.6893 11.6458C24.0638 11.6458 24.4228 11.6926 24.774 11.7862C25.1252 11.8799 25.4218 11.9891 25.6715 12.114L26.8499 7.29105C26.6236 7.2052 26.3427 7.13496 26.0149 7.07253C25.6871 7.0101 25.3437 6.97888 24.9925 6.97888H24.9847Z" fill="#212352"/><path d="M40.8423 9.2811C40.1477 8.54751 39.3283 7.98562 38.384 7.5798C37.4319 7.17399 36.4017 6.97888 35.2935 6.97888C34.0995 6.97888 32.9913 7.18959 31.969 7.61102C30.9466 8.03244 30.0648 8.63336 29.3234 9.40597C28.582 10.1786 28.0045 11.0917 27.5908 12.1452C27.1772 13.1988 26.9743 14.3538 26.9743 15.6103C26.9743 17.2413 27.3489 18.6851 28.0903 19.9415C28.8317 21.198 29.8618 22.1891 31.1807 22.9149C32.4996 23.6329 34.0449 23.9997 35.8242 23.9997C36.5656 23.9997 37.3226 23.906 38.0796 23.7188C38.8444 23.5315 39.5858 23.2583 40.3038 22.8993C41.0218 22.5403 41.6851 22.0877 42.286 21.5492L40.1789 18.607C39.5 19.1611 38.86 19.5591 38.2591 19.7855C37.6582 20.0118 37.0026 20.1288 36.2768 20.1288C35.2233 20.1288 34.3102 19.9259 33.5376 19.5279C32.765 19.1299 32.1641 18.568 31.7426 17.8422C31.5007 17.4364 31.3368 16.976 31.2354 16.4843H42.8948L42.926 15.1264C42.965 13.948 42.8011 12.8632 42.4343 11.8799C42.0597 10.8888 41.529 10.0303 40.8423 9.29671V9.2811ZM33.0459 11.2477C33.6781 10.8966 34.4429 10.7249 35.3482 10.7249C35.9647 10.7249 36.5266 10.8497 37.0182 11.0995C37.5099 11.3492 37.9235 11.7004 38.2435 12.153C38.5635 12.6057 38.743 13.1129 38.782 13.667V13.7919H31.2666C31.3446 13.4329 31.4539 13.1051 31.6022 12.8008C31.9299 12.1218 32.4138 11.6067 33.0381 11.2555L33.0459 11.2477Z" fill="#212352"/><path d="M58.5613 9.2811C57.8667 8.54751 57.0473 7.98562 56.103 7.5798C55.1509 7.17399 54.1207 6.97888 53.0125 6.97888C51.8185 6.97888 50.7103 7.18959 49.688 7.61102C48.6656 8.03244 47.7837 8.63336 47.0424 9.40597C46.301 10.1786 45.7235 11.0917 45.3098 12.1452C44.8962 13.1988 44.6933 14.3538 44.6933 15.6103C44.6933 17.2413 45.0679 18.6851 45.8093 19.9415C46.5507 21.198 47.5808 22.1891 48.8997 22.9149C50.2186 23.6329 51.7639 23.9997 53.5432 23.9997C54.2846 23.9997 55.0416 23.906 55.7986 23.7188C56.5634 23.5315 57.3048 23.2583 58.0228 22.8993C58.7408 22.5403 59.4041 22.0877 60.005 21.5492L57.8979 18.607C57.219 19.1611 56.579 19.5591 55.9781 19.7855C55.3772 20.0118 54.7216 20.1288 53.9958 20.1288C52.9423 20.1288 52.0292 19.9259 51.2566 19.5279C50.484 19.1299 49.8831 18.568 49.4616 17.8422C49.2197 17.4364 49.0558 16.976 48.9544 16.4843H60.6137L60.645 15.1264C60.684 13.948 60.5201 12.8632 60.1533 11.8799C59.7787 10.8888 59.248 10.0303 58.5613 9.29671V9.2811ZM50.7649 11.2477C51.3971 10.8966 52.1619 10.7249 53.0671 10.7249C53.6837 10.7249 54.2456 10.8497 54.7372 11.0995C55.2289 11.3492 55.6425 11.7004 55.9625 12.153C56.2825 12.6057 56.4619 13.1129 56.501 13.667V13.7919H48.9856C49.0636 13.4329 49.1729 13.1051 49.3212 12.8008C49.6489 12.1218 50.1328 11.6067 50.7571 11.2555L50.7649 11.2477Z" fill="#212352"/><path d="M76.2998 2.02319H58.8497V6.20621H65.1633V23.6797H69.8068V6.20621H76.2998V2.02319Z" fill="#212352"/><path d="M86.1597 9.49211C85.8475 9.05508 85.4885 8.65707 85.0593 8.30588C84.552 7.89226 83.9667 7.57229 83.2956 7.33036C82.6244 7.09624 81.8908 6.97137 81.087 6.97137C79.6666 6.97137 78.3946 7.33817 77.2786 8.07176C76.1626 8.80535 75.2807 9.80428 74.633 11.0763C73.9852 12.3484 73.6574 13.8078 73.6574 15.4545C73.6574 17.1011 73.9774 18.5683 74.6174 19.8482C75.2573 21.1281 76.1236 22.1348 77.2161 22.884C78.3087 23.6254 79.534 24 80.8997 24C81.6645 24 82.3825 23.8829 83.0614 23.641C83.7404 23.4069 84.3569 23.0869 84.9032 22.6811C85.3714 22.3377 85.7539 21.9475 86.0972 21.5261V23.6878H90.5222V7.31476H86.1597V9.48431V9.49211ZM84.2711 19.5985C83.6545 19.9887 82.9288 20.1838 82.1093 20.1838C81.2899 20.1838 80.5953 19.9887 79.9866 19.5985C79.3779 19.2083 78.9018 18.6542 78.5506 17.944C78.1995 17.2338 78.0278 16.3988 78.0278 15.4545C78.0278 14.5102 78.1995 13.7141 78.5506 13.0118C78.9018 12.3094 79.3779 11.7553 79.9866 11.3573C80.5953 10.9515 81.3055 10.7564 82.1093 10.7564C82.9131 10.7564 83.6545 10.9593 84.2711 11.3573C84.8876 11.7553 85.3714 12.3094 85.707 13.0118C86.0504 13.7141 86.2143 14.5258 86.2143 15.4545C86.2143 16.3832 86.0426 17.2338 85.707 17.944C85.3636 18.6542 84.8876 19.2083 84.2711 19.5985Z" fill="#212352"/><path d="M109.068 7.3147H103.902L101.1 12.2313L97.627 7.3147H92.3046L98.3216 15.3608L92.2422 23.68H97.4085L100.608 18.537L104.214 23.68H109.474L103.402 15.3998L109.068 7.3147Z" fill="#212352"/><path d="M124.469 15.0798C124.469 15.946 124.266 16.7265 123.868 17.4132C123.47 18.1 122.916 18.6541 122.229 19.0677C121.535 19.4813 120.77 19.6842 119.927 19.6842C119.084 19.6842 118.351 19.4813 117.687 19.0677C117.016 18.6541 116.486 18.1078 116.095 17.4132C115.705 16.7187 115.51 15.946 115.51 15.0798V2.00006H110.835V15.3685C110.835 16.9996 111.226 18.459 112.014 19.7467C112.794 21.0343 113.879 22.0489 115.245 22.7825C116.618 23.5161 118.179 23.8829 119.935 23.8829C121.691 23.8829 123.221 23.5161 124.594 22.7825C125.968 22.0489 127.045 21.0421 127.825 19.7467C128.605 18.459 129.003 16.9996 129.003 15.3685V2.00006H124.485V15.0876L124.469 15.0798Z" fill="#212352"/><path d="M147.054 14.6661C146.703 13.9559 146.203 13.3394 145.556 12.8087C144.908 12.278 144.127 11.8332 143.222 11.4664C142.317 11.0918 141.295 10.7953 140.155 10.5689C139.554 10.4441 139.008 10.3036 138.516 10.1397C138.025 9.97582 137.595 9.78071 137.244 9.57C136.893 9.35929 136.628 9.10175 136.44 8.813C136.253 8.52425 136.159 8.19648 136.159 7.82188C136.159 7.34582 136.3 6.94781 136.581 6.61224C136.862 6.28446 137.244 6.02693 137.744 5.85523C138.235 5.68354 138.828 5.58989 139.507 5.58989C140.124 5.58989 140.733 5.69135 141.318 5.88645C141.903 6.08155 142.45 6.37811 142.957 6.76832C143.464 7.15852 143.932 7.64238 144.362 8.21989L147.304 5.37138C146.812 4.56755 146.196 3.88859 145.462 3.3267C144.728 2.7726 143.87 2.34337 142.879 2.03901C141.888 1.74246 140.733 1.59418 139.414 1.59418C138.345 1.59418 137.322 1.75026 136.37 2.05462C135.41 2.36679 134.567 2.81162 133.834 3.38913C133.1 3.96663 132.53 4.6534 132.117 5.44942C131.703 6.24544 131.5 7.1039 131.5 8.03259C131.5 8.96128 131.641 9.7573 131.922 10.4753C132.203 11.2011 132.624 11.841 133.209 12.4107C133.787 12.9804 134.505 13.4565 135.371 13.8311C136.237 14.2135 137.244 14.5412 138.399 14.8066C138.938 14.8924 139.429 14.9939 139.882 15.1344C140.335 15.267 140.748 15.4231 141.123 15.5948C141.497 15.7743 141.817 15.9694 142.083 16.1801C142.348 16.3908 142.559 16.6405 142.699 16.9215C142.84 17.2024 142.918 17.5068 142.918 17.8346C142.918 18.2872 142.769 18.6774 142.489 19.013C142.2 19.3408 141.802 19.5983 141.294 19.77C140.787 19.9417 140.218 20.0353 139.578 20.0353C138.399 20.0353 137.314 19.7856 136.315 19.2783C135.317 18.7711 134.31 17.819 133.303 16.4142L130.392 19.7232C131.071 20.6285 131.844 21.4089 132.694 22.041C133.553 22.681 134.528 23.1648 135.636 23.4926C136.737 23.8204 137.962 23.9842 139.304 23.9842C140.951 23.9842 142.395 23.7111 143.636 23.1648C144.877 22.6185 145.844 21.8303 146.547 20.8002C147.249 19.77 147.6 18.5213 147.6 17.0542C147.6 16.1645 147.421 15.3685 147.077 14.6583L147.054 14.6661Z" fill="#212352"/><path d="M163.661 23.6797H168.422L159.986 2.02319H155.842L147.366 23.6797H151.947L153.664 19.1299H161.976L163.677 23.6797H163.661ZM155.069 15.3917L156.302 12.1139C156.466 11.6379 156.645 11.154 156.825 10.6624C157.012 10.1707 157.184 9.65564 157.348 9.13276C157.512 8.60988 157.668 8.09481 157.824 7.59535C157.98 8.0792 158.136 8.58647 158.308 9.11715C158.495 9.69466 158.674 10.2409 158.846 10.756C159.018 11.2711 159.174 11.6925 159.291 12.0281L160.555 15.3995H155.053L155.069 15.3917Z" fill="#212352"/><path d="M206.305 6.1558H166.592L164.952 1.98059H206.305V6.1558Z" fill="#D11911"/><path d="M206.304 14.8887H170.002L168.397 10.7057L206.304 10.7057V14.8887Z" fill="#D11911"/><path d="M206.304 23.6214L173.426 23.6213L171.763 19.4071L206.304 19.4384V23.6214Z" fill="#D11911"/></svg><span class="header-logo-year">2025</span></a>
+    <a class="header-logo" href="progress-personal.html" onclick="sessionStorage.clear()" title="Restart prototype"><svg width="166" height="19" viewBox="0 0 212 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.13833 2.02319H0V23.6797H4.64346V15.0795H13.3373V11.0916H4.64346V6.20621H14.6328V2.02319H4.64346H2.13833Z" fill="#212352"/><path d="M24.9847 6.97888C24.1575 6.97888 23.3693 7.17399 22.6201 7.56419C21.8709 7.9544 21.2153 8.50069 20.6534 9.18745C20.4505 9.43718 20.271 9.70252 20.115 9.97567L20.0369 7.31446H15.7993V23.6797H20.2242V15.2044C20.2242 14.6894 20.3101 14.2133 20.4896 13.7841C20.6612 13.3549 20.9032 12.9725 21.2153 12.6525C21.5275 12.3325 21.8943 12.0828 22.3157 11.9111C22.7371 11.7394 23.1976 11.6458 23.6893 11.6458C24.0638 11.6458 24.4228 11.6926 24.774 11.7862C25.1252 11.8799 25.4218 11.9891 25.6715 12.114L26.8499 7.29105C26.6236 7.2052 26.3427 7.13496 26.0149 7.07253C25.6871 7.0101 25.3437 6.97888 24.9925 6.97888H24.9847Z" fill="#212352"/><path d="M40.8423 9.2811C40.1477 8.54751 39.3283 7.98562 38.384 7.5798C37.4319 7.17399 36.4017 6.97888 35.2935 6.97888C34.0995 6.97888 32.9913 7.18959 31.969 7.61102C30.9466 8.03244 30.0648 8.63336 29.3234 9.40597C28.582 10.1786 28.0045 11.0917 27.5908 12.1452C27.1772 13.1988 26.9743 14.3538 26.9743 15.6103C26.9743 17.2413 27.3489 18.6851 28.0903 19.9415C28.8317 21.198 29.8618 22.1891 31.1807 22.9149C32.4996 23.6329 34.0449 23.9997 35.8242 23.9997C36.5656 23.9997 37.3226 23.906 38.0796 23.7188C38.8444 23.5315 39.5858 23.2583 40.3038 22.8993C41.0218 22.5403 41.6851 22.0877 42.286 21.5492L40.1789 18.607C39.5 19.1611 38.86 19.5591 38.2591 19.7855C37.6582 20.0118 37.0026 20.1288 36.2768 20.1288C35.2233 20.1288 34.3102 19.9259 33.5376 19.5279C32.765 19.1299 32.1641 18.568 31.7426 17.8422C31.5007 17.4364 31.3368 16.976 31.2354 16.4843H42.8948L42.926 15.1264C42.965 13.948 42.8011 12.8632 42.4343 11.8799C42.0597 10.8888 41.529 10.0303 40.8423 9.29671V9.2811ZM33.0459 11.2477C33.6781 10.8966 34.4429 10.7249 35.3482 10.7249C35.9647 10.7249 36.5266 10.8497 37.0182 11.0995C37.5099 11.3492 37.9235 11.7004 38.2435 12.153C38.5635 12.6057 38.743 13.1129 38.782 13.667V13.7919H31.2666C31.3446 13.4329 31.4539 13.1051 31.6022 12.8008C31.9299 12.1218 32.4138 11.6067 33.0381 11.2555L33.0459 11.2477Z" fill="#212352"/><path d="M58.5613 9.2811C57.8667 8.54751 57.0473 7.98562 56.103 7.5798C55.1509 7.17399 54.1207 6.97888 53.0125 6.97888C51.8185 6.97888 50.7103 7.18959 49.688 7.61102C48.6656 8.03244 47.7837 8.63336 47.0424 9.40597C46.301 10.1786 45.7235 11.0917 45.3098 12.1452C44.8962 13.1988 44.6933 14.3538 44.6933 15.6103C44.6933 17.2413 45.0679 18.6851 45.8093 19.9415C46.5507 21.198 47.5808 22.1891 48.8997 22.9149C50.2186 23.6329 51.7639 23.9997 53.5432 23.9997C54.2846 23.9997 55.0416 23.906 55.7986 23.7188C56.5634 23.5315 57.3048 23.2583 58.0228 22.8993C58.7408 22.5403 59.4041 22.0877 60.005 21.5492L57.8979 18.607C57.219 19.1611 56.579 19.5591 55.9781 19.7855C55.3772 20.0118 54.7216 20.1288 53.9958 20.1288C52.9423 20.1288 52.0292 19.9259 51.2566 19.5279C50.484 19.1299 49.8831 18.568 49.4616 17.8422C49.2197 17.4364 49.0558 16.976 48.9544 16.4843H60.6137L60.645 15.1264C60.684 13.948 60.5201 12.8632 60.1533 11.8799C59.7787 10.8888 59.248 10.0303 58.5613 9.29671V9.2811ZM50.7649 11.2477C51.3971 10.8966 52.1619 10.7249 53.0671 10.7249C53.6837 10.7249 54.2456 10.8497 54.7372 11.0995C55.2289 11.3492 55.6425 11.7004 55.9625 12.153C56.2825 12.6057 56.4619 13.1129 56.501 13.667V13.7919H48.9856C49.0636 13.4329 49.1729 13.1051 49.3212 12.8008C49.6489 12.1218 50.1328 11.6067 50.7571 11.2555L50.7649 11.2477Z" fill="#212352"/><path d="M76.2998 2.02319H58.8497V6.20621H65.1633V23.6797H69.8068V6.20621H76.2998V2.02319Z" fill="#212352"/><path d="M86.1597 9.49211C85.8475 9.05508 85.4885 8.65707 85.0593 8.30588C84.552 7.89226 83.9667 7.57229 83.2956 7.33036C82.6244 7.09624 81.8908 6.97137 81.087 6.97137C79.6666 6.97137 78.3946 7.33817 77.2786 8.07176C76.1626 8.80535 75.2807 9.80428 74.633 11.0763C73.9852 12.3484 73.6574 13.8078 73.6574 15.4545C73.6574 17.1011 73.9774 18.5683 74.6174 19.8482C75.2573 21.1281 76.1236 22.1348 77.2161 22.884C78.3087 23.6254 79.534 24 80.8997 24C81.6645 24 82.3825 23.8829 83.0614 23.641C83.7404 23.4069 84.3569 23.0869 84.9032 22.6811C85.3714 22.3377 85.7539 21.9475 86.0972 21.5261V23.6878H90.5222V7.31476H86.1597V9.48431V9.49211ZM84.2711 19.5985C83.6545 19.9887 82.9288 20.1838 82.1093 20.1838C81.2899 20.1838 80.5953 19.9887 79.9866 19.5985C79.3779 19.2083 78.9018 18.6542 78.5506 17.944C78.1995 17.2338 78.0278 16.3988 78.0278 15.4545C78.0278 14.5102 78.1995 13.7141 78.5506 13.0118C78.9018 12.3094 79.3779 11.7553 79.9866 11.3573C80.5953 10.9515 81.3055 10.7564 82.1093 10.7564C82.9131 10.7564 83.6545 10.9593 84.2711 11.3573C84.8876 11.7553 85.3714 12.3094 85.707 13.0118C86.0504 13.7141 86.2143 14.5258 86.2143 15.4545C86.2143 16.3832 86.0426 17.2338 85.707 17.944C85.3636 18.6542 84.8876 19.2083 84.2711 19.5985Z" fill="#212352"/><path d="M109.068 7.3147H103.902L101.1 12.2313L97.627 7.3147H92.3046L98.3216 15.3608L92.2422 23.68H97.4085L100.608 18.537L104.214 23.68H109.474L103.402 15.3998L109.068 7.3147Z" fill="#212352"/><path d="M124.469 15.0798C124.469 15.946 124.266 16.7265 123.868 17.4132C123.47 18.1 122.916 18.6541 122.229 19.0677C121.535 19.4813 120.77 19.6842 119.927 19.6842C119.084 19.6842 118.351 19.4813 117.687 19.0677C117.016 18.6541 116.486 18.1078 116.095 17.4132C115.705 16.7187 115.51 15.946 115.51 15.0798V2.00006H110.835V15.3685C110.835 16.9996 111.226 18.459 112.014 19.7467C112.794 21.0343 113.879 22.0489 115.245 22.7825C116.618 23.5161 118.179 23.8829 119.935 23.8829C121.691 23.8829 123.221 23.5161 124.594 22.7825C125.968 22.0489 127.045 21.0421 127.825 19.7467C128.605 18.459 129.003 16.9996 129.003 15.3685V2.00006H124.485V15.0876L124.469 15.0798Z" fill="#212352"/><path d="M147.054 14.6661C146.703 13.9559 146.203 13.3394 145.556 12.8087C144.908 12.278 144.127 11.8332 143.222 11.4664C142.317 11.0918 141.295 10.7953 140.155 10.5689C139.554 10.4441 139.008 10.3036 138.516 10.1397C138.025 9.97582 137.595 9.78071 137.244 9.57C136.893 9.35929 136.628 9.10175 136.44 8.813C136.253 8.52425 136.159 8.19648 136.159 7.82188C136.159 7.34582 136.3 6.94781 136.581 6.61224C136.862 6.28446 137.244 6.02693 137.744 5.85523C138.235 5.68354 138.828 5.58989 139.507 5.58989C140.124 5.58989 140.733 5.69135 141.318 5.88645C141.903 6.08155 142.45 6.37811 142.957 6.76832C143.464 7.15852 143.932 7.64238 144.362 8.21989L147.304 5.37138C146.812 4.56755 146.196 3.88859 145.462 3.3267C144.728 2.7726 143.87 2.34337 142.879 2.03901C141.888 1.74246 140.733 1.59418 139.414 1.59418C138.345 1.59418 137.322 1.75026 136.37 2.05462C135.41 2.36679 134.567 2.81162 133.834 3.38913C133.1 3.96663 132.53 4.6534 132.117 5.44942C131.703 6.24544 131.5 7.1039 131.5 8.03259C131.5 8.96128 131.641 9.7573 131.922 10.4753C132.203 11.2011 132.624 11.841 133.209 12.4107C133.787 12.9804 134.505 13.4565 135.371 13.8311C136.237 14.2135 137.244 14.5412 138.399 14.8066C138.938 14.8924 139.429 14.9939 139.882 15.1344C140.335 15.267 140.748 15.4231 141.123 15.5948C141.497 15.7743 141.817 15.9694 142.083 16.1801C142.348 16.3908 142.559 16.6405 142.699 16.9215C142.84 17.2024 142.918 17.5068 142.918 17.8346C142.918 18.2872 142.769 18.6774 142.489 19.013C142.2 19.3408 141.802 19.5983 141.294 19.77C140.787 19.9417 140.218 20.0353 139.578 20.0353C138.399 20.0353 137.314 19.7856 136.315 19.2783C135.317 18.7711 134.31 17.819 133.303 16.4142L130.392 19.7232C131.071 20.6285 131.844 21.4089 132.694 22.041C133.553 22.681 134.528 23.1648 135.636 23.4926C136.737 23.8204 137.962 23.9842 139.304 23.9842C140.951 23.9842 142.395 23.7111 143.636 23.1648C144.877 22.6185 145.844 21.8303 146.547 20.8002C147.249 19.77 147.6 18.5213 147.6 17.0542C147.6 16.1645 147.421 15.3685 147.077 14.6583L147.054 14.6661Z" fill="#212352"/><path d="M163.661 23.6797H168.422L159.986 2.02319H155.842L147.366 23.6797H151.947L153.664 19.1299H161.976L163.677 23.6797H163.661ZM155.069 15.3917L156.302 12.1139C156.466 11.6379 156.645 11.154 156.825 10.6624C157.012 10.1707 157.184 9.65564 157.348 9.13276C157.512 8.60988 157.668 8.09481 157.824 7.59535C157.98 8.0792 158.136 8.58647 158.308 9.11715C158.495 9.69466 158.674 10.2409 158.846 10.756C159.018 11.2711 159.174 11.6925 159.291 12.0281L160.555 15.3995H155.053L155.069 15.3917Z" fill="#212352"/><path d="M206.305 6.1558H166.592L164.952 1.98059H206.305V6.1558Z" fill="#D11911"/><path d="M206.304 14.8887H170.002L168.397 10.7057L206.304 10.7057V14.8887Z" fill="#D11911"/><path d="M206.304 23.6214L173.426 23.6213L171.763 19.4071L206.304 19.4384V23.6214Z" fill="#D11911"/></svg><span class="header-logo-year">2025</span></a>
     <div class="header-center"><div class="header-refund-item">Federal Refund: <span class="amount--refund">$5,484</span></div></div>
     <div class="header-right">
       <button class="header-nav-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search</button>
@@ -1762,16 +1657,21 @@
                 <div class="w2-card-employer">Jamie's Consulting</div>
               </div>
               <div class="w2-card-cell">
+                <div class="w2-card-label">Belongs to</div>
+                <div class="w2-card-employer">Jamie</div>
+              </div>
+              <div class="w2-card-cell">
                 <div class="w2-card-label">Net Profit</div>
                 <div class="w2-card-amount">$34,600.00</div>
               </div>
             </div>
             <div class="w2-card-actions">
-              <button class="w2-card-btn" onclick="return false;">
+            <button class="btn-start card-review-btn" type="button">Review</button>
+              <button class="w2-card-btn review-hidden" onclick="return false;">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                 Edit
               </button>
-              <button class="w2-card-btn" onclick="return false;">
+              <button class="w2-card-btn review-hidden" onclick="return false;">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                 Delete
               </button>
@@ -1807,7 +1707,7 @@
 <!-- ═══ SCREEN: ADD 1099-NEC ═══ -->
 <div id="screen-nec" class="sub-screen">
   <header class="global-header">
-    <a class="header-logo" href="#">
+    <a class="header-logo" href="progress-personal.html" onclick="sessionStorage.clear()" title="Restart prototype">
       <svg width="166" height="19" viewBox="0 0 212 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.13833 2.02319H0V23.6797H4.64346V15.0795H13.3373V11.0916H4.64346V6.20621H14.6328V2.02319H4.64346H2.13833Z" fill="#212352"/><path d="M24.9847 6.97888C24.1575 6.97888 23.3693 7.17399 22.6201 7.56419C21.8709 7.9544 21.2153 8.50069 20.6534 9.18745C20.4505 9.43718 20.271 9.70252 20.115 9.97567L20.0369 7.31446H15.7993V23.6797H20.2242V15.2044C20.2242 14.6894 20.3101 14.2133 20.4896 13.7841C20.6612 13.3549 20.9032 12.9725 21.2153 12.6525C21.5275 12.3325 21.8943 12.0828 22.3157 11.9111C22.7371 11.7394 23.1976 11.6458 23.6893 11.6458C24.0638 11.6458 24.4228 11.6926 24.774 11.7862C25.1252 11.8799 25.4218 11.9891 25.6715 12.114L26.8499 7.29105C26.6236 7.2052 26.3427 7.13496 26.0149 7.07253C25.6871 7.0101 25.3437 6.97888 24.9925 6.97888H24.9847Z" fill="#212352"/><path d="M40.8423 9.2811C40.1477 8.54751 39.3283 7.98562 38.384 7.5798C37.4319 7.17399 36.4017 6.97888 35.2935 6.97888C34.0995 6.97888 32.9913 7.18959 31.969 7.61102C30.9466 8.03244 30.0648 8.63336 29.3234 9.40597C28.582 10.1786 28.0045 11.0917 27.5908 12.1452C27.1772 13.1988 26.9743 14.3538 26.9743 15.6103C26.9743 17.2413 27.3489 18.6851 28.0903 19.9415C28.8317 21.198 29.8618 22.1891 31.1807 22.9149C32.4996 23.6329 34.0449 23.9997 35.8242 23.9997C36.5656 23.9997 37.3226 23.906 38.0796 23.7188C38.8444 23.5315 39.5858 23.2583 40.3038 22.8993C41.0218 22.5403 41.6851 22.0877 42.286 21.5492L40.1789 18.607C39.5 19.1611 38.86 19.5591 38.2591 19.7855C37.6582 20.0118 37.0026 20.1288 36.2768 20.1288C35.2233 20.1288 34.3102 19.9259 33.5376 19.5279C32.765 19.1299 32.1641 18.568 31.7426 17.8422C31.5007 17.4364 31.3368 16.976 31.2354 16.4843H42.8948L42.926 15.1264C42.965 13.948 42.8011 12.8632 42.4343 11.8799C42.0597 10.8888 41.529 10.0303 40.8423 9.29671V9.2811ZM33.0459 11.2477C33.6781 10.8966 34.4429 10.7249 35.3482 10.7249C35.9647 10.7249 36.5266 10.8497 37.0182 11.0995C37.5099 11.3492 37.9235 11.7004 38.2435 12.153C38.5635 12.6057 38.743 13.1129 38.782 13.667V13.7919H31.2666C31.3446 13.4329 31.4539 13.1051 31.6022 12.8008C31.9299 12.1218 32.4138 11.6067 33.0381 11.2555L33.0459 11.2477Z" fill="#212352"/><path d="M58.5613 9.2811C57.8667 8.54751 57.0473 7.98562 56.103 7.5798C55.1509 7.17399 54.1207 6.97888 53.0125 6.97888C51.8185 6.97888 50.7103 7.18959 49.688 7.61102C48.6656 8.03244 47.7837 8.63336 47.0424 9.40597C46.301 10.1786 45.7235 11.0917 45.3098 12.1452C44.8962 13.1988 44.6933 14.3538 44.6933 15.6103C44.6933 17.2413 45.0679 18.6851 45.8093 19.9415C46.5507 21.198 47.5808 22.1891 48.8997 22.9149C50.2186 23.6329 51.7639 23.9997 53.5432 23.9997C54.2846 23.9997 55.0416 23.906 55.7986 23.7188C56.5634 23.5315 57.3048 23.2583 58.0228 22.8993C58.7408 22.5403 59.4041 22.0877 60.005 21.5492L57.8979 18.607C57.219 19.1611 56.579 19.5591 55.9781 19.7855C55.3772 20.0118 54.7216 20.1288 53.9958 20.1288C52.9423 20.1288 52.0292 19.9259 51.2566 19.5279C50.484 19.1299 49.8831 18.568 49.4616 17.8422C49.2197 17.4364 49.0558 16.976 48.9544 16.4843H60.6137L60.645 15.1264C60.684 13.948 60.5201 12.8632 60.1533 11.8799C59.7787 10.8888 59.248 10.0303 58.5613 9.29671V9.2811ZM50.7649 11.2477C51.3971 10.8966 52.1619 10.7249 53.0671 10.7249C53.6837 10.7249 54.2456 10.8497 54.7372 11.0995C55.2289 11.3492 55.6425 11.7004 55.9625 12.153C56.2825 12.6057 56.4619 13.1129 56.501 13.667V13.7919H48.9856C49.0636 13.4329 49.1729 13.1051 49.3212 12.8008C49.6489 12.1218 50.1328 11.6067 50.7571 11.2555L50.7649 11.2477Z" fill="#212352"/><path d="M76.2998 2.02319H58.8497V6.20621H65.1633V23.6797H69.8068V6.20621H76.2998V2.02319Z" fill="#212352"/><path d="M86.1597 9.49211C85.8475 9.05508 85.4885 8.65707 85.0593 8.30588C84.552 7.89226 83.9667 7.57229 83.2956 7.33036C82.6244 7.09624 81.8908 6.97137 81.087 6.97137C79.6666 6.97137 78.3946 7.33817 77.2786 8.07176C76.1626 8.80535 75.2807 9.80428 74.633 11.0763C73.9852 12.3484 73.6574 13.8078 73.6574 15.4545C73.6574 17.1011 73.9774 18.5683 74.6174 19.8482C75.2573 21.1281 76.1236 22.1348 77.2161 22.884C78.3087 23.6254 79.534 24 80.8997 24C81.6645 24 82.3825 23.8829 83.0614 23.641C83.7404 23.4069 84.3569 23.0869 84.9032 22.6811C85.3714 22.3377 85.7539 21.9475 86.0972 21.5261V23.6878H90.5222V7.31476H86.1597V9.48431V9.49211ZM84.2711 19.5985C83.6545 19.9887 82.9288 20.1838 82.1093 20.1838C81.2899 20.1838 80.5953 19.9887 79.9866 19.5985C79.3779 19.2083 78.9018 18.6542 78.5506 17.944C78.1995 17.2338 78.0278 16.3988 78.0278 15.4545C78.0278 14.5102 78.1995 13.7141 78.5506 13.0118C78.9018 12.3094 79.3779 11.7553 79.9866 11.3573C80.5953 10.9515 81.3055 10.7564 82.1093 10.7564C82.9131 10.7564 83.6545 10.9593 84.2711 11.3573C84.8876 11.7553 85.3714 12.3094 85.707 13.0118C86.0504 13.7141 86.2143 14.5258 86.2143 15.4545C86.2143 16.3832 86.0426 17.2338 85.707 17.944C85.3636 18.6542 84.8876 19.2083 84.2711 19.5985Z" fill="#212352"/><path d="M109.068 7.3147H103.902L101.1 12.2313L97.627 7.3147H92.3046L98.3216 15.3608L92.2422 23.68H97.4085L100.608 18.537L104.214 23.68H109.474L103.402 15.3998L109.068 7.3147Z" fill="#212352"/><path d="M124.469 15.0798C124.469 15.946 124.266 16.7265 123.868 17.4132C123.47 18.1 122.916 18.6541 122.229 19.0677C121.535 19.4813 120.77 19.6842 119.927 19.6842C119.084 19.6842 118.351 19.4813 117.687 19.0677C117.016 18.6541 116.486 18.1078 116.095 17.4132C115.705 16.7187 115.51 15.946 115.51 15.0798V2.00006H110.835V15.3685C110.835 16.9996 111.226 18.459 112.014 19.7467C112.794 21.0343 113.879 22.0489 115.245 22.7825C116.618 23.5161 118.179 23.8829 119.935 23.8829C121.691 23.8829 123.221 23.5161 124.594 22.7825C125.968 22.0489 127.045 21.0421 127.825 19.7467C128.605 18.459 129.003 16.9996 129.003 15.3685V2.00006H124.485V15.0876L124.469 15.0798Z" fill="#212352"/><path d="M147.054 14.6661C146.703 13.9559 146.203 13.3394 145.556 12.8087C144.908 12.278 144.127 11.8332 143.222 11.4664C142.317 11.0918 141.295 10.7953 140.155 10.5689C139.554 10.4441 139.008 10.3036 138.516 10.1397C138.025 9.97582 137.595 9.78071 137.244 9.57C136.893 9.35929 136.628 9.10175 136.44 8.813C136.253 8.52425 136.159 8.19648 136.159 7.82188C136.159 7.34582 136.3 6.94781 136.581 6.61224C136.862 6.28446 137.244 6.02693 137.744 5.85523C138.235 5.68354 138.828 5.58989 139.507 5.58989C140.124 5.58989 140.733 5.69135 141.318 5.88645C141.903 6.08155 142.45 6.37811 142.957 6.76832C143.464 7.15852 143.932 7.64238 144.362 8.21989L147.304 5.37138C146.812 4.56755 146.196 3.88859 145.462 3.3267C144.728 2.7726 143.87 2.34337 142.879 2.03901C141.888 1.74246 140.733 1.59418 139.414 1.59418C138.345 1.59418 137.322 1.75026 136.37 2.05462C135.41 2.36679 134.567 2.81162 133.834 3.38913C133.1 3.96663 132.53 4.6534 132.117 5.44942C131.703 6.24544 131.5 7.1039 131.5 8.03259C131.5 8.96128 131.641 9.7573 131.922 10.4753C132.203 11.2011 132.624 11.841 133.209 12.4107C133.787 12.9804 134.505 13.4565 135.371 13.8311C136.237 14.2135 137.244 14.5412 138.399 14.8066C138.938 14.8924 139.429 14.9939 139.882 15.1344C140.335 15.267 140.748 15.4231 141.123 15.5948C141.497 15.7743 141.817 15.9694 142.083 16.1801C142.348 16.3908 142.559 16.6405 142.699 16.9215C142.84 17.2024 142.918 17.5068 142.918 17.8346C142.918 18.2872 142.769 18.6774 142.489 19.013C142.2 19.3408 141.802 19.5983 141.294 19.77C140.787 19.9417 140.218 20.0353 139.578 20.0353C138.399 20.0353 137.314 19.7856 136.315 19.2783C135.317 18.7711 134.31 17.819 133.303 16.4142L130.392 19.7232C131.071 20.6285 131.844 21.4089 132.694 22.041C133.553 22.681 134.528 23.1648 135.636 23.4926C136.737 23.8204 137.962 23.9842 139.304 23.9842C140.951 23.9842 142.395 23.7111 143.636 23.1648C144.877 22.6185 145.844 21.8303 146.547 20.8002C147.249 19.77 147.6 18.5213 147.6 17.0542C147.6 16.1645 147.421 15.3685 147.077 14.6583L147.054 14.6661Z" fill="#212352"/><path d="M163.661 23.6797H168.422L159.986 2.02319H155.842L147.366 23.6797H151.947L153.664 19.1299H161.976L163.677 23.6797H163.661ZM155.069 15.3917L156.302 12.1139C156.466 11.6379 156.645 11.154 156.825 10.6624C157.012 10.1707 157.184 9.65564 157.348 9.13276C157.512 8.60988 157.668 8.09481 157.824 7.59535C157.98 8.0792 158.136 8.58647 158.308 9.11715C158.495 9.69466 158.674 10.2409 158.846 10.756C159.018 11.2711 159.174 11.6925 159.291 12.0281L160.555 15.3995H155.053L155.069 15.3917Z" fill="#212352"/><path d="M206.305 6.1558H166.592L164.952 1.98059H206.305V6.1558Z" fill="#D11911"/><path d="M206.304 14.8887H170.002L168.397 10.7057L206.304 10.7057V14.8887Z" fill="#D11911"/><path d="M206.304 23.6214L173.426 23.6213L171.763 19.4071L206.304 19.4384V23.6214Z" fill="#D11911"/></svg>
       <span class="header-logo-year">2025</span>
     </a>
@@ -1861,7 +1761,7 @@
 <!-- ═══ SCREEN: CONGRATS ═══ -->
 <div id="screen-congrats" class="sub-screen">
   <header class="global-header">
-    <a class="header-logo" href="#">
+    <a class="header-logo" href="progress-personal.html" onclick="sessionStorage.clear()" title="Restart prototype">
       <svg width="166" height="19" viewBox="0 0 212 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.13833 2.02319H0V23.6797H4.64346V15.0795H13.3373V11.0916H4.64346V6.20621H14.6328V2.02319H4.64346H2.13833Z" fill="#212352"/><path d="M24.9847 6.97888C24.1575 6.97888 23.3693 7.17399 22.6201 7.56419C21.8709 7.9544 21.2153 8.50069 20.6534 9.18745C20.4505 9.43718 20.271 9.70252 20.115 9.97567L20.0369 7.31446H15.7993V23.6797H20.2242V15.2044C20.2242 14.6894 20.3101 14.2133 20.4896 13.7841C20.6612 13.3549 20.9032 12.9725 21.2153 12.6525C21.5275 12.3325 21.8943 12.0828 22.3157 11.9111C22.7371 11.7394 23.1976 11.6458 23.6893 11.6458C24.0638 11.6458 24.4228 11.6926 24.774 11.7862C25.1252 11.8799 25.4218 11.9891 25.6715 12.114L26.8499 7.29105C26.6236 7.2052 26.3427 7.13496 26.0149 7.07253C25.6871 7.0101 25.3437 6.97888 24.9925 6.97888H24.9847Z" fill="#212352"/><path d="M40.8423 9.2811C40.1477 8.54751 39.3283 7.98562 38.384 7.5798C37.4319 7.17399 36.4017 6.97888 35.2935 6.97888C34.0995 6.97888 32.9913 7.18959 31.969 7.61102C30.9466 8.03244 30.0648 8.63336 29.3234 9.40597C28.582 10.1786 28.0045 11.0917 27.5908 12.1452C27.1772 13.1988 26.9743 14.3538 26.9743 15.6103C26.9743 17.2413 27.3489 18.6851 28.0903 19.9415C28.8317 21.198 29.8618 22.1891 31.1807 22.9149C32.4996 23.6329 34.0449 23.9997 35.8242 23.9997C36.5656 23.9997 37.3226 23.906 38.0796 23.7188C38.8444 23.5315 39.5858 23.2583 40.3038 22.8993C41.0218 22.5403 41.6851 22.0877 42.286 21.5492L40.1789 18.607C39.5 19.1611 38.86 19.5591 38.2591 19.7855C37.6582 20.0118 37.0026 20.1288 36.2768 20.1288C35.2233 20.1288 34.3102 19.9259 33.5376 19.5279C32.765 19.1299 32.1641 18.568 31.7426 17.8422C31.5007 17.4364 31.3368 16.976 31.2354 16.4843H42.8948L42.926 15.1264C42.965 13.948 42.8011 12.8632 42.4343 11.8799C42.0597 10.8888 41.529 10.0303 40.8423 9.29671V9.2811ZM33.0459 11.2477C33.6781 10.8966 34.4429 10.7249 35.3482 10.7249C35.9647 10.7249 36.5266 10.8497 37.0182 11.0995C37.5099 11.3492 37.9235 11.7004 38.2435 12.153C38.5635 12.6057 38.743 13.1129 38.782 13.667V13.7919H31.2666C31.3446 13.4329 31.4539 13.1051 31.6022 12.8008C31.9299 12.1218 32.4138 11.6067 33.0381 11.2555L33.0459 11.2477Z" fill="#212352"/><path d="M58.5613 9.2811C57.8667 8.54751 57.0473 7.98562 56.103 7.5798C55.1509 7.17399 54.1207 6.97888 53.0125 6.97888C51.8185 6.97888 50.7103 7.18959 49.688 7.61102C48.6656 8.03244 47.7837 8.63336 47.0424 9.40597C46.301 10.1786 45.7235 11.0917 45.3098 12.1452C44.8962 13.1988 44.6933 14.3538 44.6933 15.6103C44.6933 17.2413 45.0679 18.6851 45.8093 19.9415C46.5507 21.198 47.5808 22.1891 48.8997 22.9149C50.2186 23.6329 51.7639 23.9997 53.5432 23.9997C54.2846 23.9997 55.0416 23.906 55.7986 23.7188C56.5634 23.5315 57.3048 23.2583 58.0228 22.8993C58.7408 22.5403 59.4041 22.0877 60.005 21.5492L57.8979 18.607C57.219 19.1611 56.579 19.5591 55.9781 19.7855C55.3772 20.0118 54.7216 20.1288 53.9958 20.1288C52.9423 20.1288 52.0292 19.9259 51.2566 19.5279C50.484 19.1299 49.8831 18.568 49.4616 17.8422C49.2197 17.4364 49.0558 16.976 48.9544 16.4843H60.6137L60.645 15.1264C60.684 13.948 60.5201 12.8632 60.1533 11.8799C59.7787 10.8888 59.248 10.0303 58.5613 9.29671V9.2811ZM50.7649 11.2477C51.3971 10.8966 52.1619 10.7249 53.0671 10.7249C53.6837 10.7249 54.2456 10.8497 54.7372 11.0995C55.2289 11.3492 55.6425 11.7004 55.9625 12.153C56.2825 12.6057 56.4619 13.1129 56.501 13.667V13.7919H48.9856C49.0636 13.4329 49.1729 13.1051 49.3212 12.8008C49.6489 12.1218 50.1328 11.6067 50.7571 11.2555L50.7649 11.2477Z" fill="#212352"/><path d="M76.2998 2.02319H58.8497V6.20621H65.1633V23.6797H69.8068V6.20621H76.2998V2.02319Z" fill="#212352"/><path d="M86.1597 9.49211C85.8475 9.05508 85.4885 8.65707 85.0593 8.30588C84.552 7.89226 83.9667 7.57229 83.2956 7.33036C82.6244 7.09624 81.8908 6.97137 81.087 6.97137C79.6666 6.97137 78.3946 7.33817 77.2786 8.07176C76.1626 8.80535 75.2807 9.80428 74.633 11.0763C73.9852 12.3484 73.6574 13.8078 73.6574 15.4545C73.6574 17.1011 73.9774 18.5683 74.6174 19.8482C75.2573 21.1281 76.1236 22.1348 77.2161 22.884C78.3087 23.6254 79.534 24 80.8997 24C81.6645 24 82.3825 23.8829 83.0614 23.641C83.7404 23.4069 84.3569 23.0869 84.9032 22.6811C85.3714 22.3377 85.7539 21.9475 86.0972 21.5261V23.6878H90.5222V7.31476H86.1597V9.48431V9.49211ZM84.2711 19.5985C83.6545 19.9887 82.9288 20.1838 82.1093 20.1838C81.2899 20.1838 80.5953 19.9887 79.9866 19.5985C79.3779 19.2083 78.9018 18.6542 78.5506 17.944C78.1995 17.2338 78.0278 16.3988 78.0278 15.4545C78.0278 14.5102 78.1995 13.7141 78.5506 13.0118C78.9018 12.3094 79.3779 11.7553 79.9866 11.3573C80.5953 10.9515 81.3055 10.7564 82.1093 10.7564C82.9131 10.7564 83.6545 10.9593 84.2711 11.3573C84.8876 11.7553 85.3714 12.3094 85.707 13.0118C86.0504 13.7141 86.2143 14.5258 86.2143 15.4545C86.2143 16.3832 86.0426 17.2338 85.707 17.944C85.3636 18.6542 84.8876 19.2083 84.2711 19.5985Z" fill="#212352"/><path d="M109.068 7.3147H103.902L101.1 12.2313L97.627 7.3147H92.3046L98.3216 15.3608L92.2422 23.68H97.4085L100.608 18.537L104.214 23.68H109.474L103.402 15.3998L109.068 7.3147Z" fill="#212352"/><path d="M124.469 15.0798C124.469 15.946 124.266 16.7265 123.868 17.4132C123.47 18.1 122.916 18.6541 122.229 19.0677C121.535 19.4813 120.77 19.6842 119.927 19.6842C119.084 19.6842 118.351 19.4813 117.687 19.0677C117.016 18.6541 116.486 18.1078 116.095 17.4132C115.705 16.7187 115.51 15.946 115.51 15.0798V2.00006H110.835V15.3685C110.835 16.9996 111.226 18.459 112.014 19.7467C112.794 21.0343 113.879 22.0489 115.245 22.7825C116.618 23.5161 118.179 23.8829 119.935 23.8829C121.691 23.8829 123.221 23.5161 124.594 22.7825C125.968 22.0489 127.045 21.0421 127.825 19.7467C128.605 18.459 129.003 16.9996 129.003 15.3685V2.00006H124.485V15.0876L124.469 15.0798Z" fill="#212352"/><path d="M147.054 14.6661C146.703 13.9559 146.203 13.3394 145.556 12.8087C144.908 12.278 144.127 11.8332 143.222 11.4664C142.317 11.0918 141.295 10.7953 140.155 10.5689C139.554 10.4441 139.008 10.3036 138.516 10.1397C138.025 9.97582 137.595 9.78071 137.244 9.57C136.893 9.35929 136.628 9.10175 136.44 8.813C136.253 8.52425 136.159 8.19648 136.159 7.82188C136.159 7.34582 136.3 6.94781 136.581 6.61224C136.862 6.28446 137.244 6.02693 137.744 5.85523C138.235 5.68354 138.828 5.58989 139.507 5.58989C140.124 5.58989 140.733 5.69135 141.318 5.88645C141.903 6.08155 142.45 6.37811 142.957 6.76832C143.464 7.15852 143.932 7.64238 144.362 8.21989L147.304 5.37138C146.812 4.56755 146.196 3.88859 145.462 3.3267C144.728 2.7726 143.87 2.34337 142.879 2.03901C141.888 1.74246 140.733 1.59418 139.414 1.59418C138.345 1.59418 137.322 1.75026 136.37 2.05462C135.41 2.36679 134.567 2.81162 133.834 3.38913C133.1 3.96663 132.53 4.6534 132.117 5.44942C131.703 6.24544 131.5 7.1039 131.5 8.03259C131.5 8.96128 131.641 9.7573 131.922 10.4753C132.203 11.2011 132.624 11.841 133.209 12.4107C133.787 12.9804 134.505 13.4565 135.371 13.8311C136.237 14.2135 137.244 14.5412 138.399 14.8066C138.938 14.8924 139.429 14.9939 139.882 15.1344C140.335 15.267 140.748 15.4231 141.123 15.5948C141.497 15.7743 141.817 15.9694 142.083 16.1801C142.348 16.3908 142.559 16.6405 142.699 16.9215C142.84 17.2024 142.918 17.5068 142.918 17.8346C142.918 18.2872 142.769 18.6774 142.489 19.013C142.2 19.3408 141.802 19.5983 141.294 19.77C140.787 19.9417 140.218 20.0353 139.578 20.0353C138.399 20.0353 137.314 19.7856 136.315 19.2783C135.317 18.7711 134.31 17.819 133.303 16.4142L130.392 19.7232C131.071 20.6285 131.844 21.4089 132.694 22.041C133.553 22.681 134.528 23.1648 135.636 23.4926C136.737 23.8204 137.962 23.9842 139.304 23.9842C140.951 23.9842 142.395 23.7111 143.636 23.1648C144.877 22.6185 145.844 21.8303 146.547 20.8002C147.249 19.77 147.6 18.5213 147.6 17.0542C147.6 16.1645 147.421 15.3685 147.077 14.6583L147.054 14.6661Z" fill="#212352"/><path d="M163.661 23.6797H168.422L159.986 2.02319H155.842L147.366 23.6797H151.947L153.664 19.1299H161.976L163.677 23.6797H163.661ZM155.069 15.3917L156.302 12.1139C156.466 11.6379 156.645 11.154 156.825 10.6624C157.012 10.1707 157.184 9.65564 157.348 9.13276C157.512 8.60988 157.668 8.09481 157.824 7.59535C157.98 8.0792 158.136 8.58647 158.308 9.11715C158.495 9.69466 158.674 10.2409 158.846 10.756C159.018 11.2711 159.174 11.6925 159.291 12.0281L160.555 15.3995H155.053L155.069 15.3917Z" fill="#212352"/><path d="M206.305 6.1558H166.592L164.952 1.98059H206.305V6.1558Z" fill="#D11911"/><path d="M206.304 14.8887H170.002L168.397 10.7057L206.304 10.7057V14.8887Z" fill="#D11911"/><path d="M206.304 23.6214L173.426 23.6213L171.763 19.4071L206.304 19.4384V23.6214Z" fill="#D11911"/></svg>
       <span class="header-logo-year">2025</span>
     </a>
@@ -1913,7 +1813,7 @@
 <!-- ═══ SCREEN: GENERIC INCOME ENTRY ═══ -->
 <div id="screen-generic" class="sub-screen">
   <header class="global-header">
-    <a class="header-logo" href="#">
+    <a class="header-logo" href="progress-personal.html" onclick="sessionStorage.clear()" title="Restart prototype">
       <svg width="166" height="19" viewBox="0 0 212 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.13833 2.02319H0V23.6797H4.64346V15.0795H13.3373V11.0916H4.64346V6.20621H14.6328V2.02319H4.64346H2.13833Z" fill="#212352"/><path d="M24.9847 6.97888C24.1575 6.97888 23.3693 7.17399 22.6201 7.56419C21.8709 7.9544 21.2153 8.50069 20.6534 9.18745C20.4505 9.43718 20.271 9.70252 20.115 9.97567L20.0369 7.31446H15.7993V23.6797H20.2242V15.2044C20.2242 14.6894 20.3101 14.2133 20.4896 13.7841C20.6612 13.3549 20.9032 12.9725 21.2153 12.6525C21.5275 12.3325 21.8943 12.0828 22.3157 11.9111C22.7371 11.7394 23.1976 11.6458 23.6893 11.6458C24.0638 11.6458 24.4228 11.6926 24.774 11.7862C25.1252 11.8799 25.4218 11.9891 25.6715 12.114L26.8499 7.29105C26.6236 7.2052 26.3427 7.13496 26.0149 7.07253C25.6871 7.0101 25.3437 6.97888 24.9925 6.97888H24.9847Z" fill="#212352"/><path d="M40.8423 9.2811C40.1477 8.54751 39.3283 7.98562 38.384 7.5798C37.4319 7.17399 36.4017 6.97888 35.2935 6.97888C34.0995 6.97888 32.9913 7.18959 31.969 7.61102C30.9466 8.03244 30.0648 8.63336 29.3234 9.40597C28.582 10.1786 28.0045 11.0917 27.5908 12.1452C27.1772 13.1988 26.9743 14.3538 26.9743 15.6103C26.9743 17.2413 27.3489 18.6851 28.0903 19.9415C28.8317 21.198 29.8618 22.1891 31.1807 22.9149C32.4996 23.6329 34.0449 23.9997 35.8242 23.9997C36.5656 23.9997 37.3226 23.906 38.0796 23.7188C38.8444 23.5315 39.5858 23.2583 40.3038 22.8993C41.0218 22.5403 41.6851 22.0877 42.286 21.5492L40.1789 18.607C39.5 19.1611 38.86 19.5591 38.2591 19.7855C37.6582 20.0118 37.0026 20.1288 36.2768 20.1288C35.2233 20.1288 34.3102 19.9259 33.5376 19.5279C32.765 19.1299 32.1641 18.568 31.7426 17.8422C31.5007 17.4364 31.3368 16.976 31.2354 16.4843H42.8948L42.926 15.1264C42.965 13.948 42.8011 12.8632 42.4343 11.8799C42.0597 10.8888 41.529 10.0303 40.8423 9.29671V9.2811ZM33.0459 11.2477C33.6781 10.8966 34.4429 10.7249 35.3482 10.7249C35.9647 10.7249 36.5266 10.8497 37.0182 11.0995C37.5099 11.3492 37.9235 11.7004 38.2435 12.153C38.5635 12.6057 38.743 13.1129 38.782 13.667V13.7919H31.2666C31.3446 13.4329 31.4539 13.1051 31.6022 12.8008C31.9299 12.1218 32.4138 11.6067 33.0381 11.2555L33.0459 11.2477Z" fill="#212352"/><path d="M58.5613 9.2811C57.8667 8.54751 57.0473 7.98562 56.103 7.5798C55.1509 7.17399 54.1207 6.97888 53.0125 6.97888C51.8185 6.97888 50.7103 7.18959 49.688 7.61102C48.6656 8.03244 47.7837 8.63336 47.0424 9.40597C46.301 10.1786 45.7235 11.0917 45.3098 12.1452C44.8962 13.1988 44.6933 14.3538 44.6933 15.6103C44.6933 17.2413 45.0679 18.6851 45.8093 19.9415C46.5507 21.198 47.5808 22.1891 48.8997 22.9149C50.2186 23.6329 51.7639 23.9997 53.5432 23.9997C54.2846 23.9997 55.0416 23.906 55.7986 23.7188C56.5634 23.5315 57.3048 23.2583 58.0228 22.8993C58.7408 22.5403 59.4041 22.0877 60.005 21.5492L57.8979 18.607C57.219 19.1611 56.579 19.5591 55.9781 19.7855C55.3772 20.0118 54.7216 20.1288 53.9958 20.1288C52.9423 20.1288 52.0292 19.9259 51.2566 19.5279C50.484 19.1299 49.8831 18.568 49.4616 17.8422C49.2197 17.4364 49.0558 16.976 48.9544 16.4843H60.6137L60.645 15.1264C60.684 13.948 60.5201 12.8632 60.1533 11.8799C59.7787 10.8888 59.248 10.0303 58.5613 9.29671V9.2811ZM50.7649 11.2477C51.3971 10.8966 52.1619 10.7249 53.0671 10.7249C53.6837 10.7249 54.2456 10.8497 54.7372 11.0995C55.2289 11.3492 55.6425 11.7004 55.9625 12.153C56.2825 12.6057 56.4619 13.1129 56.501 13.667V13.7919H48.9856C49.0636 13.4329 49.1729 13.1051 49.3212 12.8008C49.6489 12.1218 50.1328 11.6067 50.7571 11.2555L50.7649 11.2477Z" fill="#212352"/><path d="M76.2998 2.02319H58.8497V6.20621H65.1633V23.6797H69.8068V6.20621H76.2998V2.02319Z" fill="#212352"/><path d="M86.1597 9.49211C85.8475 9.05508 85.4885 8.65707 85.0593 8.30588C84.552 7.89226 83.9667 7.57229 83.2956 7.33036C82.6244 7.09624 81.8908 6.97137 81.087 6.97137C79.6666 6.97137 78.3946 7.33817 77.2786 8.07176C76.1626 8.80535 75.2807 9.80428 74.633 11.0763C73.9852 12.3484 73.6574 13.8078 73.6574 15.4545C73.6574 17.1011 73.9774 18.5683 74.6174 19.8482C75.2573 21.1281 76.1236 22.1348 77.2161 22.884C78.3087 23.6254 79.534 24 80.8997 24C81.6645 24 82.3825 23.8829 83.0614 23.641C83.7404 23.4069 84.3569 23.0869 84.9032 22.6811C85.3714 22.3377 85.7539 21.9475 86.0972 21.5261V23.6878H90.5222V7.31476H86.1597V9.48431V9.49211ZM84.2711 19.5985C83.6545 19.9887 82.9288 20.1838 82.1093 20.1838C81.2899 20.1838 80.5953 19.9887 79.9866 19.5985C79.3779 19.2083 78.9018 18.6542 78.5506 17.944C78.1995 17.2338 78.0278 16.3988 78.0278 15.4545C78.0278 14.5102 78.1995 13.7141 78.5506 13.0118C78.9018 12.3094 79.3779 11.7553 79.9866 11.3573C80.5953 10.9515 81.3055 10.7564 82.1093 10.7564C82.9131 10.7564 83.6545 10.9593 84.2711 11.3573C84.8876 11.7553 85.3714 12.3094 85.707 13.0118C86.0504 13.7141 86.2143 14.5258 86.2143 15.4545C86.2143 16.3832 86.0426 17.2338 85.707 17.944C85.3636 18.6542 84.8876 19.2083 84.2711 19.5985Z" fill="#212352"/><path d="M109.068 7.3147H103.902L101.1 12.2313L97.627 7.3147H92.3046L98.3216 15.3608L92.2422 23.68H97.4085L100.608 18.537L104.214 23.68H109.474L103.402 15.3998L109.068 7.3147Z" fill="#212352"/><path d="M124.469 15.0798C124.469 15.946 124.266 16.7265 123.868 17.4132C123.47 18.1 122.916 18.6541 122.229 19.0677C121.535 19.4813 120.77 19.6842 119.927 19.6842C119.084 19.6842 118.351 19.4813 117.687 19.0677C117.016 18.6541 116.486 18.1078 116.095 17.4132C115.705 16.7187 115.51 15.946 115.51 15.0798V2.00006H110.835V15.3685C110.835 16.9996 111.226 18.459 112.014 19.7467C112.794 21.0343 113.879 22.0489 115.245 22.7825C116.618 23.5161 118.179 23.8829 119.935 23.8829C121.691 23.8829 123.221 23.5161 124.594 22.7825C125.968 22.0489 127.045 21.0421 127.825 19.7467C128.605 18.459 129.003 16.9996 129.003 15.3685V2.00006H124.485V15.0876L124.469 15.0798Z" fill="#212352"/><path d="M147.054 14.6661C146.703 13.9559 146.203 13.3394 145.556 12.8087C144.908 12.278 144.127 11.8332 143.222 11.4664C142.317 11.0918 141.295 10.7953 140.155 10.5689C139.554 10.4441 139.008 10.3036 138.516 10.1397C138.025 9.97582 137.595 9.78071 137.244 9.57C136.893 9.35929 136.628 9.10175 136.44 8.813C136.253 8.52425 136.159 8.19648 136.159 7.82188C136.159 7.34582 136.3 6.94781 136.581 6.61224C136.862 6.28446 137.244 6.02693 137.744 5.85523C138.235 5.68354 138.828 5.58989 139.507 5.58989C140.124 5.58989 140.733 5.69135 141.318 5.88645C141.903 6.08155 142.45 6.37811 142.957 6.76832C143.464 7.15852 143.932 7.64238 144.362 8.21989L147.304 5.37138C146.812 4.56755 146.196 3.88859 145.462 3.3267C144.728 2.7726 143.87 2.34337 142.879 2.03901C141.888 1.74246 140.733 1.59418 139.414 1.59418C138.345 1.59418 137.322 1.75026 136.37 2.05462C135.41 2.36679 134.567 2.81162 133.834 3.38913C133.1 3.96663 132.53 4.6534 132.117 5.44942C131.703 6.24544 131.5 7.1039 131.5 8.03259C131.5 8.96128 131.641 9.7573 131.922 10.4753C132.203 11.2011 132.624 11.841 133.209 12.4107C133.787 12.9804 134.505 13.4565 135.371 13.8311C136.237 14.2135 137.244 14.5412 138.399 14.8066C138.938 14.8924 139.429 14.9939 139.882 15.1344C140.335 15.267 140.748 15.4231 141.123 15.5948C141.497 15.7743 141.817 15.9694 142.083 16.1801C142.348 16.3908 142.559 16.6405 142.699 16.9215C142.84 17.2024 142.918 17.5068 142.918 17.8346C142.918 18.2872 142.769 18.6774 142.489 19.013C142.2 19.3408 141.802 19.5983 141.294 19.77C140.787 19.9417 140.218 20.0353 139.578 20.0353C138.399 20.0353 137.314 19.7856 136.315 19.2783C135.317 18.7711 134.31 17.819 133.303 16.4142L130.392 19.7232C131.071 20.6285 131.844 21.4089 132.694 22.041C133.553 22.681 134.528 23.1648 135.636 23.4926C136.737 23.8204 137.962 23.9842 139.304 23.9842C140.951 23.9842 142.395 23.7111 143.636 23.1648C144.877 22.6185 145.844 21.8303 146.547 20.8002C147.249 19.77 147.6 18.5213 147.6 17.0542C147.6 16.1645 147.421 15.3685 147.077 14.6583L147.054 14.6661Z" fill="#212352"/><path d="M163.661 23.6797H168.422L159.986 2.02319H155.842L147.366 23.6797H151.947L153.664 19.1299H161.976L163.677 23.6797H163.661ZM155.069 15.3917L156.302 12.1139C156.466 11.6379 156.645 11.154 156.825 10.6624C157.012 10.1707 157.184 9.65564 157.348 9.13276C157.512 8.60988 157.668 8.09481 157.824 7.59535C157.98 8.0792 158.136 8.58647 158.308 9.11715C158.495 9.69466 158.674 10.2409 158.846 10.756C159.018 11.2711 159.174 11.6925 159.291 12.0281L160.555 15.3995H155.053L155.069 15.3917Z" fill="#212352"/><path d="M206.305 6.1558H166.592L164.952 1.98059H206.305V6.1558Z" fill="#D11911"/><path d="M206.304 14.8887H170.002L168.397 10.7057L206.304 10.7057V14.8887Z" fill="#D11911"/><path d="M206.304 23.6214L173.426 23.6213L171.763 19.4071L206.304 19.4384V23.6214Z" fill="#D11911"/></svg>
       <span class="header-logo-year">2025</span>
     </a>
@@ -1970,41 +1870,14 @@
 </div>
 
 <script>
-  // ── SCREEN TOGGLE (W-2 intro ↔ Income page) ──
-  function goToIncomeScreen() {
-    document.getElementById('screen-wages').classList.add('screen-hidden');
-    document.getElementById('screen-income').classList.remove('screen-hidden');
-    window.scrollTo({ top: 0, behavior: 'auto' });
-  }
-  function goBackToWages() {
-    document.getElementById('screen-income').classList.add('screen-hidden');
-    document.getElementById('screen-wages').classList.remove('screen-hidden');
-    window.scrollTo({ top: 0, behavior: 'auto' });
-  }
-  // Visiting the W-2 wages screen counts as reviewed.
-  // Any exit (back / Previous / Continue) returns to the income screen and
-  // updates row-wages: clears the needs-review badge and swaps Review → Edit/Add.
-  function markWagesVisited() {
-    goToIncomeScreen();
-    const row = document.getElementById('row-wages');
-    if (!row) return;
-    row.querySelector('.col-current').innerHTML = '$68,500';
-    row.querySelector('.col-actions').innerHTML =
-      '<button class="btn-edit-add" onclick="goBackToWages()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit/Add</button>';
-    setTimeout(function() {
-      row.classList.add('added-income-row--completing');
-      row.addEventListener('animationend', function() { row.classList.remove('added-income-row--completing'); }, { once: true });
-    }, 80);
-  }
-
   // ── STATE ──
   const addedKeys = new Set(['wages', 'business']);
   const rolloverKeys = new Set(['investments']);
   let currentKey = null;
 
   const incomeLabels = {
-    wages:             { title: 'Wages and Salaries',          form: 'Form W-2',                  prevAmount: '$43,964' },
-    investments:       { title: 'Investments and Savings',     form: '1099-INT, 1099-DIV, 1099-B', prevAmount: '$46'    },
+    wages:             { title: 'Wages and Salaries',          form: 'Form W-2',                  prevAmount: '$64,300' },
+    investments:       { title: 'Investments and Savings',     form: '1099-INT, 1099-DIV, 1099-B', prevAmount: '$1,380'    },
     retirement:        { title: 'Retirement Income',           form: 'Form 1099-R',                prevAmount: '$623'   },
     unemployment:      { title: 'Unemployment Compensation',   form: 'Form 1099-G',                prevAmount: '—'      },
     'social-security': { title: 'Social Security Benefits',    form: 'Form SSA-1099',              prevAmount: '—'      },
@@ -2168,250 +2041,6 @@
     chevron.classList.toggle('open', !isOpen);
   }
 
-  // ── OTHER-SECTION HINTS ──
-  // When a search returns no results but looks tax-related, show a targeted message.
-  // ── FUZZY SEARCH UTILITIES ──
-
-  // Strip hyphens/punctuation and lowercase so "1099nec" matches "1099-NEC", "W2" matches "W-2"
-  function norm(s) {
-    return s.toLowerCase().replace(/[-–—_.,]/g, '').replace(/(\d)\s+([a-z])/g, '$1$2').replace(/([a-z])\s+(\d)/g, '$1$2').replace(/\s+/g, ' ').trim();
-  }
-
-  // Levenshtein distance (capped early for speed)
-  function lev(a, b) {
-    if (Math.abs(a.length - b.length) > 3) return 99;
-    const dp = Array.from({length: a.length + 1}, (_, i) => [i]);
-    for (let j = 0; j <= b.length; j++) dp[0][j] = j;
-    for (let i = 1; i <= a.length; i++)
-      for (let j = 1; j <= b.length; j++)
-        dp[i][j] = a[i-1] === b[j-1] ? dp[i-1][j-1]
-          : 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
-    return dp[a.length][b.length];
-  }
-
-  // Does `text` contain `word` exactly or fuzzily?
-  function fuzzyIncludes(text, word) {
-    const nt = norm(text), nw = norm(word);
-    if (nt.includes(nw)) return true;
-    const maxDist = nw.length >= 8 ? 2 : nw.length >= 7 ? 1 : 0;
-    if (maxDist === 0) return false;
-    return nt.split(' ').some(tw => lev(tw, nw) <= maxDist);
-  }
-
-  // Returns true if every space-separated word in query fuzzy-matches somewhere in text
-  function queryMatches(query, text) {
-    return query.trim().split(/\s+/).every(w => fuzzyIncludes(text, w));
-  }
-
-  // ── EXTRA KEYWORDS (synonyms per income type) ──
-  // Keyed by lowercased data-label value
-  const extraKeywords = {
-    'wages and salaries':
-      'w2 w-2 job paycheck payroll employer box1 salary income',
-    'investments and savings':
-      'stocks bonds dividends interest brokerage capital gains etf mutual fund securities 1099b 1099div 1099int crypto cryptocurrency 8949',
-    'retirement income':
-      '401k 403b ira pension roth distribution annuity withdrawal 1099r',
-    'unemployment compensation':
-      'jobless benefits state unemployment 1099g',
-    'social security benefits':
-      'ssa ssdi disability retirement ssa1099 ssi',
-    'taxable state refund':
-      '1099g refund overpayment local refund',
-    'capital loss carryovers':
-      'carryforward carryover prior year loss schedule d',
-    'form 1099-nec and form 1099-misc income':
-      'nonemployee compensation miscellaneous contractor gig side job nec misc 1099nec 1099misc',
-    'form 1099-k income':
-      'paypal venmo stripe cashapp cash app ebay amazon seller marketplace 1099k payment app',
-    'business income':
-      'self employed selfemployed schedule c contractor freelance freelancing consulting sole proprietor llc',
-    'partnership income':
-      'k1 k-1 form 1065 partner',
-    's corporation income':
-      'k1 k-1 form 1120s scorp s corp shareholder',
-    'rental income':
-      'landlord airbnb vrbo property tenant rent',
-    'farm income':
-      'agriculture farming crops livestock',
-    'farm rental income':
-      'cash rent farmland agricultural',
-    'sale of business assets':
-      'depreciation recapture form 4797 business property',
-    'gambling income':
-      'lottery casino poker sports betting w2g winnings',
-    'original issue discount income':
-      'bond discount zero coupon 1099oid oid',
-    'estate or trust income':
-      'inheritance trust distribution executor form 1041 k1 k-1',
-    'seller-financed loans':
-      'owner financing private mortgage loan interest',
-    'royalty income':
-      'royalties book patent mineral rights oil gas',
-    'unreported or allocated tips':
-      'cash tips form 4137 tipped',
-    'sale of home':
-      'house property real estate exclusion 1099s',
-    'installment sales':
-      'deferred payment form 6252',
-    'canceled debt':
-      'debt forgiveness foreclosure short sale 1099c insolvency',
-    'qualified tuition program distributions':
-      '529 plan education savings 1099q',
-    'long-term care insurance payments':
-      '1099ltc',
-    'able account distributions':
-      'disability savings 1099qa',
-    'child with investment income over $1,350':
-      'kiddie tax form 8814',
-    'undistributed long-term capital gains':
-      'mutual fund form 2439',
-    'contracts and straddles':
-      'options futures section 1256',
-    'other income':
-      'prizes awards hobby jury duty household employee scholarship miscellaneous',
-  };
-
-  // ── OTHER-SECTION HINTS ──
-  // Patterns are checked against the normalized (no-hyphen) query
-  const otherSectionHints = [
-    { patterns: ['1098t', 'tuition', 'education credit', 'american opportunity', 'lifetime learning', '8863', 'aotc'],
-      formName: '1098-T', path: ['Deductions / Credits', 'Education Credits', 'College Tuition (1098-T)'] },
-    { patterns: ['1098e', 'student loan interest'],
-      formName: '1098-E', path: ['Deductions / Credits', 'Adjustments', 'Student Loan Interest (1098-E)'] },
-    { patterns: ['1098', 'mortgage interest', 'home mortgage'],
-      formName: '1098', path: ['Deductions / Credits', 'Itemized Deductions', 'Mortgage Interest (1098)'] },
-    { patterns: ['child tax credit', 'ctc', '8812', 'additional child tax'],
-      formName: '8812', path: ['Deductions / Credits', 'Common Credits', 'Child Tax Credit'] },
-    { patterns: ['earned income credit', 'eitc', 'eic'],
-      formName: 'EIC', path: ['Deductions / Credits', 'Common Credits', 'Earned Income Credit'] },
-    { patterns: ['child care', 'dependent care', '2441', 'daycare', 'childcare'],
-      formName: '2441', path: ['Deductions / Credits', 'Common Credits', 'Child & Dependent Care (2441)'] },
-    { patterns: ['hsa', 'health savings', '8889'],
-      formName: '8889', path: ['Deductions / Credits', 'Adjustments', 'HSA Contributions (8889)'] },
-    { patterns: ['charitable', 'donation', 'charity'],
-      formName: 'Sch A', path: ['Deductions / Credits', 'Itemized Deductions', 'Charitable Donations'] },
-    { patterns: ['property tax', 'real estate tax', 'salt deduction'],
-      formName: 'Sch A', path: ['Deductions / Credits', 'Itemized Deductions', 'State & Local Taxes (SALT)'] },
-    { patterns: ['medical expense', 'dental expense'],
-      formName: 'Sch A', path: ['Deductions / Credits', 'Itemized Deductions', 'Medical & Dental Expenses'] },
-    { patterns: ['solar', 'energy credit', '5695', 'electric vehicle credit', 'ev credit'],
-      formName: '5695', path: ['Deductions / Credits', 'Other Credits', 'Residential Energy Credits (5695)'] },
-    { patterns: ['saver credit', 'retirement credit', '8880'],
-      formName: '8880', path: ['Deductions / Credits', 'Other Credits', 'Retirement Savings Credit (8880)'] },
-    { patterns: ['1095a', '8962'],
-      formName: '1095-A', path: ['Deductions / Credits', 'Other', 'Health Insurance Marketplace (1095-A)'] },
-    { patterns: ['1095b', '1095c'],
-      title: "You don't need to enter this",
-      sub: "Forms 1095-B and 1095-C are for your records only. You may be prompted for them if you file a state return with a health insurance mandate.",
-      formName: '1095-B' },
-    { patterns: ['1095'],
-      formName: '1095-A', path: ['Deductions / Credits', 'Other', 'Health Insurance Marketplace (1095-A)'] },
-    { patterns: ['8862'],
-      formName: '8862', path: ['Deductions / Credits', 'Other Credits', 'Credit Recertification (8862)'] },
-    { patterns: ['prior year', 'prior return', '2024', '2023', '2022', '2021', '2020'],
-      title: "You don't need to enter this",
-      sub: "To access previous years' returns, use the Account menu in the top-right corner and select \"Prior Returns\"." },
-    { patterns: ['w4', 'withholding allowance'],
-      formName: 'W-4', path: ['Personal', 'Tax Withholding', 'W-4 Details'] },
-    { patterns: ['estimated tax', '1040es', 'quarterly payment', 'quarterly tax'],
-      formName: '1040-ES', path: ['Misc', 'Taxes Paid', 'Estimated Tax Payments'] },
-    { patterns: ['ira contribution', 'ira deduction', 'traditional ira contribution', 'roth ira contribution'],
-      formName: 'IRA', path: ['Deductions / Credits', 'Adjustments', 'IRA Contributions'] },
-    { patterns: ['alimony paid', 'spousal support paid'],
-      formName: 'Alimony', path: ['Deductions / Credits', 'Adjustments', 'Alimony Paid'] },
-  ];
-
-  function getOtherSectionHint(q) {
-    const nq = norm(q);
-    for (const hint of otherSectionHints) {
-      if (hint.patterns.some(p => nq.includes(norm(p)))) return hint;
-    }
-    return null;
-  }
-
-  // ── SEARCH / FILTER ──
-  function filterIncome(query) {
-    const q = query.trim().toLowerCase();
-    const noResults     = document.getElementById('noResults');
-    const noResultsTitle = document.getElementById('noResultsTitle');
-    const noResultsSub  = document.getElementById('noResultsSub');
-    const clearBtn      = document.getElementById('searchClear');
-    clearBtn.style.display = query ? 'flex' : 'none';
-    let anyVisible = false;
-
-    document.querySelectorAll('.category-block').forEach(cat => {
-      const items = cat.querySelectorAll('.income-item');
-      let catHasMatch = false;
-
-      items.forEach(item => {
-        const label = (item.getAttribute('data-label') || '').toLowerCase();
-        const forms = (item.getAttribute('data-forms') || '').toLowerCase();
-        const extra = extraKeywords[label] || '';
-        const fullText = [label, forms, extra].join(' ');
-        const matches = !q || queryMatches(q, fullText);
-        item.classList.toggle('hidden', !matches);
-        if (matches) { catHasMatch = true; anyVisible = true; }
-      });
-
-      const itemsEl = cat.querySelector('.category-items');
-      const chevron  = cat.querySelector('.category-chevron');
-      if (q) {
-        if (catHasMatch) {
-          itemsEl.classList.add('open'); chevron.classList.add('open'); cat.style.display = '';
-        } else {
-          cat.style.display = 'none';
-        }
-      } else {
-        cat.style.display = '';
-        const isCommon = cat.getAttribute('data-category') === 'common';
-        itemsEl.classList.toggle('open', isCommon);
-        chevron.classList.toggle('open', isCommon);
-      }
-    });
-
-    const pathEl = document.getElementById('noResultsPath');
-    const illustrationEl = document.getElementById('noResultsIllustration');
-    const formTextEl = document.getElementById('noResultsFormText');
-    const iconEl = document.querySelector('.no-results-icon');
-    if (!anyVisible && q) {
-      const hint = getOtherSectionHint(q);
-      if (hint && hint.path && hint.path.length) {
-        // State 1: covered in another section — illustration + menu path
-        noResultsTitle.textContent = "We'll enter this later";
-        noResultsSub.style.display = 'none';
-        formTextEl.textContent = hint.formName || '';
-        illustrationEl.style.display = 'block';
-        if (iconEl) iconEl.style.display = 'none';
-        pathEl.textContent = hint.path.join(' > ');
-        pathEl.style.display = 'block';
-      } else if (hint) {
-        // State 2: don't need to enter — illustration + explanation
-        noResultsTitle.textContent = hint.title;
-        noResultsSub.textContent   = hint.sub;
-        noResultsSub.style.display = '';
-        formTextEl.textContent = hint.formName || '';
-        illustrationEl.style.display = 'block';
-        if (iconEl) iconEl.style.display = 'none';
-        pathEl.style.display = 'none';
-      } else {
-        // State 3: generic no results — magnifying glass icon
-        noResultsTitle.textContent = 'No results found';
-        noResultsSub.textContent   = 'Try searching for a form number, income type, or source.';
-        noResultsSub.style.display = '';
-        illustrationEl.style.display = 'none';
-        if (iconEl) {
-          iconEl.style.display = '';
-          iconEl.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#016ee6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`;
-        }
-        pathEl.style.display = 'none';
-      }
-      noResults.style.display = 'flex';
-    } else {
-      noResults.style.display = 'none';
-      pathEl.style.display = 'none';
-    }
-  }
 
   // ── INVESTMENTS FLOW ──
   function showInvestmentsScreen() {
@@ -2420,55 +2049,7 @@
   }
   function hideInvestmentsScreen() {
     document.getElementById('screen-investments').classList.remove('active');
-    clearSearch();
   }
-
-  // ── RETIREMENT REVIEW SCREEN (dedicated, modeled on Investments) ──
-  function showBusinessScreen() {
-    document.getElementById('screen-business').classList.add('active');
-    document.getElementById('screen-business').scrollTop = 0;
-  }
-  // Visiting the retirement review screen counts as reviewed.
-  // Any exit (back / Previous / Continue) closes the screen and updates the
-  // income row: clears the needs-review badge and swaps Review → Edit/Add.
-  function markBusinessVisited() {
-    document.getElementById('screen-business').classList.remove('active');
-    const row = document.getElementById('row-business');
-    if (!row) return;
-    row.querySelector('.col-current').innerHTML = '$34,600';
-    row.querySelector('.col-actions').innerHTML =
-      '<button class="btn-edit-add" onclick="showBusinessScreen()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit/Add</button>';
-    setTimeout(function() {
-      row.classList.add('added-income-row--completing');
-      row.addEventListener('animationend', function() { row.classList.remove('added-income-row--completing'); }, { once: true });
-    }, 80);
-  }
-
-  // Same pattern for Investments — all exits route here.
-  function markInvestmentsVisited() {
-    document.getElementById('screen-investments').classList.remove('active');
-    clearSearch();
-    const row = document.getElementById('row-investments');
-    if (!row) return;
-    const amount = (typeof mockAmounts !== 'undefined' && mockAmounts.investments) || '$1,599';
-    row.querySelector('.col-current').innerHTML = amount;
-    row.querySelector('.col-actions').innerHTML =
-      '<button class="btn-edit-add" onclick="showInvestmentsScreen()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit/Add</button>';
-    rolloverKeys.delete('investments');
-    addedKeys.add('investments');
-    const pdfLink = document.getElementById('investments-pdf-link');
-    if (pdfLink) pdfLink.style.display = '';
-    const catBtn = document.getElementById('cat-investments-btn');
-    if (catBtn) {
-      catBtn.className = 'btn-edit-add';
-      catBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit/Add';
-    }
-    setTimeout(function() {
-      row.classList.add('added-income-row--completing');
-      row.addEventListener('animationend', function() { row.classList.remove('added-income-row--completing'); }, { once: true });
-    }, 80);
-  }
-
   // ── GENERIC SCREEN CONFIG ──
   const genericConfig = {
     'unemployment':     { title: 'Your Unemployment Compensation',         desc: 'If you received unemployment benefits in 2025, you\'ll need to enter the amount shown on your <strong>Form 1099-G</strong>.', question: 'Do you need to enter any unemployment compensation for 2025?',           addLabel: 'Add Unemployment Compensation', congrats: 'Nice job! You entered your 1099-G.' },
@@ -2544,7 +2125,6 @@
   function hideGenericScreen() {
     document.getElementById('screen-generic').classList.remove('active');
     currentGenericKey = null;
-    clearSearch();
   }
   function triggerGenericCongrats() {
     const cfg = genericConfig[currentGenericKey];
@@ -2553,7 +2133,6 @@
   }
   function finishGeneric() {
     document.getElementById('screen-congrats').classList.remove('active');
-    clearSearch();
     const key = currentGenericKey;
     if (!key) return;
     const info = incomeLabels[key] || { title: genericConfig[key]?.title || key, form: '', prevAmount: '—' };
@@ -2592,7 +2171,6 @@
 
   function finishInvestments() {
     document.getElementById('screen-congrats').classList.remove('active');
-    clearSearch();
     // Update investments row: swap needs-info → amount, Start → Edit/Add
     const key = 'investments';
     const row = document.getElementById('row-investments');
@@ -2623,11 +2201,9 @@
   }
   function hideNecScreen() {
     document.getElementById('screen-nec').classList.remove('active');
-    clearSearch();
   }
   function finishNec() {
     document.getElementById('screen-congrats').classList.remove('active');
-    clearSearch();
     const key = 'nec-misc';
     const amount = mockAmounts[key] || '$0';
     // If the row already exists in the top table (added via modal previously), just update it
@@ -2664,12 +2240,7 @@
     }, 80);
   }
 
-  function clearSearch() {
-    const input = document.getElementById('incomeSearch');
-    input.value = '';
-    filterIncome('');
-    input.focus();
-  }
+
 
   document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeInfoModal(); } });
 
@@ -2713,16 +2284,93 @@
     document.getElementById('infoModalOverlay').classList.remove('open');
   }
 
-  // Sync visible label on .form-select dropdowns (used by institution cards)
-  document.querySelectorAll('.form-select select').forEach(function(sel) {
-    sel.addEventListener('change', function() {
-      this.parentElement.querySelector('span').textContent = this.value;
+  // ── PORTED REVIEW MACHINERY (wages / investments / business) ──
+  function goToIncomeScreen() {
+    document.getElementById('screen-wages').classList.add('screen-hidden');
+    document.getElementById('screen-income').classList.remove('screen-hidden');
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+  function goBackToWages() {
+    document.getElementById('screen-income').classList.add('screen-hidden');
+    document.getElementById('screen-wages').classList.remove('screen-hidden');
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+  // Visiting the W-2 wages screen counts as reviewed.
+  // Any exit (back / Previous / Continue) returns to the income screen and
+  // updates row-wages: clears the needs-review badge and swaps Review → Edit/Add.
+  function markWagesVisited() {
+    goToIncomeScreen();
+    const row = document.getElementById('row-wages');
+    if (!row) return;
+    row.querySelector('.col-current').innerHTML = '$68,500';
+    row.querySelector('.col-actions').innerHTML =
+      '<button class="btn-edit-add" onclick="goBackToWages()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit/Add</button>';
+    setTimeout(function() {
+      row.classList.add('added-income-row--completing');
+      row.addEventListener('animationend', function() { row.classList.remove('added-income-row--completing'); }, { once: true });
+    }, 80);
+  }
+
+  // Same pattern for Investments — all exits route here.
+  function markInvestmentsVisited() {
+    document.getElementById('screen-investments').classList.remove('active');
+    const row = document.getElementById('row-investments');
+    if (!row) return;
+    const amount = (typeof mockAmounts !== 'undefined' && mockAmounts.investments) || '$1,599';
+    row.querySelector('.col-current').innerHTML = amount;
+    row.querySelector('.col-actions').innerHTML =
+      '<button class="btn-edit-add" onclick="showInvestmentsScreen()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit/Add</button>';
+    rolloverKeys.delete('investments');
+    addedKeys.add('investments');
+    const pdfLink = document.getElementById('investments-pdf-link');
+    if (pdfLink) pdfLink.style.display = '';
+    const catBtn = document.getElementById('cat-investments-btn');
+    if (catBtn) {
+      catBtn.className = 'btn-edit-add';
+      catBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit/Add';
+    }
+    setTimeout(function() {
+      row.classList.add('added-income-row--completing');
+      row.addEventListener('animationend', function() { row.classList.remove('added-income-row--completing'); }, { once: true });
+    }, 80);
+  }
+
+  // ── BUSINESS (SCHEDULE C) REVIEW SCREEN (dedicated, modeled on Investments) ──
+  function showBusinessScreen() {
+    document.getElementById('screen-business').classList.add('active');
+    document.getElementById('screen-business').scrollTop = 0;
+  }
+  // Visiting the retirement review screen counts as reviewed.
+  // Any exit (back / Previous / Continue) closes the screen and updates the
+  // income row: clears the needs-review badge and swaps Review → Edit/Add.
+  function markBusinessVisited() {
+    document.getElementById('screen-business').classList.remove('active');
+    const row = document.getElementById('row-business');
+    if (!row) return;
+    row.querySelector('.col-current').innerHTML = '$34,600';
+    row.querySelector('.col-actions').innerHTML =
+      '<button class="btn-edit-add" onclick="showBusinessScreen()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit/Add</button>';
+    setTimeout(function() {
+      row.classList.add('added-income-row--completing');
+      row.addEventListener('animationend', function() { row.classList.remove('added-income-row--completing'); }, { once: true });
+    }, 80);
+  }
+
+  // Card-level Review: clicking it reveals the Edit/Delete actions in place.
+  function revealCardActions(screenId) {
+    var scr = document.getElementById(screenId);
+    if (!scr) return;
+    scr.querySelectorAll('.card-review-btn').forEach(function(b) { b.remove(); });
+    scr.querySelectorAll('.review-hidden').forEach(function(el) { el.classList.remove('review-hidden'); });
+  }
+  document.querySelectorAll('.card-review-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var host = btn.parentElement;
+      host.querySelectorAll('.review-hidden').forEach(function(el) { el.classList.remove('review-hidden'); });
+      btn.remove();
     });
   });
 
-  // When users review records on income-import-complete-v2 and hit Save and
-  // continue, those rows arrive here pre-reviewed: no "Needs review" badge,
-  // and the Review button is swapped for Edit/Add.
   (function applyReviewedFromShoeboxV2() {
     var editIconSvg = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
 
@@ -2737,9 +2385,11 @@
 
     if (sessionStorage.getItem('reviewed-wages') === '1') {
       markRowReviewed('row-wages', '$68,500', 'goBackToWages()');
+      revealCardActions('screen-wages');
     }
     if (sessionStorage.getItem('reviewed-investments') === '1') {
       markRowReviewed('row-investments', '$1,599', 'showInvestmentsScreen()');
+      revealCardActions('screen-investments');
       var pdfLink = document.getElementById('investments-pdf-link');
       if (pdfLink) pdfLink.style.display = '';
       var catBtn = document.getElementById('cat-investments-btn');
@@ -2750,6 +2400,7 @@
     }
     if (sessionStorage.getItem('reviewed-business') === '1') {
       markRowReviewed('row-business', '$34,600', 'showBusinessScreen()');
+      revealCardActions('screen-business');
     }
   })();
 
