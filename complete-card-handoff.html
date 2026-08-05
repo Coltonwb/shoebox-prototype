@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complete Card — Component Handoff</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; color: inherit; }
+    html, body { font-family: 'Lexend', sans-serif; font-size: 16px; line-height: 24px; color: #212f45; background: #f9f9f9; }
+    .doc { max-width: 800px; margin: 0 auto; padding: 40px 32px 80px; }
+    .doc-kicker { font-size: 12px; line-height: 18px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #667285; margin-bottom: 4px; }
+    h1 { font-size: 30px; line-height: 38px; font-weight: 600; margin-bottom: 8px; }
+    .doc-meta { font-size: 14px; line-height: 20px; color: #667285; padding-bottom: 24px; border-bottom: 1px solid #e2e5e9; }
+    h2 { font-size: 20px; line-height: 28px; font-weight: 600; margin: 32px 0 8px; }
+    h3 { font-size: 16px; line-height: 24px; font-weight: 600; margin: 16px 0 4px; }
+    p, li { font-size: 15px; line-height: 22px; color: #465163; }
+    ul, ol { margin: 4px 0 8px 20px; }
+    li { margin-bottom: 4px; }
+    li::marker { color: #8f99a7; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; background: #f1f2f3; border-radius: 3px; padding: 1px 4px; white-space: nowrap; }
+    table { border-collapse: collapse; width: 100%; margin: 8px 0 8px; font-size: 14px; line-height: 20px; }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #e2e5e9; vertical-align: top; }
+    th { font-weight: 600; color: #212f45; background: #f9f9f9; }
+    td { color: #465163; }
+    .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; border: 1px solid rgba(33,47,69,0.15); vertical-align: -1px; margin-right: 4px; }
+    .example { background: #ffffff; border: 1px solid #e2e5e9; border-radius: 8px; padding: 20px; margin: 8px 0 16px; }
+    .example-caption { font-size: 13px; line-height: 18px; color: #667285; margin-bottom: 12px; }
+    .example .complete-card + .complete-card { margin-top: 8px; }
+    .phone-frame {
+      width: 375px; margin: 8px auto 4px;
+      background: #ffffff; border: 10px solid #212f45; border-radius: 32px;
+      padding: 20px 12px; box-shadow: 0 8px 24px rgba(33, 47, 69, 0.12);
+    }
+    .phone-frame .complete-card + .complete-card,
+    .phone-frame .complete-card + .warning-wrapper { margin-top: 8px; }
+    .phone-frame .complete-card-inner { align-items: flex-start; }
+    .phone-frame .complete-card-left {
+      display: grid; grid-template-columns: 32px 1fr;
+      column-gap: 16px; row-gap: 8px; align-items: start;
+    }
+    .phone-frame .complete-card-badge {
+      grid-column: 2; justify-self: start; margin-left: 0;
+    }
+    .callout { background: #fff9e5; border-radius: 4px; padding: 10px 14px; font-size: 14px; line-height: 20px; color: #465163; margin: 8px 0 16px; }
+    .callout b { font-weight: 600; }
+    .do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 8px 0 16px; }
+    .do, .dont { border-radius: 8px; padding: 12px 16px; font-size: 14px; line-height: 20px; }
+    .do { background: #edfcf0; } .dont { background: #fef6f6; }
+    .do b, .dont b { display: block; margin-bottom: 4px; font-weight: 600; }
+
+    .complete-card {
+      width: 100%;
+      background: #f4f9ff;
+      border: 1px solid #bad9f7;
+      border-radius: 4px;
+      padding: 16px;
+      display: flex;
+    }
+    .complete-card-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .complete-card-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 0;
+    }
+    .complete-card-pdf-svg {
+      width: 32px; height: 40px; flex-shrink: 0;
+    }
+    .complete-card-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .complete-card-name {
+      font-size: 16px; font-weight: 500; line-height: 24px; color: #212f45;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      overflow: hidden; overflow-wrap: anywhere;
+    }
+    .complete-card-status {
+      font-size: 14px; font-weight: 400; line-height: 20px; color: #667285;
+    }
+    .complete-card-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 4px 2px 8px;
+      background: #eaf4ff;
+      border: 1px solid #bad9f7;
+      border-radius: 16px;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+      color: #0850c4;
+      margin-left: 8px;
+      cursor: pointer;
+      position: relative;
+      transition: box-shadow 0.15s, background 0.15s, border-color 0.15s, color 0.15s;
+      user-select: none;
+    }
+    .complete-card-badge:hover {
+      background: #daebff;
+      border-color: #91c2f4;
+      color: #003b9a;
+      text-decoration: underline;
+    }
+    .complete-card-badge:has(.badge-select:focus-visible) {
+      box-shadow: 0 0 0 4px #daebff;
+    }
+    .complete-card-badge.is-open {
+      background: #daebff;
+      border-color: #91c2f4;
+      color: #003b9a;
+      text-decoration: none;
+      box-shadow: none;
+    }
+    .complete-card-badge .badge-chevron {
+      width: 12px; height: 12px; flex-shrink: 0;
+      transition: transform 0.2s;
+    }
+    .complete-card-badge.is-open .badge-chevron {
+      transform: rotate(180deg);
+    }
+    .warning-wrapper .complete-card-badge {
+      background: #fff9e5;
+      border-color: #f9df71;
+      color: #ad4e09;
+    }
+    .warning-wrapper .complete-card-badge:hover {
+      background: #fff2ba;
+      border-color: #f4cd41;
+      color: #93370d;
+      text-decoration: underline;
+    }
+    .warning-wrapper .complete-card-badge:has(.badge-select:focus-visible) {
+      box-shadow: 0 0 0 4px #fff2ba;
+    }
+    .warning-wrapper .complete-card-badge.is-open {
+      background: #fff2ba;
+      border-color: #f4cd41;
+      color: #93370d;
+      text-decoration: none;
+    }
+    .badge-select {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      opacity: 0;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .complete-card-close {
+      width: 40px; height: 40px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: none; border: none; cursor: pointer;
+      border-radius: 50%; color: #212f45;
+      transition: background 0.15s;
+    }
+    .complete-card-close:hover { background: #eaf4ff; }
+    .complete-card-close svg { width: 24px; height: 24px; }
+    .warning-wrapper {
+      border: 1px solid #f9df71;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .warning-wrapper .complete-card {
+      background: #fffcf5;
+      border: none;
+      border-radius: 0;
+    }
+    .warning-wrapper .complete-card .complete-card-close:hover {
+      background: #fff2ba;
+    }
+    .warning-divider {
+      height: 1px;
+      background: #fff2ba;
+      margin: 0 16px;
+    }
+    .warning-message {
+      display: flex;
+      gap: 16px;
+      padding: 16px;
+      background: #fffcf5;
+    }
+    .warning-message-icon {
+      width: 24px; height: 24px; flex-shrink: 0; color: #f79009;
+    }
+    .warning-message-content {
+      display: flex; flex-direction: column; flex: 1; gap: 4px;
+    }
+    .warning-message-title {
+      font-size: 16px; font-weight: 600; line-height: 24px; color: #465163;
+    }
+    .warning-message-text {
+      font-size: 16px; font-weight: 400; line-height: 24px; color: #465163;
+    }
+    .warning-message-text a {
+      color: #016ee6; font-weight: 500; text-decoration: underline;
+    }
+    .warning-message-text a:hover { color: #0850c4; }
+  </style>
+</head>
+<body>
+  <div class="doc">
+    <div class="doc-kicker">Component handoff · SWOOP</div>
+    <h1>Complete Card</h1>
+    <p class="doc-meta">Working name — final class/tag name TBD with dev. Source design: Shoebox v11 income upload (ready-for-import state). Prepared by Colton Bragg (UX) · 2026-08-05 · Draft for dev handoff into <code>@taxhawk-swoop/common</code>.</p>
+
+    <h2>Purpose</h2>
+    <p>The Complete Card represents <b>one uploaded document that finished uploading and is ready to import</b>. It confirms what the file is (name + detected form type), lets the user correct the classification in place, and lets them remove the file — without leaving the upload page.</p>
+
+    <h2>Instances</h2>
+    <p>All shipped permutations. The badge on every card is the live form-type selector; switching any card to Uncategorized converts it to the warning variant below.</p>
+    <div class="example">
+      <p class="example-caption">Default — one card per file type icon (PDF, JPG, PNG, xlsx), various detected form types, including a long-filename case.</p>
+        <div class="complete-card">
+          <div class="complete-card-inner">
+            <div class="complete-card-left">
+              <svg class="complete-card-pdf-svg" width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#016EE6" stroke="#016EE6"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#4B9AEE"/><path d="M5.27561 34V25.6H8.69561C9.15161 25.6 9.56361 25.716 9.93161 25.948C10.3076 26.172 10.6076 26.48 10.8316 26.872C11.0556 27.264 11.1676 27.7 11.1676 28.18C11.1676 28.66 11.0556 29.096 10.8316 29.488C10.6076 29.88 10.3076 30.196 9.93161 30.436C9.56361 30.668 9.15161 30.784 8.69561 30.784H6.57161V34H5.27561ZM6.57161 29.536H8.67161C8.88761 29.536 9.08361 29.476 9.25961 29.356C9.43561 29.228 9.57561 29.064 9.67961 28.864C9.79161 28.656 9.84761 28.428 9.84761 28.18C9.84761 27.932 9.79161 27.708 9.67961 27.508C9.57561 27.308 9.43561 27.148 9.25961 27.028C9.08361 26.908 8.88761 26.848 8.67161 26.848H6.57161V29.536ZM12.8811 34V25.6H16.1691C16.7691 25.6 17.3091 25.7 17.7891 25.9C18.2771 26.1 18.6931 26.388 19.0371 26.764C19.3811 27.14 19.6451 27.584 19.8291 28.096C20.0131 28.608 20.1051 29.176 20.1051 29.8C20.1051 30.424 20.0131 30.996 19.8291 31.516C19.6451 32.028 19.3811 32.472 19.0371 32.848C18.7011 33.216 18.2891 33.5 17.8011 33.7C17.3131 33.9 16.7691 34 16.1691 34H12.8811ZM14.1771 32.884L14.1411 32.752H16.1091C16.5331 32.752 16.9091 32.684 17.2371 32.548C17.5731 32.412 17.8531 32.22 18.0771 31.972C18.3091 31.716 18.4851 31.404 18.6051 31.036C18.7251 30.668 18.7851 30.256 18.7851 29.8C18.7851 29.344 18.7251 28.936 18.6051 28.576C18.4851 28.208 18.3091 27.896 18.0771 27.64C17.8451 27.384 17.5651 27.188 17.2371 27.052C16.9091 26.916 16.5331 26.848 16.1091 26.848H14.1051L14.1771 26.74V32.884ZM21.8576 34V25.6H23.1536V34H21.8576ZM22.4336 30.424V29.176H26.7656V30.424H22.4336ZM22.4336 26.848V25.6H27.3056V26.848H22.4336Z" fill="white"/></svg>
+              <div class="complete-card-info">
+                <span class="complete-card-name">myworkW2.pdf</span>
+                <span class="complete-card-status">Ready for import</span>
+              </div>
+              <span class="complete-card-badge">
+                <span class="badge-label">W-2</span>
+                <svg class="badge-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                <select class="badge-select" aria-label="Form type"><option selected>W-2</option><option>Uncategorized</option><option>1099-INT</option></select>
+              </span>
+            </div>
+            <button class="complete-card-close" title="Remove file" aria-label="Remove file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+          </div>
+        </div>
+        <div class="complete-card">
+          <div class="complete-card-inner">
+            <div class="complete-card-left">
+              <svg class="complete-card-pdf-svg" width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#016EE6" stroke="#016EE6"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#4B9AEE"/><path d="M5.27561 34V25.6H8.69561C9.15161 25.6 9.56361 25.716 9.93161 25.948C10.3076 26.172 10.6076 26.48 10.8316 26.872C11.0556 27.264 11.1676 27.7 11.1676 28.18C11.1676 28.66 11.0556 29.096 10.8316 29.488C10.6076 29.88 10.3076 30.196 9.93161 30.436C9.56361 30.668 9.15161 30.784 8.69561 30.784H6.57161V34H5.27561ZM6.57161 29.536H8.67161C8.88761 29.536 9.08361 29.476 9.25961 29.356C9.43561 29.228 9.57561 29.064 9.67961 28.864C9.79161 28.656 9.84761 28.428 9.84761 28.18C9.84761 27.932 9.79161 27.708 9.67961 27.508C9.57561 27.308 9.43561 27.148 9.25961 27.028C9.08361 26.908 8.88761 26.848 8.67161 26.848H6.57161V29.536ZM12.8811 34V25.6H16.1691C16.7691 25.6 17.3091 25.7 17.7891 25.9C18.2771 26.1 18.6931 26.388 19.0371 26.764C19.3811 27.14 19.6451 27.584 19.8291 28.096C20.0131 28.608 20.1051 29.176 20.1051 29.8C20.1051 30.424 20.0131 30.996 19.8291 31.516C19.6451 32.028 19.3811 32.472 19.0371 32.848C18.7011 33.216 18.2891 33.5 17.8011 33.7C17.3131 33.9 16.7691 34 16.1691 34H12.8811ZM14.1771 32.884L14.1411 32.752H16.1091C16.5331 32.752 16.9091 32.684 17.2371 32.548C17.5731 32.412 17.8531 32.22 18.0771 31.972C18.3091 31.716 18.4851 31.404 18.6051 31.036C18.7251 30.668 18.7851 30.256 18.7851 29.8C18.7851 29.344 18.7251 28.936 18.6051 28.576C18.4851 28.208 18.3091 27.896 18.0771 27.64C17.8451 27.384 17.5651 27.188 17.2371 27.052C16.9091 26.916 16.5331 26.848 16.1091 26.848H14.1051L14.1771 26.74V32.884ZM21.8576 34V25.6H23.1536V34H21.8576ZM22.4336 30.424V29.176H26.7656V30.424H22.4336ZM22.4336 26.848V25.6H27.3056V26.848H22.4336Z" fill="white"/></svg>
+              <div class="complete-card-info">
+                <span class="complete-card-name">chase-consolidated-1099-2025.pdf</span>
+                <span class="complete-card-status">Ready for import</span>
+              </div>
+              <span class="complete-card-badge">
+                <span class="badge-label">1099 Consolidated</span>
+                <svg class="badge-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                <select class="badge-select" aria-label="Form type"><option selected>1099 Consolidated</option><option>W-2</option><option>Uncategorized</option></select>
+              </span>
+            </div>
+            <button class="complete-card-close" title="Remove file" aria-label="Remove file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+          </div>
+        </div>
+        <div class="complete-card">
+          <div class="complete-card-inner">
+            <div class="complete-card-left">
+              <svg class="complete-card-pdf-svg" width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#832AE4" stroke="#832AE4"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#AA6DED"/><text x="16.5" y="34" text-anchor="middle" font-family="Lexend, sans-serif" font-size="12" font-weight="400" fill="#ffffff">JPG</text></svg>
+              <div class="complete-card-info">
+                <span class="complete-card-name">w2-photo.jpg</span>
+                <span class="complete-card-status">Ready for import</span>
+              </div>
+              <span class="complete-card-badge">
+                <span class="badge-label">W-2</span>
+                <svg class="badge-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                <select class="badge-select" aria-label="Form type"><option selected>W-2</option><option>Uncategorized</option><option>1099-INT</option></select>
+              </span>
+            </div>
+            <button class="complete-card-close" title="Remove file" aria-label="Remove file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+          </div>
+        </div>
+        <div class="complete-card">
+          <div class="complete-card-inner">
+            <div class="complete-card-left">
+              <svg class="complete-card-pdf-svg" width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#832AE4" stroke="#832AE4"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#AA6DED"/><text x="16.5" y="34" text-anchor="middle" font-family="Lexend, sans-serif" font-size="12" font-weight="400" fill="#ffffff">PNG</text></svg>
+              <div class="complete-card-info">
+                <span class="complete-card-name">Screenshot 2025-04-11 at 2.31.09 PM.png</span>
+                <span class="complete-card-status">Ready for import</span>
+              </div>
+              <span class="complete-card-badge">
+                <span class="badge-label">1099-INT</span>
+                <svg class="badge-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                <select class="badge-select" aria-label="Form type"><option selected>1099-INT</option><option>W-2</option><option>Uncategorized</option></select>
+              </span>
+            </div>
+            <button class="complete-card-close" title="Remove file" aria-label="Remove file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+          </div>
+        </div>
+        <div class="complete-card">
+          <div class="complete-card-inner">
+            <div class="complete-card-left">
+              <svg class="complete-card-pdf-svg" width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#008936" stroke="#008936"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#15AA51"/><text x="16.5" y="34" text-anchor="middle" font-family="Lexend, sans-serif" font-size="12" font-weight="400" fill="#ffffff">xlsx</text></svg>
+              <div class="complete-card-info">
+                <span class="complete-card-name">brokerage-statement.xlsx</span>
+                <span class="complete-card-status">Ready for import</span>
+              </div>
+              <span class="complete-card-badge">
+                <span class="badge-label">1099-B</span>
+                <svg class="badge-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                <select class="badge-select" aria-label="Form type"><option selected>1099-B</option><option>W-2</option><option>Uncategorized</option></select>
+              </span>
+            </div>
+            <button class="complete-card-close" title="Remove file" aria-label="Remove file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+          </div>
+        </div>
+    </div>
+    <div class="example">
+      <p class="example-caption">Uncategorized variant — warning treatment plus the attached explanation block. Re-classifying via the badge returns it to the default state.</p>
+      <div class="warning-wrapper">
+        <div class="complete-card">
+          <div class="complete-card-inner">
+            <div class="complete-card-left">
+              <svg class="complete-card-pdf-svg" width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#832AE4" stroke="#832AE4"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#AA6DED"/><text x="16.5" y="34" text-anchor="middle" font-family="Lexend, sans-serif" font-size="12" font-weight="400" fill="#ffffff">JPG</text></svg>
+              <div class="complete-card-info">
+                <span class="complete-card-name">kfcreceipt.jpg</span>
+                <span class="complete-card-status">Ready for import</span>
+              </div>
+              <span class="complete-card-badge">
+                <span class="badge-label">Uncategorized</span>
+                <svg class="badge-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                <select class="badge-select" aria-label="Form type"><option selected>Uncategorized</option><option>W-2</option><option selected>Uncategorized</option></select>
+              </span>
+            </div>
+            <button class="complete-card-close" title="Remove file" aria-label="Remove file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+          </div>
+        </div>
+        <div class="warning-divider"></div>
+        <div class="warning-message">
+          <svg class="warning-message-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg>
+          <div class="warning-message-content">
+            <span class="warning-message-title">Uncategorized Document</span>
+            <span class="warning-message-text">Uncategorized files will be saved in <a href="#">My Tax Files</a>, but won&rsquo;t be included with your return.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2>Mobile preview</h2>
+    <p>Mobile layout rules (375px):</p>
+    <ul>
+      <li>Icon, filename block, and the remove button&rsquo;s clickable area <b>top-align</b> — not vertically centered.</li>
+      <li>The form-type badge drops to a <b>second line</b>, aligned with the text column (not under the icon).</li>
+      <li>Filename wraps to a <b>maximum of two lines</b>, then truncates with an ellipsis (applies at all breakpoints).</li>
+    </ul>
+    <div class="phone-frame">
+        <div class="complete-card">
+          <div class="complete-card-inner">
+            <div class="complete-card-left">
+              <svg class="complete-card-pdf-svg" width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#016EE6" stroke="#016EE6"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#4B9AEE"/><path d="M5.27561 34V25.6H8.69561C9.15161 25.6 9.56361 25.716 9.93161 25.948C10.3076 26.172 10.6076 26.48 10.8316 26.872C11.0556 27.264 11.1676 27.7 11.1676 28.18C11.1676 28.66 11.0556 29.096 10.8316 29.488C10.6076 29.88 10.3076 30.196 9.93161 30.436C9.56361 30.668 9.15161 30.784 8.69561 30.784H6.57161V34H5.27561ZM6.57161 29.536H8.67161C8.88761 29.536 9.08361 29.476 9.25961 29.356C9.43561 29.228 9.57561 29.064 9.67961 28.864C9.79161 28.656 9.84761 28.428 9.84761 28.18C9.84761 27.932 9.79161 27.708 9.67961 27.508C9.57561 27.308 9.43561 27.148 9.25961 27.028C9.08361 26.908 8.88761 26.848 8.67161 26.848H6.57161V29.536ZM12.8811 34V25.6H16.1691C16.7691 25.6 17.3091 25.7 17.7891 25.9C18.2771 26.1 18.6931 26.388 19.0371 26.764C19.3811 27.14 19.6451 27.584 19.8291 28.096C20.0131 28.608 20.1051 29.176 20.1051 29.8C20.1051 30.424 20.0131 30.996 19.8291 31.516C19.6451 32.028 19.3811 32.472 19.0371 32.848C18.7011 33.216 18.2891 33.5 17.8011 33.7C17.3131 33.9 16.7691 34 16.1691 34H12.8811ZM14.1771 32.884L14.1411 32.752H16.1091C16.5331 32.752 16.9091 32.684 17.2371 32.548C17.5731 32.412 17.8531 32.22 18.0771 31.972C18.3091 31.716 18.4851 31.404 18.6051 31.036C18.7251 30.668 18.7851 30.256 18.7851 29.8C18.7851 29.344 18.7251 28.936 18.6051 28.576C18.4851 28.208 18.3091 27.896 18.0771 27.64C17.8451 27.384 17.5651 27.188 17.2371 27.052C16.9091 26.916 16.5331 26.848 16.1091 26.848H14.1051L14.1771 26.74V32.884ZM21.8576 34V25.6H23.1536V34H21.8576ZM22.4336 30.424V29.176H26.7656V30.424H22.4336ZM22.4336 26.848V25.6H27.3056V26.848H22.4336Z" fill="white"/></svg>
+              <div class="complete-card-info">
+                <span class="complete-card-name">myworkW2.pdf</span>
+                <span class="complete-card-status">Ready for import</span>
+              </div>
+              <span class="complete-card-badge">
+                <span class="badge-label">W-2</span>
+                <svg class="badge-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                <select class="badge-select" aria-label="Form type"><option selected>W-2</option><option>Uncategorized</option><option>1099-INT</option></select>
+              </span>
+            </div>
+            <button class="complete-card-close" title="Remove file" aria-label="Remove file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+          </div>
+        </div>
+
+        <div class="complete-card">
+          <div class="complete-card-inner">
+            <div class="complete-card-left">
+              <svg class="complete-card-pdf-svg" width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#832AE4" stroke="#832AE4"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#AA6DED"/><text x="16.5" y="34" text-anchor="middle" font-family="Lexend, sans-serif" font-size="12" font-weight="400" fill="#ffffff">PNG</text></svg>
+              <div class="complete-card-info">
+                <span class="complete-card-name">Screenshot 2025-04-11 at 2.31.09 PM.png</span>
+                <span class="complete-card-status">Ready for import</span>
+              </div>
+              <span class="complete-card-badge">
+                <span class="badge-label">1099-INT</span>
+                <svg class="badge-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                <select class="badge-select" aria-label="Form type"><option selected>1099-INT</option><option>W-2</option><option>Uncategorized</option></select>
+              </span>
+            </div>
+            <button class="complete-card-close" title="Remove file" aria-label="Remove file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+          </div>
+        </div>
+
+      <div class="warning-wrapper">
+        <div class="complete-card">
+          <div class="complete-card-inner">
+            <div class="complete-card-left">
+              <svg class="complete-card-pdf-svg" width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0.5H20.793L31.5 11.207V38C31.5 38.8284 30.8284 39.5 30 39.5H2C1.17157 39.5 0.5 38.8284 0.5 38V2C0.5 1.17157 1.17157 0.5 2 0.5Z" fill="#832AE4" stroke="#832AE4"/><path d="M21 0L32 11H23C21.8954 11 21 10.1046 21 9V0Z" fill="#AA6DED"/><text x="16.5" y="34" text-anchor="middle" font-family="Lexend, sans-serif" font-size="12" font-weight="400" fill="#ffffff">JPG</text></svg>
+              <div class="complete-card-info">
+                <span class="complete-card-name">kfcreceipt.jpg</span>
+                <span class="complete-card-status">Ready for import</span>
+              </div>
+              <span class="complete-card-badge">
+                <span class="badge-label">Uncategorized</span>
+                <svg class="badge-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                <select class="badge-select" aria-label="Form type"><option selected>Uncategorized</option><option>W-2</option><option selected>Uncategorized</option></select>
+              </span>
+            </div>
+            <button class="complete-card-close" title="Remove file" aria-label="Remove file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+          </div>
+        </div>
+        <div class="warning-divider"></div>
+        <div class="warning-message">
+          <svg class="warning-message-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg>
+          <div class="warning-message-content">
+            <span class="warning-message-title">Uncategorized Document</span>
+            <span class="warning-message-text">Uncategorized files will be saved in <a href="#">My Tax Files</a>, but won&rsquo;t be included with your return.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2>Scope</h2>
+    <ul>
+      <li>The completed-upload card: file-type icon, filename, status line, form-type badge selector, remove button.</li>
+      <li>The <b>uncategorized variant</b>: warning surface plus attached explanation block, and the in-place transition between variants.</li>
+      <li>Desktop layout plus the 375px mobile layout defined below; in-between breakpoints TBD.</li>
+    </ul>
+
+    <h2>Anatomy</h2>
+    <table>
+      <tr><th>#</th><th>Part</th><th>Notes</th></tr>
+      <tr><td>1</td><td>File-type icon</td><td>32&times;40 SWOOP file icon (PDF blue, JPG/PNG purple, xlsx green). One icon, always present.</td></tr>
+      <tr><td>2</td><td>Filename</td><td>Text md medium, <code>$text-default</code>. Max two lines, then ellipsis.</td></tr>
+      <tr><td>3</td><td>Status line</td><td>Text sm regular, <code>$text-subtlest</code>. Fixed copy: &ldquo;Ready for import&rdquo;.</td></tr>
+      <tr><td>4</td><td>Form-type badge</td><td>Pill badge wrapping a native <code>&lt;select&gt;</code>; shows detected type + chevron. The only classification control.</td></tr>
+      <tr><td>5</td><td>Remove button</td><td>40&times;40 icon button, x-close icon, right-aligned. Requires <code>aria-label</code>.</td></tr>
+      <tr><td>6</td><td>Warning block (variant only)</td><td>Divider + alert-triangle + title + body. Explains the consequence of staying uncategorized.</td></tr>
+    </table>
+
+
+    <h2>Element breakdown</h2>
+
+    <h3>1 · File-type icon</h3>
+    <p>32&times;40 from the SWOOP file icon set; exactly one per card, leading position. Label is 12px Lexend white, drawn into the icon.</p>
+    <table>
+      <tr><th>Variant</th><th>Body</th><th>Corner fold</th><th>Used for</th></tr>
+      <tr><td>PDF</td><td><span class="swatch" style="background:#016EE6"></span><code>$brand-500</code></td><td><span class="swatch" style="background:#4B9AEE"></span><code>$brand-400</code></td><td>.pdf</td></tr>
+      <tr><td>JPG</td><td><span class="swatch" style="background:#832AE4"></span>purple 500*</td><td><span class="swatch" style="background:#AA6DED"></span>purple 400*</td><td>.jpg / .jpeg</td></tr>
+      <tr><td>PNG</td><td colspan="2">same purple pair as JPG</td><td>.png</td></tr>
+      <tr><td>xlsx</td><td><span class="swatch" style="background:#008936"></span>green 600*</td><td><span class="swatch" style="background:#15AA51"></span><code>$success-500</code></td><td>.xlsx</td></tr>
+      <tr><td>Blank (&ldquo;?&rdquo;)</td><td colspan="2">gray — exists in the SWOOP set</td><td>unknown types (not currently used in the flow)</td></tr>
+    </table>
+    <p style="font-size:13px;line-height:18px;color:#667285;">* The JPG/PNG purple pair and the xlsx body green match the official SWOOP file-icon components but have no named primitives in <code>_color_primitives.scss</code> — confirm token naming with dev.</p>
+
+    <h3>2 · Filename</h3>
+    <table>
+      <tr><th>Property</th><th>Value</th></tr>
+      <tr><td>Type</td><td>16/24, weight 500 (Text md/Medium)</td></tr>
+      <tr><td>Color</td><td><code>$text-default</code> #212f45</td></tr>
+      <tr><td>Wrapping</td><td>Max two lines, then ellipsis (<code>-webkit-line-clamp: 2</code>); applies at all breakpoints</td></tr>
+    </table>
+
+    <h3>3 · Status line</h3>
+    <table>
+      <tr><th>Property</th><th>Value</th></tr>
+      <tr><td>Type</td><td>14/20, weight 400 (Text sm/Regular)</td></tr>
+      <tr><td>Color</td><td><code>$text-subtlest</code> #667285</td></tr>
+      <tr><td>Copy</td><td>Fixed: &ldquo;Ready for import&rdquo; — this component has no other status strings</td></tr>
+    </table>
+
+    <h3>4 · Form-type badge</h3>
+    <p>Pill wrapper over a native <code>&lt;select&gt;</code> (invisible, full-size overlay). Chevron 12px, rotates 180&deg; while open. Text 14/20 medium.</p>
+    <table>
+      <tr><th>State</th><th>Default variant</th><th>Uncategorized variant</th></tr>
+      <tr><td>Rest</td><td><code>$brand-50</code> / <code>$brand-200</code> / <code>$brand-600</code></td><td><code>$warning-50</code> / <code>$warning-200</code> / <code>$warning-700</code></td></tr>
+      <tr><td>Hover</td><td><code>$brand-100</code> / <code>$brand-300</code> / <code>$brand-700</code> + underline</td><td><code>$warning-100</code> / <code>$warning-300</code> / <code>$warning-800</code> + underline</td></tr>
+      <tr><td>Open</td><td>Same as hover, no underline</td><td>Same as hover, no underline</td></tr>
+      <tr><td>Focus (keyboard)</td><td>Ring <code>0 0 0 4px $brand-100</code></td><td>Ring <code>0 0 0 4px $warning-100</code></td></tr>
+    </table>
+
+    <h3>5 · Remove button</h3>
+    <table>
+      <tr><th>Property</th><th>Default variant</th><th>Uncategorized variant</th></tr>
+      <tr><td>Hit area</td><td colspan="2">40&times;40 fixed — never shrinks (<code>flex-shrink: 0</code>); fully rounded; 24px x-close icon, <code>$text-default</code></td></tr>
+      <tr><td>Hover</td><td>Surface <code>$brand-50</code></td><td>Surface <code>$warning-100</code></td></tr>
+      <tr><td>A11y</td><td colspan="2"><code>aria-label="Remove &lt;filename&gt;"</code>; icon decorative</td></tr>
+    </table>
+
+    <h3>6 · Warning block (variant only)</h3>
+    <table>
+      <tr><th>Part</th><th>Spec</th></tr>
+      <tr><td>Divider</td><td>1px <code>$warning-100</code>, inset 16px from card edges</td></tr>
+      <tr><td>Container</td><td>16px padding, 16px gap, surface <code>$warning-25</code></td></tr>
+      <tr><td>Icon</td><td>24px alert-triangle, <code>$warning-500</code> (see drift note in Visual spec)</td></tr>
+      <tr><td>Title</td><td>16/24 semibold, <code>$text-subtle</code> #465163 — fixed copy &ldquo;Uncategorized Document&rdquo;</td></tr>
+      <tr><td>Body</td><td>16/24 regular, <code>$text-subtle</code>; inline link in <code>$text-link</code> with hover underline</td></tr>
+      <tr><td>Lifecycle</td><td>Appended when badge &rarr; Uncategorized; removed when badge &rarr; any form type; announce via <code>aria-live="polite"</code></td></tr>
+    </table>
+
+    <h2>Visual spec (tokens)</h2>
+    <table>
+      <tr><th>Property</th><th>Default</th><th>Uncategorized variant</th></tr>
+      <tr><td>Card surface</td><td><span class="swatch" style="background:#f4f9ff"></span><code>$brand-25</code></td><td><span class="swatch" style="background:#fffcf5"></span><code>$warning-25</code></td></tr>
+      <tr><td>Card border</td><td><span class="swatch" style="background:#bad9f7"></span><code>$brand-200</code></td><td><span class="swatch" style="background:#f9df71"></span><code>$warning-200</code> (on the wrapper)</td></tr>
+      <tr><td>Badge surface / border / text</td><td><code>$brand-50</code> / <code>$brand-200</code> / <code>$brand-600</code></td><td><code>$warning-50</code> / <code>$warning-200</code> / <code>$warning-700</code></td></tr>
+      <tr><td>Badge hover</td><td><code>$brand-100</code> / <code>$brand-300</code> / <code>$brand-700</code></td><td><code>$warning-100</code> / <code>$warning-300</code> / <code>$warning-800</code></td></tr>
+      <tr><td>Warning icon</td><td>&mdash;</td><td><code>$warning-500</code> — see drift note</td></tr>
+      <tr><td>Radius / padding</td><td colspan="2">4px radius; 16px padding; badge radius 16px, padding 2px 4px 2px 8px</td></tr>
+    </table>
+    <div class="callout"><b>Palette drift found during handoff:</b> the current mockup renders the warning icon in <code>#f79009</code>, which is not a SWOOP primitive. Build with <code>$warning-500</code> (or UX picks another token) — do not carry the hex forward.</div>
+
+    <h2>Behavior</h2>
+    <ol>
+      <li>The badge opens a native form-type <code>&lt;select&gt;</code> (full SWOOP form-type list). Changing the value updates the badge label immediately.</li>
+      <li>Selecting <b>Uncategorized</b> converts the card to the warning variant and appends the warning block; selecting any real form type converts it back. The transition happens in place.</li>
+      <li>The remove button deletes the card from the list. No confirmation (recoverable by re-uploading).</li>
+      <li>The card itself is not clickable; only the badge and remove button are interactive.</li>
+    </ol>
+
+    <h2>Accessibility constraints</h2>
+    <ul>
+      <li>The badge must remain a real <code>&lt;select&gt;</code>; focus shows the SWOOP ring (<code>0 0 0 4px $brand-100</code>; warning variant <code>$warning-100</code>).</li>
+      <li>The warning block appears after user interaction &rarr; <code>aria-live="polite" aria-atomic="false"</code>.</li>
+      <li>Remove button: <code>aria-label="Remove &lt;filename&gt;"</code>. Icons decorative &rarr; <code>&lt;span data-th-icon aria-hidden="true"&gt;</code>.</li>
+      <li>Badge text/surface pairs above meet 4.5:1; keep any new pairs at or above that.</li>
+    </ul>
+
+    <h2>Build constraints</h2>
+    <ul>
+      <li>Ship in <code>@taxhawk-swoop/common</code>: one SCSS component + docs page in <code>/.claude/docs/components/</code>, following package conventions (single base class + variant modifier, like <code>.audit-message</code>).</li>
+      <li>Tokens only — every value above maps to an existing token; no raw hex, no scoped overrides of other components.</li>
+      <li>Icons from the SWOOP file-type set via the mask-image pattern in <code>/docs/icons.md</code>.</li>
+      <li>Any JS (badge label sync, variant toggle) belongs in the package&rsquo;s <code>index.js</code> DOM initialization.</li>
+      <li>Class names in these examples are mockup working names — dev + UX agree final naming before build.</li>
+    </ul>
+
+    <h2>Do / Don&rsquo;t</h2>
+    <div class="do-dont">
+      <div class="do"><b>Do</b>One card per uploaded file, stacked oldest-first, 8px gap. &ldquo;Ready for import&rdquo; is the only status this component shows.</div>
+      <div class="dont"><b>Don&rsquo;t</b>Reuse for in-progress or failed uploads, add extra action buttons, or place outside an upload list.</div>
+    </div>
+
+    <h2>Open questions</h2>
+    <ul>
+      <li>Final component/tag name (working name: Complete Card).</li>
+      <li>Responsive behavior between desktop and the 375px layout above (breakpoint, tablet) — TBD.</li>
+      <li>Should the warning block&rsquo;s &ldquo;My Tax Files&rdquo; link be configurable or fixed?</li>
+    </ul>
+  </div>
+</body>
+</html>
