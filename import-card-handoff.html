@@ -386,7 +386,7 @@
       <tr><td>Progress overlay tint</td><td colspan="3"><span class="swatch" style="background:#bad9f7"></span><code>rgba($brand-500, 14%)</code> — a raw rgba value today, not run through a token; sits behind all card content, all states</td></tr>
     </table>
     <div class="callout">
-      <b>Two values still have no matching semantic token</b> — flagged with <code>// FIXME: missing token - notify UX</code> in the SCSS so they&rsquo;re easy to find: the uncategorized/failed card <b>surface</b> colors (built with the primitives <code>$warning-25</code> / <code>$danger-25</code> directly, since there&rsquo;s no <code>$surface-warning-light</code> / <code>$surface-danger-light</code> equivalent to the brand one), and the warning block&rsquo;s divider (built with the primitive <code>$warning-100</code>, since none of the existing <code>$border-warning-*</code> tokens are light enough to read as a subtle divider). If UX wants to formalize either, that&rsquo;s the naming gap to fill.
+      <b>Two values still have no matching semantic token</b> — flagged with <code>// FIXME: missing token - notify UX</code> in the SCSS so they&rsquo;re easy to find: the uncategorized/failed card <b>surface</b> colors (built with the primitives <code>$warning-25</code> / <code>$danger-25</code> directly, since there&rsquo;s no <code>$surface-warning-light</code> / <code>$surface-danger-light</code> equivalent to the brand one), and the warning block&rsquo;s divider (built with the primitive <code>$warning-100</code>, since none of the existing <code>$border-warning-*</code> tokens are light enough to read as a subtle divider). Resolved 2026-08-14: the surface tokens will be added (<code>$surface-warning-light</code> / <code>$surface-danger-light</code>), and the divider switches to <code>$border-warning</code> — see Open Questions below.
     </div>
 
     <h3>Two divergences from the original type/color spec worth knowing about</h3>
@@ -430,8 +430,8 @@
 
     <h2>Open questions for UX</h2>
     <ul>
-      <li>Should <code>$surface-warning-light</code> / <code>$surface-danger-light</code> tokens be added to match <code>$surface-brand-light</code>, so the uncategorized/failed card surfaces stop relying on raw primitives?</li>
-      <li>Is there a lighter warning-border token intended for subtle dividers (used today via the <code>$warning-100</code> primitive), or should the divider just reuse <code>$border-warning</code>?</li>
+      <li><b>Resolved 2026-08-14 (Colton):</b> yes — add <code>$surface-warning-light</code> ($warning-25) and <code>$surface-danger-light</code> ($danger-25) to match <code>$surface-brand-light</code>.</li>
+      <li><b>Resolved 2026-08-14 (Colton):</b> the divider reuses <code>$border-warning</code> ($warning-200 #F9DF71) — no lighter divider token intended.</li>
     </ul>
   </div>
 
