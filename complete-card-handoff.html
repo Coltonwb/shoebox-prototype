@@ -180,7 +180,7 @@
     }
     .warning-divider {
       height: 1px;
-      background: #fff2ba;
+      background: #f9df71;
       margin: 0 16px;
     }
     .warning-message {
@@ -453,7 +453,7 @@
       <tr><td>Status line</td><td>Text sm/Regular. &ldquo;Ready for import&rdquo; (<code>$text-help</code>); error: &ldquo;Upload failed, please try again&rdquo; (<code>$text-subtle</code>).</td></tr>
       <tr><td>Form-type badge</td><td>The package badge (<code>.badge.badge-primary.clickable</code> / <code>.badge-warning.clickable</code>) over an invisible native <code>&lt;select&gt;</code>. The only classification control. Not rendered in the error variant. See the badge differences section below.</td></tr>
       <tr><td>Remove button</td><td>40&times;40 icon button, 24px x-close, <code>$text-default</code>, <code>aria-label="Remove &lt;filename&gt;"</code>. Hover: variant surface tint + <code>mix-blend-mode: multiply</code> — brand at shade 50, warning/danger at 100 (50 reads too faint on the warm 25 surfaces).</td></tr>
-      <tr><td>Warning block</td><td>Uncategorized only: divider, alert-triangle (<code>$svg-warning</code>), &ldquo;Uncategorized Document&rdquo; title, body with My Tax Files link. Added/removed in place as the badge changes; <code>aria-live="polite"</code>.</td></tr>
+      <tr><td>Warning block</td><td>Uncategorized only: divider (<code>$border-warning</code>), alert-triangle (<code>$svg-warning</code>), &ldquo;Uncategorized Document&rdquo; title, body with My Tax Files link. Added/removed in place as the badge changes; <code>aria-live="polite"</code>.</td></tr>
     </table>
 
     <h2>Behavior</h2>
@@ -500,7 +500,6 @@
     <ul>
       <li>Final component/tag name (working name: Complete Card).</li>
       <li>Badge differences above — adopt the package badge as-is, or update <code>_badge_new.scss</code>?</li>
-      <li>Missing tokens — mint light-surface tokens for warning/danger (cards are all shade 25; only brand has one), or keep the FIXME primitives?</li>
       <li>Is <code>media-breakpoint-down(sm)</code> the right switch point for the stacked layout, or should tablet (<code>md</code>) stack too? Tablet is untested.</li>
       <li>Should the warning block&rsquo;s &ldquo;My Tax Files&rdquo; link be configurable or fixed?</li>
     </ul>
@@ -636,7 +635,7 @@
 	.complete-card-divider {
 		height: $border-width;
 		margin: 0 $scale-400;
-		background: $warning-100; <span class="cmt">// FIXME: missing token - notify UX</span>
+		background: $border-warning;
 	}
 
 	.complete-card-message {
@@ -688,8 +687,7 @@
 
 	&.uncategorized {
 		& {
-			background: $warning-25; <span class="cmt">// FIXME: missing token - card surfaces are all shade 25 but
-			// only brand is tokenized ($surface-brand-light); new warning/danger tokens TBD (dev + UX)</span>
+			background: $surface-warning-light; <span class="cmt">// new token, approved 2026-08-14 = $warning-25</span>
 			border-color: $border-warning;
 		}
 
@@ -710,7 +708,7 @@
 
 	&.upload-error {
 		& {
-			background: $danger-25; <span class="cmt">// FIXME: missing token - same shade-25 card-surface gap as warning</span>
+			background: $surface-danger-light; <span class="cmt">// new token, approved 2026-08-14 = $danger-25</span>
 			border-color: $border-danger;
 		}
 
