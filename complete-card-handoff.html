@@ -318,7 +318,7 @@
       <tr><td>Filename</td><td>Text md/Medium, <code>$text-default</code> (failed: <code>$text-subtle</code>). Max two lines, then ellipsis — all breakpoints.</td></tr>
       <tr><td>Status line</td><td>Text sm/Regular, <code>$text-help</code> (failed: <code>$text-subtle</code>). Copy per state: &ldquo;Ready for import&rdquo; / &ldquo;Failed to process file&rdquo;.</td></tr>
       <tr><td>Form-type badge</td><td>Package badge (<code>badge-style(primary)</code>; warning in the uncategorized variant) over a native <code>&lt;select&gt;</code> with a width-sync <code>select.width-temp-select</code> twin. Hidden in the failed and loading variants.</td></tr>
-      <tr><td>Retry badge</td><td>Failed only — danger badge with refresh icon in the form-type badge&rsquo;s grid slot. Styled and in the markup, but not wired to a retry action yet (planned).</td></tr>
+      <tr><td>Retry badge</td><td>Failed only — danger badge with refresh icon in the form-type badge&rsquo;s grid slot. Styled and in the markup, not wired yet — kept per UX (2026-08-14); wiring lands with the upload-flow rewrite.</td></tr>
       <tr><td>Remove button</td><td><code>.btn.btn-icon</code>, 40&times;40, 24px x icon, <code>aria-label="Remove &lt;filename&gt;"</code>. Hover: variant surface tint + <code>mix-blend-mode: multiply</code>. Hidden while loading.</td></tr>
       <tr><td>Warning block</td><td>Uncategorized only: <code>.alert.warning-message</code> with alert-triangle (<code>$svg-warning</code>), &ldquo;Uncategorized Document&rdquo; title, body with My Tax Files link (consumer sets the <code>href</code>). <code>aria-live="polite"</code>.</td></tr>
       <tr><td>Progress overlay</td><td><code>.card-progress</code> — brand-tinted bar behind the content; width driven by JS during upload.</td></tr>
@@ -352,7 +352,7 @@
 
     <h2>Open Questions</h2>
     <ul>
-      <li>Retry badge: wire it to a real retry action, or drop it until the upload-flow rewrite lands? (Earlier UX direction removed retry; the shipped version styles it as planned.)</li>
+      <li>None. Retry badge resolved 2026-08-14 (UX): it stays as shipped — styled, unwired — and gets wired when the upload-flow rewrite lands.</li>
     </ul>
     <h2>Reference SCSS — <code>_import_card.scss</code> (as shipped)</h2>
     <p>Verbatim from <code>src/scss/components/_import_card.scss</code> in the SWOOP package (v3.5.1).</p>
