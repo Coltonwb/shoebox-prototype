@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Complete Card — Component Handoff</title>
+  <title>Import Card — Component Handoff</title>
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; color: inherit; }
     html, body { font-family: 'Lexend', sans-serif; font-size: 16px; line-height: 24px; color: #212f45; background: #f9f9f9; }
@@ -18,429 +19,294 @@
     ul, ol { margin: 4px 0 8px 20px; }
     li { margin-bottom: 4px; }
     li::marker { color: #8f99a7; }
-    code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; background: #f1f2f3; border-radius: 3px; padding: 1px 4px; white-space: nowrap; }
-    pre.code-block { background: #f1f2f3; border-radius: 8px; padding: 16px 20px; margin: 8px 0 16px; overflow-x: auto; }
-    pre.code-block code { background: none; border-radius: 0; padding: 0; white-space: pre; display: block; font-size: 13px; line-height: 20px; color: #212f45; }
-    pre.code-block .cmt { color: #667285; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; color: #212f45; background: #f1f2f3; border-radius: 3px; padding: 1px 4px; white-space: nowrap; }
     table { border-collapse: collapse; width: 100%; margin: 8px 0 8px; font-size: 14px; line-height: 20px; }
     th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #e2e5e9; vertical-align: top; }
     th { font-weight: 600; color: #212f45; background: #f9f9f9; }
     td { color: #465163; }
     .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; border: 1px solid rgba(33,47,69,0.15); vertical-align: -1px; margin-right: 4px; }
     .example { background: #ffffff; border: 1px solid #e2e5e9; border-radius: 8px; padding: 20px; margin: 8px 0 16px; }
-    .example-caption { font-size: 13px; line-height: 18px; color: #667285; margin-bottom: 12px; }
-    .example .complete-card + .complete-card { margin-top: 8px; }
+    .example-caption { font-size: 13px; line-height: 18px; color: #667285; margin-top: 0; margin-bottom: 12px; }
     .phone-frame {
       width: 375px; margin: 8px auto 4px;
       background: #ffffff; border: 10px solid #212f45; border-radius: 32px;
       padding: 20px 12px; box-shadow: 0 8px 24px rgba(33, 47, 69, 0.12);
     }
-    .phone-frame .complete-card + .complete-card,
-    .phone-frame .complete-card + .warning-wrapper { margin-top: 8px; }
-    .phone-frame .complete-card-inner { align-items: flex-start; }
-    .phone-frame .complete-card-left {
-      display: grid; grid-template-columns: 32px 1fr;
-      column-gap: 16px; row-gap: 8px; align-items: start;
-    }
-    .phone-frame .complete-card-badge {
-      grid-column: 2; justify-self: start; margin-left: 0;
-    }
     .callout { background: #fff9e5; border-radius: 4px; padding: 10px 14px; font-size: 14px; line-height: 20px; color: #465163; margin: 8px 0 16px; }
     .callout b { font-weight: 600; }
+    .resolved { background: #edfcf0; border-radius: 4px; padding: 10px 14px; font-size: 14px; line-height: 20px; color: #465163; margin: 8px 0 16px; }
+    .resolved b { font-weight: 600; }
     .do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 8px 0 16px; }
     .do, .dont { border-radius: 8px; padding: 12px 16px; font-size: 14px; line-height: 20px; }
     .do { background: #edfcf0; } .dont { background: #fef6f6; }
     .do b, .dont b { display: block; margin-bottom: 4px; font-weight: 600; }
 
-    .complete-card {
-      width: 100%;
-      background: #f4f9ff;
-      border: 1px solid #bad9f7;
-      border-radius: 4px;
-      padding: 16px;
-      display: flex;
+    /* Everything below styles the .import-card examples themselves — that's all coming from the
+       linked styles.css (the real package build), not hand-duplicated here. The one exception is
+       the phone-frame mockup: a fixed-width div isn't an actual narrow viewport, so the real
+       min-width media query in styles.css can't tell it apart from the wide page around it. These
+       rules force the mobile layout inside it regardless of the browser's actual window size. */
+    .phone-frame .import-card .import-card-main { align-items: flex-start; }
+    .phone-frame .import-card .import-card-main .import-card-left { grid-template-areas: "icon info" "icon badge"; }
+    .phone-frame .import-card .import-card-main .import-card-left .import-card-icon,
+    .phone-frame .import-card .import-card-main .import-card-left .import-card-info,
+    .phone-frame .import-card .import-card-main .import-card-left .badge-dropdown,
+    .phone-frame .import-card .import-card-main .import-card-left .badge-danger {
+      height: auto;
+      align-self: start;
     }
-    .complete-card-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-    }
-    .complete-card-left {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      min-width: 0;
-    }
-    .complete-card-pdf-svg {
-      width: 32px; height: 40px; flex-shrink: 0;
-    }
-    .complete-card-info {
-      display: flex;
-      flex-direction: column;
-    }
-    .complete-card-name {
-      font-size: 16px; font-weight: 500; line-height: 24px; color: #212f45;
-      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-      overflow: hidden; overflow-wrap: anywhere;
-    }
-    .complete-card-status {
-      font-size: 14px; font-weight: 400; line-height: 20px; color: #667285;
-    }
-    .complete-card-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 2px 4px 2px 8px;
-      background: #eaf4ff;
-      border: 1px solid #bad9f7;
-      border-radius: 16px;
-      font-size: 14px;
-      font-weight: 500;
-      line-height: 20px;
-      color: #0850c4;
-      margin-left: 8px;
-      cursor: pointer;
-      position: relative;
-      transition: box-shadow 0.15s, background 0.15s, border-color 0.15s, color 0.15s;
-      user-select: none;
-    }
-    .complete-card-badge:hover {
-      background: #daebff;
-      border-color: #91c2f4;
-      color: #003b9a;
-      text-decoration: underline;
-    }
-    .complete-card-badge:has(.badge-select:focus-visible) {
-      box-shadow: 0 0 0 4px #daebff;
-    }
-    .complete-card-badge.is-open {
-      background: #daebff;
-      border-color: #91c2f4;
-      color: #003b9a;
-      text-decoration: none;
-      box-shadow: none;
-    }
-    .complete-card-badge .badge-chevron {
-      width: 12px; height: 12px; flex-shrink: 0;
-      transition: transform 0.2s;
-    }
-    .complete-card-badge.is-open .badge-chevron {
-      transform: rotate(180deg);
-    }
-    .warning-wrapper .complete-card-badge {
-      background: #fff9e5;
-      border-color: #f9df71;
-      color: #ad4e09;
-    }
-    .warning-wrapper .complete-card-badge:hover {
-      background: #fff2ba;
-      border-color: #f4cd41;
-      color: #93370d;
-      text-decoration: underline;
-    }
-    .warning-wrapper .complete-card-badge:has(.badge-select:focus-visible) {
-      box-shadow: 0 0 0 4px #fff2ba;
-    }
-    .warning-wrapper .complete-card-badge.is-open {
-      background: #fff2ba;
-      border-color: #f4cd41;
-      color: #93370d;
-      text-decoration: none;
-    }
-    .badge-select {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      opacity: 0;
-      cursor: pointer;
-      font-size: 14px;
-    }
-    .complete-card-close {
-      width: 40px; height: 40px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      background: none; border: none; cursor: pointer;
-      border-radius: 50%; color: #212f45;
-      transition: background 0.15s;
-    }
-    .complete-card-close:hover { background: #eaf4ff; mix-blend-mode: multiply; }
-    .complete-card-close svg { width: 24px; height: 24px; }
-    .warning-wrapper {
-      border: 1px solid #f9df71;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    .warning-wrapper .complete-card {
-      background: #fffcf5;
-      border: none;
-      border-radius: 0;
-    }
-    .warning-wrapper .complete-card .complete-card-close:hover {
-      background: #fff2ba;
-    }
-    .warning-divider {
-      height: 1px;
-      background: #f9df71;
-      margin: 0 16px;
-    }
-    .warning-message {
-      display: flex;
-      gap: 16px;
-      padding: 16px;
-      background: #fffcf5;
-    }
-    .warning-message-icon {
-      width: 24px; height: 24px; flex-shrink: 0; color: #e49e1e;
-    }
-    .warning-message-content {
-      display: flex; flex-direction: column; flex: 1; gap: 4px;
-    }
-    .warning-message-title {
-      font-size: 16px; font-weight: 600; line-height: 24px; color: #465163;
-    }
-    .warning-message-text {
-      font-size: 16px; font-weight: 400; line-height: 24px; color: #465163;
-    }
-    .warning-message-text a {
-      color: #016ee6; font-weight: 500; text-decoration: underline;
-    }
-    .warning-message-text a:hover { color: #0850c4; }
 
-    .complete-card.card-error { background: #fffafa; border-color: #fecbc9; }
-    .complete-card.card-error .complete-card-status { color: #465163; }
-    .complete-card.card-error .complete-card-close:hover { background: #fee3e2; }
-    .card-error .generic-file-icon { width: 20px; height: 20px; color: #d11911; flex-shrink: 0; }
-    .phone-frame .warning-wrapper + .complete-card { margin-top: 8px; }
+    /* The retry badge's icon is inlined as an <svg> (see the mockup note above), so it no longer
+       carries the [data-th-icon] attribute the real .pre-icon spacing rule keys off of
+       ([data-th-icon].pre-icon { margin-inline-end: 4px; } in _badge_new.scss never matches an
+       element without that attribute). Restoring the same 4px gap here by class instead. */
+    .badge .pre-icon { display: inline-block; margin-inline-end: 4px; }
+    pre.code-block { background: #f1f2f3; border-radius: 8px; padding: 16px 20px; margin: 8px 0 16px; overflow-x: auto; }
+    pre.code-block code { background: none; border-radius: 0; padding: 0; white-space: pre; display: block; font-size: 13px; line-height: 20px; color: #212f45; }
   </style>
 </head>
 <body>
   <div class="doc">
     <div class="doc-kicker">Component handoff · SWOOP</div>
-    <h1>Complete Card</h1>
-    <p class="doc-meta">Working name — final class/tag name TBD. Source: Shoebox v11 income upload mock. Colton Bragg (UX) · 2026-08-05, updated 2026-08-14 · Handoff for <code>@taxhawk-swoop/common</code>.</p>
+    <h1>Import Card</h1>
+    <p class="doc-meta">Shipped as <code>.import-card</code> in <code>@taxhawk-swoop/common</code> v3.5.0 (was: Complete Card). Source: Shoebox v11 income upload mock. Colton Bragg (UX) · 2026-08-05, updated 2026-08-14 · Handoff for <code>@taxhawk-swoop/common</code>.</p>
 
     <h2>Purpose</h2>
-    <p>One card per uploaded document on the upload page. Three states: <b>ready to import</b> (confirm the detected form type or remove the file), <b>uncategorized</b> (warning treatment with an explanation block), and <b>upload failed</b> (error treatment). Desktop layout plus a stacked mobile layout below 576px.</p>
+    <p>One card per uploaded document on the upload page, covering the file&rsquo;s whole lifecycle: <b>loading</b> (upload in progress), <b>ready to import</b> (confirm the detected form type or remove the file), <b>uncategorized</b> (warning treatment with an explanation block), and <b>failed</b> (error treatment). Desktop layout plus a stacked mobile layout below 576px.</p>
 
     <h2>Instances</h2>
-    <p>The badge is the live form-type selector. Switching a card to Uncategorized converts it to the warning variant in place. A failed upload shows the error variant.</p>
+    <p>All shipped states, rendered with the real compiled CSS linked above — these are live, not mockups. The badge on every card is the actual form-type <code>&lt;select&gt;</code>; try switching one to Uncategorized. The remove button works too.</p>
+
     <div class="example">
-      <p class="example-caption">Default — one card per uploaded file, including a long-filename case.</p>
-        <div class="complete-card">
-          <div class="complete-card-inner">
-            <div class="complete-card-left">
-              <svg class="complete-card-pdf-svg" width="32" height="40" viewBox="4 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><g><g><path d="M4 38V2C4 0.895431 4.89543 0 6 0H25L36 11V38C36 39.1046 35.1046 40 34 40H6C4.89543 40 4 39.1046 4 38Z" fill="#0850C4"/><path d="M25 0L36 11H27C25.8954 11 25 10.1046 25 9V0Z" fill="#4B9AEE"/><path d="M9.27561 34V25.6H12.6956C13.1516 25.6 13.5636 25.716 13.9316 25.948C14.3076 26.172 14.6076 26.48 14.8316 26.872C15.0556 27.264 15.1676 27.7 15.1676 28.18C15.1676 28.66 15.0556 29.096 14.8316 29.488C14.6076 29.88 14.3076 30.196 13.9316 30.436C13.5636 30.668 13.1516 30.784 12.6956 30.784H10.5716V34H9.27561ZM10.5716 29.536H12.6716C12.8876 29.536 13.0836 29.476 13.2596 29.356C13.4356 29.228 13.5756 29.064 13.6796 28.864C13.7916 28.656 13.8476 28.428 13.8476 28.18C13.8476 27.932 13.7916 27.708 13.6796 27.508C13.5756 27.308 13.4356 27.148 13.2596 27.028C13.0836 26.908 12.8876 26.848 12.6716 26.848H10.5716V29.536ZM16.8811 34V25.6H20.1691C20.7691 25.6 21.3091 25.7 21.7891 25.9C22.2771 26.1 22.6931 26.388 23.0371 26.764C23.3811 27.14 23.6451 27.584 23.8291 28.096C24.0131 28.608 24.1051 29.176 24.1051 29.8C24.1051 30.424 24.0131 30.996 23.8291 31.516C23.6451 32.028 23.3811 32.472 23.0371 32.848C22.7011 33.216 22.2891 33.5 21.8011 33.7C21.3131 33.9 20.7691 34 20.1691 34H16.8811ZM18.1771 32.884L18.1411 32.752H20.1091C20.5331 32.752 20.9091 32.684 21.2371 32.548C21.5731 32.412 21.8531 32.22 22.0771 31.972C22.3091 31.716 22.4851 31.404 22.6051 31.036C22.7251 30.668 22.7851 30.256 22.7851 29.8C22.7851 29.344 22.7251 28.936 22.6051 28.576C22.4851 28.208 22.3091 27.896 22.0771 27.64C21.8451 27.384 21.5651 27.188 21.2371 27.052C20.9091 26.916 20.5331 26.848 20.1091 26.848H18.1051L18.1771 26.74V32.884ZM25.8576 34V25.6H27.1536V34H25.8576ZM26.4336 30.424V29.176H30.7656V30.424H26.4336ZM26.4336 26.848V25.6H31.3056V26.848H26.4336Z" fill="white"/></g></g></svg>
-              <div class="complete-card-info">
-                <span class="complete-card-name">myworkW2.pdf</span>
-                <span class="complete-card-status">Ready for import</span>
-              </div>
-              <span class="complete-card-badge">
-                <span class="badge-label">W-2</span>
-                <svg class="badge-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-                <select class="badge-select" aria-label="Form type"><option selected>W-2</option><option>Uncategorized</option><option>1099-INT</option></select>
-              </span>
+      <p class="example-caption">Default — ready for import, various file-type icons and detected form types.</p>
+      <div class="import-card">
+        <div id="progress-1" class="card-progress"></div>
+        <div class="import-card-main">
+          <div class="import-card-left">
+            <svg class="import-card-icon" width="32" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 38V2C4 0.895431 4.89543 0 6 0H25L36 11V38C36 39.1046 35.1046 40 34 40H6C4.89543 40 4 39.1046 4 38Z" fill="#0850C4"/><path d="M25 0L36 11H27C25.8954 11 25 10.1046 25 9V0Z" fill="#4B9AEE"/><path d="M9.27561 34V25.6H12.6956C13.1516 25.6 13.5636 25.716 13.9316 25.948C14.3076 26.172 14.6076 26.48 14.8316 26.872C15.0556 27.264 15.1676 27.7 15.1676 28.18C15.1676 28.66 15.0556 29.096 14.8316 29.488C14.6076 29.88 14.3076 30.196 13.9316 30.436C13.5636 30.668 13.1516 30.784 12.6956 30.784H10.5716V34H9.27561ZM10.5716 29.536H12.6716C12.8876 29.536 13.0836 29.476 13.2596 29.356C13.4356 29.228 13.5756 29.064 13.6796 28.864C13.7916 28.656 13.8476 28.428 13.8476 28.18C13.8476 27.932 13.7916 27.708 13.6796 27.508C13.5756 27.308 13.4356 27.148 13.2596 27.028C13.0836 26.908 12.8876 26.848 12.6716 26.848H10.5716V29.536ZM16.8811 34V25.6H20.1691C20.7691 25.6 21.3091 25.7 21.7891 25.9C22.2771 26.1 22.6931 26.388 23.0371 26.764C23.3811 27.14 23.6451 27.584 23.8291 28.096C24.0131 28.608 24.1051 29.176 24.1051 29.8C24.1051 30.424 24.0131 30.996 23.8291 31.516C23.6451 32.028 23.3811 32.472 23.0371 32.848C22.7011 33.216 22.2891 33.5 21.8011 33.7C21.3131 33.9 20.7691 34 20.1691 34H16.8811ZM18.1771 32.884L18.1411 32.752H20.1091C20.5331 32.752 20.9091 32.684 21.2371 32.548C21.5731 32.412 21.8531 32.22 22.0771 31.972C22.3091 31.716 22.4851 31.404 22.6051 31.036C22.7251 30.668 22.7851 30.256 22.7851 29.8C22.7851 29.344 22.7251 28.936 22.6051 28.576C22.4851 28.208 22.3091 27.896 22.0771 27.64C21.8451 27.384 21.5651 27.188 21.2371 27.052C20.9091 26.916 20.5331 26.848 20.1091 26.848H18.1051L18.1771 26.74V32.884ZM25.8576 34V25.6H27.1536V34H25.8576ZM26.4336 30.424V29.176H30.7656V30.424H26.4336ZM26.4336 26.848V25.6H31.3056V26.848H26.4336Z" fill="white"/></svg>
+            <span class="import-card-error-icon" aria-hidden="true" style="mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMiA4VjEyTTEyIDE2SDEyLjAxTTIgOC41MjI3NFYxNS40NzczQzIgMTUuNzIxOCAyIDE1Ljg0NDEgMi4wMjc2MyAxNS45NTkyQzIuMDUyMTMgMTYuMDYxMyAyLjA5MjUzIDE2LjE1ODggMi4xNDczNiAxNi4yNDgzQzIuMjA5MiAxNi4zNDkyIDIuMjk1NjggMTYuNDM1NyAyLjQ2ODYzIDE2LjYwODZMNy4zOTEzNyAyMS41MzE0QzcuNTY0MzIgMjEuNzA0MyA3LjY1MDggMjEuNzkwOCA3Ljc1MTcyIDIxLjg1MjZDNy44NDExOSAyMS45MDc1IDcuOTM4NzMgMjEuOTQ3OSA4LjA0MDc3IDIxLjk3MjRDOC4xNTU4NiAyMiA4LjI3ODE1IDIyIDguNTIyNzQgMjJIMTUuNDc3M0MxNS43MjE4IDIyIDE1Ljg0NDEgMjIgMTUuOTU5MiAyMS45NzI0QzE2LjA2MTMgMjEuOTQ3OSAxNi4xNTg4IDIxLjkwNzUgMTYuMjQ4MyAyMS44NTI2QzE2LjM0OTIgMjEuNzkwOCAxNi40MzU3IDIxLjcwNDMgMTYuNjA4NiAyMS41MzE0TDIxLjUzMTQgMTYuNjA4NkMyMS43MDQzIDE2LjQzNTcgMjEuNzkwOCAxNi4zNDkyIDIxLjg1MjYgMTYuMjQ4M0MyMS45MDc1IDE2LjE1ODggMjEuOTQ3OSAxNi4wNjEzIDIxLjk3MjQgMTUuOTU5MkMyMiAxNS44NDQxIDIyIDE1LjcyMTggMjIgMTUuNDc3M1Y4LjUyMjc0QzIyIDguMjc4MTUgMjIgOC4xNTU4NiAyMS45NzI0IDguMDQwNzdDMjEuOTQ3OSA3LjkzODczIDIxLjkwNzUgNy44NDExOSAyMS44NTI2IDcuNzUxNzJDMjEuNzkwOCA3LjY1MDggMjEuNzA0MyA3LjU2NDMyIDIxLjUzMTQgNy4zOTEzN0wxNi42MDg2IDIuNDY4NjNDMTYuNDM1NyAyLjI5NTY4IDE2LjM0OTIgMi4yMDkyIDE2LjI0ODMgMi4xNDczNkMxNi4xNTg4IDIuMDkyNTMgMTYuMDYxMyAyLjA1MjEzIDE1Ljk1OTIgMi4wMjc2M0MxNS44NDQxIDIgMTUuNzIxOCAyIDE1LjQ3NzMgMkg4LjUyMjc0QzguMjc4MTUgMiA4LjE1NTg2IDIgOC4wNDA3NyAyLjAyNzYzQzcuOTM4NzMgMi4wNTIxMyA3Ljg0MTE5IDIuMDkyNTMgNy43NTE3MiAyLjE0NzM2QzcuNjUwOCAyLjIwOTIgNy41NjQzMiAyLjI5NTY4IDcuMzkxMzcgMi40Njg2M0wyLjQ2ODYzIDcuMzkxMzdDMi4yOTU2OCA3LjU2NDMyIDIuMjA5MiA3LjY1MDggMi4xNDczNiA3Ljc1MTcyQzIuMDkyNTMgNy44NDExOSAyLjA1MjEzIDcuOTM4NzMgMi4wMjc2MyA4LjA0MDc3QzIgOC4xNTU4NiAyIDguMjc4MTUgMiA4LjUyMjc0WiIvPjwvc3ZnPg==') no-repeat center / contain; -webkit-mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMiA4VjEyTTEyIDE2SDEyLjAxTTIgOC41MjI3NFYxNS40NzczQzIgMTUuNzIxOCAyIDE1Ljg0NDEgMi4wMjc2MyAxNS45NTkyQzIuMDUyMTMgMTYuMDYxMyAyLjA5MjUzIDE2LjE1ODggMi4xNDczNiAxNi4yNDgzQzIuMjA5MiAxNi4zNDkyIDIuMjk1NjggMTYuNDM1NyAyLjQ2ODYzIDE2LjYwODZMNy4zOTEzNyAyMS41MzE0QzcuNTY0MzIgMjEuNzA0MyA3LjY1MDggMjEuNzkwOCA3Ljc1MTcyIDIxLjg1MjZDNy44NDExOSAyMS45MDc1IDcuOTM4NzMgMjEuOTQ3OSA4LjA0MDc3IDIxLjk3MjRDOC4xNTU4NiAyMiA4LjI3ODE1IDIyIDguNTIyNzQgMjJIMTUuNDc3M0MxNS43MjE4IDIyIDE1Ljg0NDEgMjIgMTUuOTU5MiAyMS45NzI0QzE2LjA2MTMgMjEuOTQ3OSAxNi4xNTg4IDIxLjkwNzUgMTYuMjQ4MyAyMS44NTI2QzE2LjM0OTIgMjEuNzkwOCAxNi40MzU3IDIxLjcwNDMgMTYuNjA4NiAyMS41MzE0TDIxLjUzMTQgMTYuNjA4NkMyMS43MDQzIDE2LjQzNTcgMjEuNzkwOCAxNi4zNDkyIDIxLjg1MjYgMTYuMjQ4M0MyMS45MDc1IDE2LjE1ODggMjEuOTQ3OSAxNi4wNjEzIDIxLjk3MjQgMTUuOTU5MkMyMiAxNS44NDQxIDIyIDE1LjcyMTggMjIgMTUuNDc3M1Y4LjUyMjc0QzIyIDguMjc4MTUgMjIgOC4xNTU4NiAyMS45NzI0IDguMDQwNzdDMjEuOTQ3OSA3LjkzODczIDIxLjkwNzUgNy44NDExOSAyMS44NTI2IDcuNzUxNzJDMjEuNzkwOCA3LjY1MDggMjEuNzA0MyA3LjU2NDMyIDIxLjUzMTQgNy4zOTEzN0wxNi42MDg2IDIuNDY4NjNDMTYuNDM1NyAyLjI5NTY4IDE2LjM0OTIgMi4yMDkyIDE2LjI0ODMgMi4xNDczNkMxNi4xNTg4IDIuMDkyNTMgMTYuMDYxMyAyLjA1MjEzIDE1Ljk1OTIgMi4wMjc2M0MxNS44NDQxIDIgMTUuNzIxOCAyIDE1LjQ3NzMgMkg4LjUyMjc0QzguMjc4MTUgMiA4LjE1NTg2IDIgOC4wNDA3NyAyLjAyNzYzQzcuOTM4NzMgMi4wNTIxMyA3Ljg0MTE5IDIuMDkyNTMgNy43NTE3MiAyLjE0NzM2QzcuNjUwOCAyLjIwOTIgNy41NjQzMiAyLjI5NTY4IDcuMzkxMzcgMi40Njg2M0wyLjQ2ODYzIDcuMzkxMzdDMi4yOTU2OCA3LjU2NDMyIDIuMjA5MiA3LjY1MDggMi4xNDczNiA3Ljc1MTcyQzIuMDkyNTMgNy44NDExOSAyLjA1MjEzIDcuOTM4NzMgMi4wMjc2MyA4LjA0MDc3QzIgOC4xNTU4NiAyIDguMjc4MTUgMiA4LjUyMjc0WiIvPjwvc3ZnPg==') no-repeat center / contain;"></span>
+            <div class="import-card-info">
+              <h3 class="import-card-name">myworkW2.pdf</h3>
+              <p class="import-card-status">Ready for import</p>
             </div>
-            <button class="complete-card-close" title="Remove file" aria-label="Remove file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+            <div class="badge clickable badge-dropdown">
+              <select id="tmpSelect-1" class="width-temp-select"><option id="tmpOption-1" class="width-temp-option"></option></select>
+              <select id="formType-1" aria-label="Form type">
+                <option value="w2" selected>W-2</option>
+                <option value="uncategorized">Uncategorized</option>
+                <option value="1099-int">1099-INT</option>
+              </select>
+              <span class="chevron" aria-hidden="true" style="mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik02IDlMMTIgMTVMMTggOSIvPjwvc3ZnPg==') no-repeat center / contain; -webkit-mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik02IDlMMTIgMTVMMTggOSIvPjwvc3ZnPg==') no-repeat center / contain;"></span>
+            </div>
+            <button type="button" class="badge badge-danger clickable">
+              <span class="pre-icon" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#f03e38" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10C2 10 2.12132 9.15076 5.63604 5.63604C9.15076 2.12132 14.8492 2.12132 18.364 5.63604C19.6092 6.88131 20.4133 8.40072 20.7762 10M2 10V4M2 10H8M22 14C22 14 21.8787 14.8492 18.364 18.364C14.8492 21.8787 9.15076 21.8787 5.63604 18.364C4.39076 17.1187 3.58669 15.5993 3.22383 14M22 14V20M22 14H16"/></svg></span>
+              Retry upload
+            </button>
+          </div>
+          <div class="import-card-loading"><img class="spinner-animation" width="24" height="24" src="https://static.freetaxusa.com/email-images/animations/spinner_optimized_transparent.gif" alt=""/></div>
+          <button class="btn btn-icon" aria-label="Remove myworkW2.pdf"><span aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#212f45" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 7L7 17M7 7L17 17"/></svg></span></button>
+        </div>
+        <!-- warning block is always in the markup, hidden by CSS until .uncategorized is added to the card -->
+        <div class="alert warning-message" aria-live="polite" aria-atomic="false">
+          <span class="icon" aria-hidden="true" style="mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMS45OTk4IDguOTk5OTlWMTNNMTEuOTk5OCAxN0gxMi4wMDk4TTEwLjYxNTEgMy44OTE3MUwyLjM5MDE5IDE4LjA5ODNDMS45MzM5OCAxOC44ODYzIDEuNzA1ODggMTkuMjgwMyAxLjczOTU5IDE5LjYwMzdDMS43NjkgMTkuODg1NyAxLjkxNjc3IDIwLjE0MiAyLjE0NjEzIDIwLjMwODhDMi40MDkwOCAyMC41IDIuODY0MzUgMjAuNSAzLjc3NDg3IDIwLjVIMjAuMjI0NkMyMS4xMzUyIDIwLjUgMjEuNTkwNCAyMC41IDIxLjg1MzQgMjAuMzA4OEMyMi4wODI3IDIwLjE0MiAyMi4yMzA1IDE5Ljg4NTcgMjIuMjU5OSAxOS42MDM3QzIyLjI5MzYgMTkuMjgwMyAyMi4wNjU1IDE4Ljg4NjMgMjEuNjA5MyAxOC4wOTgzTDEzLjM4NDQgMy44OTE3MUMxMi45Mjk5IDMuMTA2NTQgMTIuNzAyNiAyLjcxMzk2IDEyLjQwNjEgMi41ODIxMUMxMi4xNDc0IDIuNDY3MSAxMS44NTIxIDIuNDY3MSAxMS41OTM1IDIuNTgyMTFDMTEuMjk2OSAyLjcxMzk2IDExLjA2OTYgMy4xMDY1NSAxMC42MTUxIDMuODkxNzFaIi8+PC9zdmc+') no-repeat center / contain; -webkit-mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMS45OTk4IDguOTk5OTlWMTNNMTEuOTk5OCAxN0gxMi4wMDk4TTEwLjYxNTEgMy44OTE3MUwyLjM5MDE5IDE4LjA5ODNDMS45MzM5OCAxOC44ODYzIDEuNzA1ODggMTkuMjgwMyAxLjczOTU5IDE5LjYwMzdDMS43NjkgMTkuODg1NyAxLjkxNjc3IDIwLjE0MiAyLjE0NjEzIDIwLjMwODhDMi40MDkwOCAyMC41IDIuODY0MzUgMjAuNSAzLjc3NDg3IDIwLjVIMjAuMjI0NkMyMS4xMzUyIDIwLjUgMjEuNTkwNCAyMC41IDIxLjg1MzQgMjAuMzA4OEMyMi4wODI3IDIwLjE0MiAyMi4yMzA1IDE5Ljg4NTcgMjIuMjU5OSAxOS42MDM3QzIyLjI5MzYgMTkuMjgwMyAyMi4wNjU1IDE4Ljg4NjMgMjEuNjA5MyAxOC4wOTgzTDEzLjM4NDQgMy44OTE3MUMxMi45Mjk5IDMuMTA2NTQgMTIuNzAyNiAyLjcxMzk2IDEyLjQwNjEgMi41ODIxMUMxMi4xNDc0IDIuNDY3MSAxMS44NTIxIDIuNDY3MSAxMS41OTM1IDIuNTgyMTFDMTEuMjk2OSAyLjcxMzk2IDExLjA2OTYgMy4xMDY1NSAxMC42MTUxIDMuODkxNzFaIi8+PC9zdmc+') no-repeat center / contain;"></span>
+          <div class="message-content">
+            <p class="message m-0"><b>Uncategorized Document</b></p>
+            <p class="message m-0">Uncategorized files will be saved in <a href="#">My Tax Files</a>, but won&rsquo;t be included with your return.</p>
           </div>
         </div>
-        <div class="complete-card">
-          <div class="complete-card-inner">
-            <div class="complete-card-left">
-              <svg class="complete-card-pdf-svg" width="32" height="40" viewBox="4 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><g><g><path d="M4 38V2C4 0.895431 4.89543 0 6 0H25L36 11V38C36 39.1046 35.1046 40 34 40H6C4.89543 40 4 39.1046 4 38Z" fill="#0850C4"/><path d="M25 0L36 11H27C25.8954 11 25 10.1046 25 9V0Z" fill="#4B9AEE"/><path d="M9.27561 34V25.6H12.6956C13.1516 25.6 13.5636 25.716 13.9316 25.948C14.3076 26.172 14.6076 26.48 14.8316 26.872C15.0556 27.264 15.1676 27.7 15.1676 28.18C15.1676 28.66 15.0556 29.096 14.8316 29.488C14.6076 29.88 14.3076 30.196 13.9316 30.436C13.5636 30.668 13.1516 30.784 12.6956 30.784H10.5716V34H9.27561ZM10.5716 29.536H12.6716C12.8876 29.536 13.0836 29.476 13.2596 29.356C13.4356 29.228 13.5756 29.064 13.6796 28.864C13.7916 28.656 13.8476 28.428 13.8476 28.18C13.8476 27.932 13.7916 27.708 13.6796 27.508C13.5756 27.308 13.4356 27.148 13.2596 27.028C13.0836 26.908 12.8876 26.848 12.6716 26.848H10.5716V29.536ZM16.8811 34V25.6H20.1691C20.7691 25.6 21.3091 25.7 21.7891 25.9C22.2771 26.1 22.6931 26.388 23.0371 26.764C23.3811 27.14 23.6451 27.584 23.8291 28.096C24.0131 28.608 24.1051 29.176 24.1051 29.8C24.1051 30.424 24.0131 30.996 23.8291 31.516C23.6451 32.028 23.3811 32.472 23.0371 32.848C22.7011 33.216 22.2891 33.5 21.8011 33.7C21.3131 33.9 20.7691 34 20.1691 34H16.8811ZM18.1771 32.884L18.1411 32.752H20.1091C20.5331 32.752 20.9091 32.684 21.2371 32.548C21.5731 32.412 21.8531 32.22 22.0771 31.972C22.3091 31.716 22.4851 31.404 22.6051 31.036C22.7251 30.668 22.7851 30.256 22.7851 29.8C22.7851 29.344 22.7251 28.936 22.6051 28.576C22.4851 28.208 22.3091 27.896 22.0771 27.64C21.8451 27.384 21.5651 27.188 21.2371 27.052C20.9091 26.916 20.5331 26.848 20.1091 26.848H18.1051L18.1771 26.74V32.884ZM25.8576 34V25.6H27.1536V34H25.8576ZM26.4336 30.424V29.176H30.7656V30.424H26.4336ZM26.4336 26.848V25.6H31.3056V26.848H26.4336Z" fill="white"/></g></g></svg>
-              <div class="complete-card-info">
-                <span class="complete-card-name">chase-consolidated-1099-2025.pdf</span>
-                <span class="complete-card-status">Ready for import</span>
-              </div>
-              <span class="complete-card-badge">
-                <span class="badge-label">1099 Consolidated</span>
-                <svg class="badge-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-                <select class="badge-select" aria-label="Form type"><option selected>1099 Consolidated</option><option>W-2</option><option>Uncategorized</option></select>
-              </span>
+      </div>
+      <div class="import-card">
+        <div id="progress-2" class="card-progress"></div>
+        <div class="import-card-main">
+          <div class="import-card-left">
+            <svg class="import-card-icon" width="32" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 0.5H24.793L35.5 11.207V38C35.5 38.8284 34.8284 39.5 34 39.5H6C5.17157 39.5 4.5 38.8284 4.5 38V2C4.5 1.17157 5.17157 0.5 6 0.5Z" fill="#9549E9" stroke="#9549E9"/><path d="M25 0L36 11H27C25.8954 11 25 10.1046 25 9V0Z" fill="#B77CF0"/><path d="M11.3259 34.12C11.0539 34.12 10.7939 34.084 10.5459 34.012C10.2979 33.94 10.0659 33.836 9.84991 33.7C9.64191 33.564 9.45391 33.404 9.28591 33.22C9.11791 33.028 8.97391 32.82 8.85391 32.596L9.66991 31.744C9.83791 31.984 9.98991 32.176 10.1259 32.32C10.2699 32.464 10.4059 32.576 10.5339 32.656C10.6619 32.736 10.7899 32.792 10.9179 32.824C11.0459 32.848 11.1819 32.86 11.3259 32.86C11.6139 32.86 11.8659 32.796 12.0819 32.668C12.2979 32.532 12.4659 32.348 12.5859 32.116C12.7059 31.884 12.7659 31.62 12.7659 31.324V26.8H11.2299V25.6H15.3579V26.8H14.0619V31.444C14.0619 31.828 13.9939 32.184 13.8579 32.512C13.7299 32.832 13.5419 33.112 13.2939 33.352C13.0539 33.592 12.7659 33.78 12.4299 33.916C12.1019 34.052 11.7339 34.12 11.3259 34.12ZM17.1291 34V25.6H20.5491C21.0051 25.6 21.4171 25.716 21.7851 25.948C22.1611 26.172 22.4611 26.48 22.6851 26.872C22.9091 27.264 23.0211 27.7 23.0211 28.18C23.0211 28.66 22.9091 29.096 22.6851 29.488C22.4611 29.88 22.1611 30.196 21.7851 30.436C21.4171 30.668 21.0051 30.784 20.5491 30.784H18.4251V34H17.1291ZM18.4251 29.536H20.5251C20.7411 29.536 20.9371 29.476 21.1131 29.356C21.2891 29.228 21.4291 29.064 21.5331 28.864C21.6451 28.656 21.7011 28.428 21.7011 28.18C21.7011 27.932 21.6451 27.708 21.5331 27.508C21.4291 27.308 21.2891 27.148 21.1131 27.028C20.9371 26.908 20.7411 26.848 20.5251 26.848H18.4251V29.536ZM28.4906 34.12C27.8826 34.12 27.3146 34.012 26.7866 33.796C26.2586 33.572 25.7946 33.264 25.3946 32.872C24.9946 32.48 24.6826 32.024 24.4586 31.504C24.2426 30.976 24.1346 30.408 24.1346 29.8C24.1346 29.2 24.2426 28.64 24.4586 28.12C24.6826 27.6 24.9906 27.148 25.3826 26.764C25.7826 26.372 26.2466 26.068 26.7746 25.852C27.3026 25.636 27.8706 25.528 28.4786 25.528C28.9026 25.528 29.3146 25.588 29.7146 25.708C30.1226 25.828 30.4906 25.996 30.8186 26.212C31.1466 26.428 31.4146 26.676 31.6226 26.956L30.7826 27.832C30.5426 27.6 30.2946 27.408 30.0386 27.256C29.7906 27.104 29.5346 26.988 29.2706 26.908C29.0066 26.828 28.7426 26.788 28.4786 26.788C28.0466 26.788 27.6466 26.864 27.2786 27.016C26.9186 27.168 26.5986 27.38 26.3186 27.652C26.0466 27.924 25.8346 28.244 25.6826 28.612C25.5306 28.972 25.4546 29.368 25.4546 29.8C25.4546 30.216 25.5346 30.612 25.6946 30.988C25.8546 31.356 26.0746 31.68 26.3546 31.96C26.6426 32.24 26.9706 32.46 27.3386 32.62C27.7146 32.78 28.1106 32.86 28.5266 32.86C28.8386 32.86 29.1346 32.816 29.4146 32.728C29.6946 32.632 29.9426 32.5 30.1586 32.332C30.3746 32.164 30.5426 31.972 30.6626 31.756C30.7826 31.532 30.8426 31.296 30.8426 31.048V30.808L31.0226 30.976H28.4546V29.692H32.1746C32.1906 29.78 32.2026 29.868 32.2106 29.956C32.2186 30.036 32.2226 30.116 32.2226 30.196C32.2306 30.268 32.2346 30.34 32.2346 30.412C32.2346 30.964 32.1386 31.468 31.9466 31.924C31.7546 32.372 31.4866 32.76 31.1426 33.088C30.8066 33.416 30.4106 33.672 29.9546 33.856C29.5066 34.032 29.0186 34.12 28.4906 34.12Z" fill="white"/></svg>
+            <span class="import-card-error-icon" aria-hidden="true" style="mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMiA4VjEyTTEyIDE2SDEyLjAxTTIgOC41MjI3NFYxNS40NzczQzIgMTUuNzIxOCAyIDE1Ljg0NDEgMi4wMjc2MyAxNS45NTkyQzIuMDUyMTMgMTYuMDYxMyAyLjA5MjUzIDE2LjE1ODggMi4xNDczNiAxNi4yNDgzQzIuMjA5MiAxNi4zNDkyIDIuMjk1NjggMTYuNDM1NyAyLjQ2ODYzIDE2LjYwODZMNy4zOTEzNyAyMS41MzE0QzcuNTY0MzIgMjEuNzA0MyA3LjY1MDggMjEuNzkwOCA3Ljc1MTcyIDIxLjg1MjZDNy44NDExOSAyMS45MDc1IDcuOTM4NzMgMjEuOTQ3OSA4LjA0MDc3IDIxLjk3MjRDOC4xNTU4NiAyMiA4LjI3ODE1IDIyIDguNTIyNzQgMjJIMTUuNDc3M0MxNS43MjE4IDIyIDE1Ljg0NDEgMjIgMTUuOTU5MiAyMS45NzI0QzE2LjA2MTMgMjEuOTQ3OSAxNi4xNTg4IDIxLjkwNzUgMTYuMjQ4MyAyMS44NTI2QzE2LjM0OTIgMjEuNzkwOCAxNi40MzU3IDIxLjcwNDMgMTYuNjA4NiAyMS41MzE0TDIxLjUzMTQgMTYuNjA4NkMyMS43MDQzIDE2LjQzNTcgMjEuNzkwOCAxNi4zNDkyIDIxLjg1MjYgMTYuMjQ4M0MyMS45MDc1IDE2LjE1ODggMjEuOTQ3OSAxNi4wNjEzIDIxLjk3MjQgMTUuOTU5MkMyMiAxNS44NDQxIDIyIDE1LjcyMTggMjIgMTUuNDc3M1Y4LjUyMjc0QzIyIDguMjc4MTUgMjIgOC4xNTU4NiAyMS45NzI0IDguMDQwNzdDMjEuOTQ3OSA3LjkzODczIDIxLjkwNzUgNy44NDExOSAyMS44NTI2IDcuNzUxNzJDMjEuNzkwOCA3LjY1MDggMjEuNzA0MyA3LjU2NDMyIDIxLjUzMTQgNy4zOTEzN0wxNi42MDg2IDIuNDY4NjNDMTYuNDM1NyAyLjI5NTY4IDE2LjM0OTIgMi4yMDkyIDE2LjI0ODMgMi4xNDczNkMxNi4xNTg4IDIuMDkyNTMgMTYuMDYxMyAyLjA1MjEzIDE1Ljk1OTIgMi4wMjc2M0MxNS44NDQxIDIgMTUuNzIxOCAyIDE1LjQ3NzMgMkg4LjUyMjc0QzguMjc4MTUgMiA4LjE1NTg2IDIgOC4wNDA3NyAyLjAyNzYzQzcuOTM4NzMgMi4wNTIxMyA3Ljg0MTE5IDIuMDkyNTMgNy43NTE3MiAyLjE0NzM2QzcuNjUwOCAyLjIwOTIgNy41NjQzMiAyLjI5NTY4IDcuMzkxMzcgMi40Njg2M0wyLjQ2ODYzIDcuMzkxMzdDMi4yOTU2OCA3LjU2NDMyIDIuMjA5MiA3LjY1MDggMi4xNDczNiA3Ljc1MTcyQzIuMDkyNTMgNy44NDExOSAyLjA1MjEzIDcuOTM4NzMgMi4wMjc2MyA4LjA0MDc3QzIgOC4xNTU4NiAyIDguMjc4MTUgMiA4LjUyMjc0WiIvPjwvc3ZnPg==') no-repeat center / contain; -webkit-mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMiA4VjEyTTEyIDE2SDEyLjAxTTIgOC41MjI3NFYxNS40NzczQzIgMTUuNzIxOCAyIDE1Ljg0NDEgMi4wMjc2MyAxNS45NTkyQzIuMDUyMTMgMTYuMDYxMyAyLjA5MjUzIDE2LjE1ODggMi4xNDczNiAxNi4yNDgzQzIuMjA5MiAxNi4zNDkyIDIuMjk1NjggMTYuNDM1NyAyLjQ2ODYzIDE2LjYwODZMNy4zOTEzNyAyMS41MzE0QzcuNTY0MzIgMjEuNzA0MyA3LjY1MDggMjEuNzkwOCA3Ljc1MTcyIDIxLjg1MjZDNy44NDExOSAyMS45MDc1IDcuOTM4NzMgMjEuOTQ3OSA4LjA0MDc3IDIxLjk3MjRDOC4xNTU4NiAyMiA4LjI3ODE1IDIyIDguNTIyNzQgMjJIMTUuNDc3M0MxNS43MjE4IDIyIDE1Ljg0NDEgMjIgMTUuOTU5MiAyMS45NzI0QzE2LjA2MTMgMjEuOTQ3OSAxNi4xNTg4IDIxLjkwNzUgMTYuMjQ4MyAyMS44NTI2QzE2LjM0OTIgMjEuNzkwOCAxNi40MzU3IDIxLjcwNDMgMTYuNjA4NiAyMS41MzE0TDIxLjUzMTQgMTYuNjA4NkMyMS43MDQzIDE2LjQzNTcgMjEuNzkwOCAxNi4zNDkyIDIxLjg1MjYgMTYuMjQ4M0MyMS45MDc1IDE2LjE1ODggMjEuOTQ3OSAxNi4wNjEzIDIxLjk3MjQgMTUuOTU5MkMyMiAxNS44NDQxIDIyIDE1LjcyMTggMjIgMTUuNDc3M1Y4LjUyMjc0QzIyIDguMjc4MTUgMjIgOC4xNTU4NiAyMS45NzI0IDguMDQwNzdDMjEuOTQ3OSA3LjkzODczIDIxLjkwNzUgNy44NDExOSAyMS44NTI2IDcuNzUxNzJDMjEuNzkwOCA3LjY1MDggMjEuNzA0MyA3LjU2NDMyIDIxLjUzMTQgNy4zOTEzN0wxNi42MDg2IDIuNDY4NjNDMTYuNDM1NyAyLjI5NTY4IDE2LjM0OTIgMi4yMDkyIDE2LjI0ODMgMi4xNDczNkMxNi4xNTg4IDIuMDkyNTMgMTYuMDYxMyAyLjA1MjEzIDE1Ljk1OTIgMi4wMjc2M0MxNS44NDQxIDIgMTUuNzIxOCAyIDE1LjQ3NzMgMkg4LjUyMjc0QzguMjc4MTUgMiA4LjE1NTg2IDIgOC4wNDA3NyAyLjAyNzYzQzcuOTM4NzMgMi4wNTIxMyA3Ljg0MTE5IDIuMDkyNTMgNy43NTE3MiAyLjE0NzM2QzcuNjUwOCAyLjIwOTIgNy41NjQzMiAyLjI5NTY4IDcuMzkxMzcgMi40Njg2M0wyLjQ2ODYzIDcuMzkxMzdDMi4yOTU2OCA3LjU2NDMyIDIuMjA5MiA3LjY1MDggMi4xNDczNiA3Ljc1MTcyQzIuMDkyNTMgNy44NDExOSAyLjA1MjEzIDcuOTM4NzMgMi4wMjc2MyA4LjA0MDc3QzIgOC4xNTU4NiAyIDguMjc4MTUgMiA4LjUyMjc0WiIvPjwvc3ZnPg==') no-repeat center / contain;"></span>
+            <div class="import-card-info">
+              <h3 class="import-card-name">w2-photo.jpg</h3>
+              <p class="import-card-status">Ready for import</p>
             </div>
-            <button class="complete-card-close" title="Remove file" aria-label="Remove file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+            <div class="badge clickable badge-dropdown">
+              <select id="tmpSelect-2" class="width-temp-select"><option id="tmpOption-2" class="width-temp-option"></option></select>
+              <select id="formType-2" aria-label="Form type">
+                <option value="w2" selected>W-2</option>
+                <option value="uncategorized">Uncategorized</option>
+                <option value="1099-int">1099-INT</option>
+              </select>
+              <span class="chevron" aria-hidden="true" style="mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik02IDlMMTIgMTVMMTggOSIvPjwvc3ZnPg==') no-repeat center / contain; -webkit-mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik02IDlMMTIgMTVMMTggOSIvPjwvc3ZnPg==') no-repeat center / contain;"></span>
+            </div>
+            <button type="button" class="badge badge-danger clickable">
+              <span class="pre-icon" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#f03e38" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10C2 10 2.12132 9.15076 5.63604 5.63604C9.15076 2.12132 14.8492 2.12132 18.364 5.63604C19.6092 6.88131 20.4133 8.40072 20.7762 10M2 10V4M2 10H8M22 14C22 14 21.8787 14.8492 18.364 18.364C14.8492 21.8787 9.15076 21.8787 5.63604 18.364C4.39076 17.1187 3.58669 15.5993 3.22383 14M22 14V20M22 14H16"/></svg></span>
+              Retry upload
+            </button>
+          </div>
+          <div class="import-card-loading"><img class="spinner-animation" width="24" height="24" src="https://static.freetaxusa.com/email-images/animations/spinner_optimized_transparent.gif" alt=""/></div>
+          <button class="btn btn-icon" aria-label="Remove w2-photo.jpg"><span aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#212f45" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 7L7 17M7 7L17 17"/></svg></span></button>
+        </div>
+        <div class="alert warning-message" aria-live="polite" aria-atomic="false">
+          <span class="icon" aria-hidden="true" style="mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMS45OTk4IDguOTk5OTlWMTNNMTEuOTk5OCAxN0gxMi4wMDk4TTEwLjYxNTEgMy44OTE3MUwyLjM5MDE5IDE4LjA5ODNDMS45MzM5OCAxOC44ODYzIDEuNzA1ODggMTkuMjgwMyAxLjczOTU5IDE5LjYwMzdDMS43NjkgMTkuODg1NyAxLjkxNjc3IDIwLjE0MiAyLjE0NjEzIDIwLjMwODhDMi40MDkwOCAyMC41IDIuODY0MzUgMjAuNSAzLjc3NDg3IDIwLjVIMjAuMjI0NkMyMS4xMzUyIDIwLjUgMjEuNTkwNCAyMC41IDIxLjg1MzQgMjAuMzA4OEMyMi4wODI3IDIwLjE0MiAyMi4yMzA1IDE5Ljg4NTcgMjIuMjU5OSAxOS42MDM3QzIyLjI5MzYgMTkuMjgwMyAyMi4wNjU1IDE4Ljg4NjMgMjEuNjA5MyAxOC4wOTgzTDEzLjM4NDQgMy44OTE3MUMxMi45Mjk5IDMuMTA2NTQgMTIuNzAyNiAyLjcxMzk2IDEyLjQwNjEgMi41ODIxMUMxMi4xNDc0IDIuNDY3MSAxMS44NTIxIDIuNDY3MSAxMS41OTM1IDIuNTgyMTFDMTEuMjk2OSAyLjcxMzk2IDExLjA2OTYgMy4xMDY1NSAxMC42MTUxIDMuODkxNzFaIi8+PC9zdmc+') no-repeat center / contain; -webkit-mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMS45OTk4IDguOTk5OTlWMTNNMTEuOTk5OCAxN0gxMi4wMDk4TTEwLjYxNTEgMy44OTE3MUwyLjM5MDE5IDE4LjA5ODNDMS45MzM5OCAxOC44ODYzIDEuNzA1ODggMTkuMjgwMyAxLjczOTU5IDE5LjYwMzdDMS43NjkgMTkuODg1NyAxLjkxNjc3IDIwLjE0MiAyLjE0NjEzIDIwLjMwODhDMi40MDkwOCAyMC41IDIuODY0MzUgMjAuNSAzLjc3NDg3IDIwLjVIMjAuMjI0NkMyMS4xMzUyIDIwLjUgMjEuNTkwNCAyMC41IDIxLjg1MzQgMjAuMzA4OEMyMi4wODI3IDIwLjE0MiAyMi4yMzA1IDE5Ljg4NTcgMjIuMjU5OSAxOS42MDM3QzIyLjI5MzYgMTkuMjgwMyAyMi4wNjU1IDE4Ljg4NjMgMjEuNjA5MyAxOC4wOTgzTDEzLjM4NDQgMy44OTE3MUMxMi45Mjk5IDMuMTA2NTQgMTIuNzAyNiAyLjcxMzk2IDEyLjQwNjEgMi41ODIxMUMxMi4xNDc0IDIuNDY3MSAxMS44NTIxIDIuNDY3MSAxMS41OTM1IDIuNTgyMTFDMTEuMjk2OSAyLjcxMzk2IDExLjA2OTYgMy4xMDY1NSAxMC42MTUxIDMuODkxNzFaIi8+PC9zdmc+') no-repeat center / contain;"></span>
+          <div class="message-content">
+            <p class="message m-0"><b>Uncategorized Document</b></p>
+            <p class="message m-0">Uncategorized files will be saved in <a href="#">My Tax Files</a>, but won&rsquo;t be included with your return.</p>
           </div>
         </div>
-        <div class="complete-card">
-          <div class="complete-card-inner">
-            <div class="complete-card-left">
-              <svg class="complete-card-pdf-svg" width="32" height="40" viewBox="4 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><g><g><path d="M6 0.5H24.793L35.5 11.207V38C35.5 38.8284 34.8284 39.5 34 39.5H6C5.17157 39.5 4.5 38.8284 4.5 38V2C4.5 1.17157 5.17157 0.5 6 0.5Z" fill="#9549E9" stroke="#9549E9"/><path d="M25 0L36 11H27C25.8954 11 25 10.1046 25 9V0Z" fill="#B77CF0"/><path d="M11.3259 34.12C11.0539 34.12 10.7939 34.084 10.5459 34.012C10.2979 33.94 10.0659 33.836 9.84991 33.7C9.64191 33.564 9.45391 33.404 9.28591 33.22C9.11791 33.028 8.97391 32.82 8.85391 32.596L9.66991 31.744C9.83791 31.984 9.98991 32.176 10.1259 32.32C10.2699 32.464 10.4059 32.576 10.5339 32.656C10.6619 32.736 10.7899 32.792 10.9179 32.824C11.0459 32.848 11.1819 32.86 11.3259 32.86C11.6139 32.86 11.8659 32.796 12.0819 32.668C12.2979 32.532 12.4659 32.348 12.5859 32.116C12.7059 31.884 12.7659 31.62 12.7659 31.324V26.8H11.2299V25.6H15.3579V26.8H14.0619V31.444C14.0619 31.828 13.9939 32.184 13.8579 32.512C13.7299 32.832 13.5419 33.112 13.2939 33.352C13.0539 33.592 12.7659 33.78 12.4299 33.916C12.1019 34.052 11.7339 34.12 11.3259 34.12ZM17.1291 34V25.6H20.5491C21.0051 25.6 21.4171 25.716 21.7851 25.948C22.1611 26.172 22.4611 26.48 22.6851 26.872C22.9091 27.264 23.0211 27.7 23.0211 28.18C23.0211 28.66 22.9091 29.096 22.6851 29.488C22.4611 29.88 22.1611 30.196 21.7851 30.436C21.4171 30.668 21.0051 30.784 20.5491 30.784H18.4251V34H17.1291ZM18.4251 29.536H20.5251C20.7411 29.536 20.9371 29.476 21.1131 29.356C21.2891 29.228 21.4291 29.064 21.5331 28.864C21.6451 28.656 21.7011 28.428 21.7011 28.18C21.7011 27.932 21.6451 27.708 21.5331 27.508C21.4291 27.308 21.2891 27.148 21.1131 27.028C20.9371 26.908 20.7411 26.848 20.5251 26.848H18.4251V29.536ZM28.4906 34.12C27.8826 34.12 27.3146 34.012 26.7866 33.796C26.2586 33.572 25.7946 33.264 25.3946 32.872C24.9946 32.48 24.6826 32.024 24.4586 31.504C24.2426 30.976 24.1346 30.408 24.1346 29.8C24.1346 29.2 24.2426 28.64 24.4586 28.12C24.6826 27.6 24.9906 27.148 25.3826 26.764C25.7826 26.372 26.2466 26.068 26.7746 25.852C27.3026 25.636 27.8706 25.528 28.4786 25.528C28.9026 25.528 29.3146 25.588 29.7146 25.708C30.1226 25.828 30.4906 25.996 30.8186 26.212C31.1466 26.428 31.4146 26.676 31.6226 26.956L30.7826 27.832C30.5426 27.6 30.2946 27.408 30.0386 27.256C29.7906 27.104 29.5346 26.988 29.2706 26.908C29.0066 26.828 28.7426 26.788 28.4786 26.788C28.0466 26.788 27.6466 26.864 27.2786 27.016C26.9186 27.168 26.5986 27.38 26.3186 27.652C26.0466 27.924 25.8346 28.244 25.6826 28.612C25.5306 28.972 25.4546 29.368 25.4546 29.8C25.4546 30.216 25.5346 30.612 25.6946 30.988C25.8546 31.356 26.0746 31.68 26.3546 31.96C26.6426 32.24 26.9706 32.46 27.3386 32.62C27.7146 32.78 28.1106 32.86 28.5266 32.86C28.8386 32.86 29.1346 32.816 29.4146 32.728C29.6946 32.632 29.9426 32.5 30.1586 32.332C30.3746 32.164 30.5426 31.972 30.6626 31.756C30.7826 31.532 30.8426 31.296 30.8426 31.048V30.808L31.0226 30.976H28.4546V29.692H32.1746C32.1906 29.78 32.2026 29.868 32.2106 29.956C32.2186 30.036 32.2226 30.116 32.2226 30.196C32.2306 30.268 32.2346 30.34 32.2346 30.412C32.2346 30.964 32.1386 31.468 31.9466 31.924C31.7546 32.372 31.4866 32.76 31.1426 33.088C30.8066 33.416 30.4106 33.672 29.9546 33.856C29.5066 34.032 29.0186 34.12 28.4906 34.12Z" fill="white"/></g></g></svg>
-              <div class="complete-card-info">
-                <span class="complete-card-name">w2-photo.jpg</span>
-                <span class="complete-card-status">Ready for import</span>
-              </div>
-              <span class="complete-card-badge">
-                <span class="badge-label">W-2</span>
-                <svg class="badge-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-                <select class="badge-select" aria-label="Form type"><option selected>W-2</option><option>Uncategorized</option><option>1099-INT</option></select>
-              </span>
+      </div>
+      <div class="import-card">
+        <div id="progress-3" class="card-progress"></div>
+        <div class="import-card-main">
+          <div class="import-card-left">
+            <svg class="import-card-icon" width="32" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 0.5H24.793L35.5 11.207V38C35.5 38.8284 34.8284 39.5 34 39.5H6C5.17157 39.5 4.5 38.8284 4.5 38V2C4.5 1.17157 5.17157 0.5 6 0.5Z" fill="#027932" stroke="#027932"/><path d="M25 0L36 11H27C25.8954 11 25 10.1046 25 9V0Z" fill="#15AA51"/><path d="M12.9785 34.12C12.3945 34.12 11.8585 34.016 11.3705 33.808C10.8825 33.6 10.4585 33.304 10.0985 32.92C9.73853 32.528 9.45853 32.068 9.25853 31.54C9.06653 31.012 8.97053 30.432 8.97053 29.8C8.97053 29.2 9.07453 28.644 9.28253 28.132C9.49853 27.612 9.79453 27.156 10.1705 26.764C10.5465 26.372 10.9825 26.068 11.4785 25.852C11.9745 25.636 12.5105 25.528 13.0865 25.528C13.4945 25.528 13.8905 25.592 14.2745 25.72C14.6665 25.84 15.0185 26.012 15.3305 26.236C15.6505 26.452 15.9105 26.7 16.1105 26.98L15.2465 27.88C15.0145 27.648 14.7785 27.456 14.5385 27.304C14.3065 27.144 14.0665 27.024 13.8185 26.944C13.5785 26.864 13.3345 26.824 13.0865 26.824C12.6945 26.824 12.3265 26.9 11.9825 27.052C11.6465 27.196 11.3505 27.4 11.0945 27.664C10.8465 27.928 10.6505 28.244 10.5065 28.612C10.3625 28.972 10.2905 29.368 10.2905 29.8C10.2905 30.256 10.3585 30.672 10.4945 31.048C10.6385 31.416 10.8385 31.732 11.0945 31.996C11.3505 32.26 11.6545 32.464 12.0065 32.608C12.3665 32.744 12.7625 32.812 13.1945 32.812C13.4585 32.812 13.7185 32.776 13.9745 32.704C14.2305 32.632 14.4705 32.528 14.6945 32.392C14.9185 32.256 15.1225 32.096 15.3065 31.912L15.9545 32.968C15.7705 33.184 15.5185 33.38 15.1985 33.556C14.8865 33.732 14.5345 33.872 14.1425 33.976C13.7585 34.072 13.3705 34.12 12.9785 34.12ZM20.3071 34.12C19.8511 34.12 19.4271 34.06 19.0351 33.94C18.6511 33.82 18.2991 33.64 17.9791 33.4C17.6671 33.152 17.3871 32.848 17.1391 32.488L18.0271 31.468C18.4191 32.028 18.7951 32.416 19.1551 32.632C19.5151 32.848 19.9431 32.956 20.4391 32.956C20.7431 32.956 21.0191 32.908 21.2671 32.812C21.5151 32.716 21.7111 32.584 21.8551 32.416C21.9991 32.248 22.0711 32.056 22.0711 31.84C22.0711 31.696 22.0471 31.56 21.9991 31.432C21.9511 31.304 21.8751 31.188 21.7711 31.084C21.6751 30.98 21.5471 30.884 21.3871 30.796C21.2351 30.708 21.0551 30.632 20.8471 30.568C20.6391 30.496 20.3991 30.436 20.1271 30.388C19.6951 30.3 19.3191 30.184 18.9991 30.04C18.6791 29.896 18.4111 29.716 18.1951 29.5C17.9791 29.284 17.8191 29.04 17.7151 28.768C17.6111 28.488 17.5591 28.176 17.5591 27.832C17.5591 27.496 17.6311 27.184 17.7751 26.896C17.9271 26.608 18.1311 26.36 18.3871 26.152C18.6511 25.936 18.9591 25.772 19.3111 25.66C19.6631 25.54 20.0431 25.48 20.4511 25.48C20.8831 25.48 21.2791 25.536 21.6391 25.648C21.9991 25.76 22.3191 25.928 22.5991 26.152C22.8791 26.368 23.1111 26.636 23.2951 26.956L22.3831 27.856C22.2231 27.592 22.0431 27.372 21.8431 27.196C21.6431 27.012 21.4231 26.876 21.1831 26.788C20.9431 26.692 20.6871 26.644 20.4151 26.644C20.1031 26.644 19.8311 26.692 19.5991 26.788C19.3671 26.884 19.1831 27.02 19.0471 27.196C18.9191 27.364 18.8551 27.564 18.8551 27.796C18.8551 27.964 18.8871 28.12 18.9511 28.264C19.0151 28.4 19.1111 28.524 19.2391 28.636C19.3751 28.74 19.5551 28.836 19.7791 28.924C20.0031 29.004 20.2711 29.076 20.5831 29.14C21.0231 29.236 21.4151 29.36 21.7591 29.512C22.1031 29.656 22.3951 29.828 22.6351 30.028C22.8751 30.228 23.0551 30.452 23.1751 30.7C23.3031 30.948 23.3671 31.216 23.3671 31.504C23.3671 32.04 23.2431 32.504 22.9951 32.896C22.7471 33.288 22.3951 33.592 21.9391 33.808C21.4831 34.016 20.9391 34.12 20.3071 34.12ZM27.6753 34L24.3153 25.6H25.7913L27.7953 30.7C27.8913 30.948 27.9753 31.172 28.0473 31.372C28.1273 31.572 28.1953 31.756 28.2513 31.924C28.3073 32.084 28.3593 32.236 28.4073 32.38C28.4553 32.524 28.5033 32.668 28.5513 32.812L28.2393 32.824C28.2953 32.632 28.3553 32.432 28.4193 32.224C28.4833 32.016 28.5553 31.788 28.6353 31.54C28.7233 31.292 28.8273 31.012 28.9473 30.7L30.8073 25.6H32.3193L28.9353 34H27.6753Z" fill="white"/></svg>
+            <span class="import-card-error-icon" aria-hidden="true" style="mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMiA4VjEyTTEyIDE2SDEyLjAxTTIgOC41MjI3NFYxNS40NzczQzIgMTUuNzIxOCAyIDE1Ljg0NDEgMi4wMjc2MyAxNS45NTkyQzIuMDUyMTMgMTYuMDYxMyAyLjA5MjUzIDE2LjE1ODggMi4xNDczNiAxNi4yNDgzQzIuMjA5MiAxNi4zNDkyIDIuMjk1NjggMTYuNDM1NyAyLjQ2ODYzIDE2LjYwODZMNy4zOTEzNyAyMS41MzE0QzcuNTY0MzIgMjEuNzA0MyA3LjY1MDggMjEuNzkwOCA3Ljc1MTcyIDIxLjg1MjZDNy44NDExOSAyMS45MDc1IDcuOTM4NzMgMjEuOTQ3OSA4LjA0MDc3IDIxLjk3MjRDOC4xNTU4NiAyMiA4LjI3ODE1IDIyIDguNTIyNzQgMjJIMTUuNDc3M0MxNS43MjE4IDIyIDE1Ljg0NDEgMjIgMTUuOTU5MiAyMS45NzI0QzE2LjA2MTMgMjEuOTQ3OSAxNi4xNTg4IDIxLjkwNzUgMTYuMjQ4MyAyMS44NTI2QzE2LjM0OTIgMjEuNzkwOCAxNi40MzU3IDIxLjcwNDMgMTYuNjA4NiAyMS41MzE0TDIxLjUzMTQgMTYuNjA4NkMyMS43MDQzIDE2LjQzNTcgMjEuNzkwOCAxNi4zNDkyIDIxLjg1MjYgMTYuMjQ4M0MyMS45MDc1IDE2LjE1ODggMjEuOTQ3OSAxNi4wNjEzIDIxLjk3MjQgMTUuOTU5MkMyMiAxNS44NDQxIDIyIDE1LjcyMTggMjIgMTUuNDc3M1Y4LjUyMjc0QzIyIDguMjc4MTUgMjIgOC4xNTU4NiAyMS45NzI0IDguMDQwNzdDMjEuOTQ3OSA3LjkzODczIDIxLjkwNzUgNy44NDExOSAyMS44NTI2IDcuNzUxNzJDMjEuNzkwOCA3LjY1MDggMjEuNzA0MyA3LjU2NDMyIDIxLjUzMTQgNy4zOTEzN0wxNi42MDg2IDIuNDY4NjNDMTYuNDM1NyAyLjI5NTY4IDE2LjM0OTIgMi4yMDkyIDE2LjI0ODMgMi4xNDczNkMxNi4xNTg4IDIuMDkyNTMgMTYuMDYxMyAyLjA1MjEzIDE1Ljk1OTIgMi4wMjc2M0MxNS44NDQxIDIgMTUuNzIxOCAyIDE1LjQ3NzMgMkg4LjUyMjc0QzguMjc4MTUgMiA4LjE1NTg2IDIgOC4wNDA3NyAyLjAyNzYzQzcuOTM4NzMgMi4wNTIxMyA3Ljg0MTE5IDIuMDkyNTMgNy43NTE3MiAyLjE0NzM2QzcuNjUwOCAyLjIwOTIgNy41NjQzMiAyLjI5NTY4IDcuMzkxMzcgMi40Njg2M0wyLjQ2ODYzIDcuMzkxMzdDMi4yOTU2OCA3LjU2NDMyIDIuMjA5MiA3LjY1MDggMi4xNDczNiA3Ljc1MTcyQzIuMDkyNTMgNy44NDExOSAyLjA1MjEzIDcuOTM4NzMgMi4wMjc2MyA4LjA0MDc3QzIgOC4xNTU4NiAyIDguMjc4MTUgMiA4LjUyMjc0WiIvPjwvc3ZnPg==') no-repeat center / contain; -webkit-mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMiA4VjEyTTEyIDE2SDEyLjAxTTIgOC41MjI3NFYxNS40NzczQzIgMTUuNzIxOCAyIDE1Ljg0NDEgMi4wMjc2MyAxNS45NTkyQzIuMDUyMTMgMTYuMDYxMyAyLjA5MjUzIDE2LjE1ODggMi4xNDczNiAxNi4yNDgzQzIuMjA5MiAxNi4zNDkyIDIuMjk1NjggMTYuNDM1NyAyLjQ2ODYzIDE2LjYwODZMNy4zOTEzNyAyMS41MzE0QzcuNTY0MzIgMjEuNzA0MyA3LjY1MDggMjEuNzkwOCA3Ljc1MTcyIDIxLjg1MjZDNy44NDExOSAyMS45MDc1IDcuOTM4NzMgMjEuOTQ3OSA4LjA0MDc3IDIxLjk3MjRDOC4xNTU4NiAyMiA4LjI3ODE1IDIyIDguNTIyNzQgMjJIMTUuNDc3M0MxNS43MjE4IDIyIDE1Ljg0NDEgMjIgMTUuOTU5MiAyMS45NzI0QzE2LjA2MTMgMjEuOTQ3OSAxNi4xNTg4IDIxLjkwNzUgMTYuMjQ4MyAyMS44NTI2QzE2LjM0OTIgMjEuNzkwOCAxNi40MzU3IDIxLjcwNDMgMTYuNjA4NiAyMS41MzE0TDIxLjUzMTQgMTYuNjA4NkMyMS43MDQzIDE2LjQzNTcgMjEuNzkwOCAxNi4zNDkyIDIxLjg1MjYgMTYuMjQ4M0MyMS45MDc1IDE2LjE1ODggMjEuOTQ3OSAxNi4wNjEzIDIxLjk3MjQgMTUuOTU5MkMyMiAxNS44NDQxIDIyIDE1LjcyMTggMjIgMTUuNDc3M1Y4LjUyMjc0QzIyIDguMjc4MTUgMjIgOC4xNTU4NiAyMS45NzI0IDguMDQwNzdDMjEuOTQ3OSA3LjkzODczIDIxLjkwNzUgNy44NDExOSAyMS44NTI2IDcuNzUxNzJDMjEuNzkwOCA3LjY1MDggMjEuNzA0MyA3LjU2NDMyIDIxLjUzMTQgNy4zOTEzN0wxNi42MDg2IDIuNDY4NjNDMTYuNDM1NyAyLjI5NTY4IDE2LjM0OTIgMi4yMDkyIDE2LjI0ODMgMi4xNDczNkMxNi4xNTg4IDIuMDkyNTMgMTYuMDYxMyAyLjA1MjEzIDE1Ljk1OTIgMi4wMjc2M0MxNS44NDQxIDIgMTUuNzIxOCAyIDE1LjQ3NzMgMkg4LjUyMjc0QzguMjc4MTUgMiA4LjE1NTg2IDIgOC4wNDA3NyAyLjAyNzYzQzcuOTM4NzMgMi4wNTIxMyA3Ljg0MTE5IDIuMDkyNTMgNy43NTE3MiAyLjE0NzM2QzcuNjUwOCAyLjIwOTIgNy41NjQzMiAyLjI5NTY4IDcuMzkxMzcgMi40Njg2M0wyLjQ2ODYzIDcuMzkxMzdDMi4yOTU2OCA3LjU2NDMyIDIuMjA5MiA3LjY1MDggMi4xNDczNiA3Ljc1MTcyQzIuMDkyNTMgNy44NDExOSAyLjA1MjEzIDcuOTM4NzMgMi4wMjc2MyA4LjA0MDc3QzIgOC4xNTU4NiAyIDguMjc4MTUgMiA4LjUyMjc0WiIvPjwvc3ZnPg==') no-repeat center / contain;"></span>
+            <div class="import-card-info">
+              <h3 class="import-card-name">brokerage-consolidated-statement-2025.xlsx</h3>
+              <p class="import-card-status">Ready for import</p>
             </div>
-            <button class="complete-card-close" title="Remove file" aria-label="Remove file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
-          </div>
-        </div>
-        <div class="complete-card">
-          <div class="complete-card-inner">
-            <div class="complete-card-left">
-              <svg class="complete-card-pdf-svg" width="32" height="40" viewBox="4 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><g><g><path d="M6 0.5H24.793L35.5 11.207V38C35.5 38.8284 34.8284 39.5 34 39.5H6C5.17157 39.5 4.5 38.8284 4.5 38V2C4.5 1.17157 5.17157 0.5 6 0.5Z" fill="#9549E9" stroke="#9549E9"/><path d="M25 0L36 11H27C25.8954 11 25 10.1046 25 9V0Z" fill="#B77CF0"/><path d="M8.5217 34V25.6H11.9417C12.3977 25.6 12.8097 25.716 13.1777 25.948C13.5537 26.172 13.8537 26.48 14.0777 26.872C14.3017 27.264 14.4137 27.7 14.4137 28.18C14.4137 28.66 14.3017 29.096 14.0777 29.488C13.8537 29.88 13.5537 30.196 13.1777 30.436C12.8097 30.668 12.3977 30.784 11.9417 30.784H9.8177V34H8.5217ZM9.8177 29.536H11.9177C12.1337 29.536 12.3297 29.476 12.5057 29.356C12.6817 29.228 12.8217 29.064 12.9257 28.864C13.0377 28.656 13.0937 28.428 13.0937 28.18C13.0937 27.932 13.0377 27.708 12.9257 27.508C12.8217 27.308 12.6817 27.148 12.5057 27.028C12.3297 26.908 12.1337 26.848 11.9177 26.848H9.8177V29.536ZM16.1272 34V25.6H17.2912L22.4272 32.476L22.2352 32.584C22.2032 32.384 22.1752 32.168 22.1512 31.936C22.1272 31.696 22.1032 31.444 22.0792 31.18C22.0632 30.908 22.0472 30.624 22.0312 30.328C22.0232 30.024 22.0152 29.708 22.0072 29.38C21.9992 29.052 21.9952 28.712 21.9952 28.36V25.6H23.2912V34H22.1032L17.0512 27.376L17.1832 27.208C17.2232 27.696 17.2552 28.112 17.2792 28.456C17.3112 28.792 17.3352 29.08 17.3512 29.32C17.3752 29.552 17.3912 29.744 17.3992 29.896C17.4072 30.04 17.4112 30.16 17.4112 30.256C17.4192 30.352 17.4232 30.436 17.4232 30.508V34H16.1272ZM29.3988 34.12C28.7908 34.12 28.2228 34.012 27.6948 33.796C27.1668 33.572 26.7028 33.264 26.3028 32.872C25.9028 32.48 25.5908 32.024 25.3668 31.504C25.1508 30.976 25.0428 30.408 25.0428 29.8C25.0428 29.2 25.1508 28.64 25.3668 28.12C25.5908 27.6 25.8988 27.148 26.2908 26.764C26.6908 26.372 27.1548 26.068 27.6828 25.852C28.2108 25.636 28.7788 25.528 29.3868 25.528C29.8108 25.528 30.2228 25.588 30.6228 25.708C31.0308 25.828 31.3988 25.996 31.7268 26.212C32.0548 26.428 32.3228 26.676 32.5308 26.956L31.6908 27.832C31.4508 27.6 31.2028 27.408 30.9468 27.256C30.6988 27.104 30.4428 26.988 30.1788 26.908C29.9148 26.828 29.6508 26.788 29.3868 26.788C28.9548 26.788 28.5548 26.864 28.1868 27.016C27.8268 27.168 27.5068 27.38 27.2268 27.652C26.9548 27.924 26.7428 28.244 26.5908 28.612C26.4388 28.972 26.3628 29.368 26.3628 29.8C26.3628 30.216 26.4428 30.612 26.6028 30.988C26.7628 31.356 26.9828 31.68 27.2628 31.96C27.5508 32.24 27.8788 32.46 28.2468 32.62C28.6228 32.78 29.0188 32.86 29.4348 32.86C29.7468 32.86 30.0428 32.816 30.3228 32.728C30.6028 32.632 30.8508 32.5 31.0668 32.332C31.2828 32.164 31.4508 31.972 31.5708 31.756C31.6908 31.532 31.7508 31.296 31.7508 31.048V30.808L31.9308 30.976H29.3628V29.692H33.0828C33.0988 29.78 33.1108 29.868 33.1188 29.956C33.1268 30.036 33.1308 30.116 33.1308 30.196C33.1388 30.268 33.1428 30.34 33.1428 30.412C33.1428 30.964 33.0468 31.468 32.8548 31.924C32.6628 32.372 32.3948 32.76 32.0508 33.088C31.7148 33.416 31.3188 33.672 30.8628 33.856C30.4148 34.032 29.9268 34.12 29.3988 34.12Z" fill="white"/></g></g></svg>
-              <div class="complete-card-info">
-                <span class="complete-card-name">Screenshot 2025-04-11 at 2.31.09 PM.png</span>
-                <span class="complete-card-status">Ready for import</span>
-              </div>
-              <span class="complete-card-badge">
-                <span class="badge-label">1099-INT</span>
-                <svg class="badge-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-                <select class="badge-select" aria-label="Form type"><option selected>1099-INT</option><option>W-2</option><option>Uncategorized</option></select>
-              </span>
+            <div class="badge clickable badge-dropdown">
+              <select id="tmpSelect-3" class="width-temp-select"><option id="tmpOption-3" class="width-temp-option"></option></select>
+              <select id="formType-3" aria-label="Form type">
+                <option value="1099-b" selected>1099-B</option>
+                <option value="w2">W-2</option>
+                <option value="uncategorized">Uncategorized</option>
+              </select>
+              <span class="chevron" aria-hidden="true" style="mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik02IDlMMTIgMTVMMTggOSIvPjwvc3ZnPg==') no-repeat center / contain; -webkit-mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik02IDlMMTIgMTVMMTggOSIvPjwvc3ZnPg==') no-repeat center / contain;"></span>
             </div>
-            <button class="complete-card-close" title="Remove file" aria-label="Remove file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+            <button type="button" class="badge badge-danger clickable">
+              <span class="pre-icon" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#f03e38" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10C2 10 2.12132 9.15076 5.63604 5.63604C9.15076 2.12132 14.8492 2.12132 18.364 5.63604C19.6092 6.88131 20.4133 8.40072 20.7762 10M2 10V4M2 10H8M22 14C22 14 21.8787 14.8492 18.364 18.364C14.8492 21.8787 9.15076 21.8787 5.63604 18.364C4.39076 17.1187 3.58669 15.5993 3.22383 14M22 14V20M22 14H16"/></svg></span>
+              Retry upload
+            </button>
           </div>
+          <div class="import-card-loading"><img class="spinner-animation" width="24" height="24" src="https://static.freetaxusa.com/email-images/animations/spinner_optimized_transparent.gif" alt=""/></div>
+          <button class="btn btn-icon" aria-label="Remove brokerage-consolidated-statement-2025.xlsx"><span aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#212f45" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 7L7 17M7 7L17 17"/></svg></span></button>
         </div>
-        <div class="complete-card">
-          <div class="complete-card-inner">
-            <div class="complete-card-left">
-              <svg class="complete-card-pdf-svg" width="32" height="40" viewBox="4 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><g><g><path d="M6 0.5H24.793L35.5 11.207V38C35.5 38.8284 34.8284 39.5 34 39.5H6C5.17157 39.5 4.5 38.8284 4.5 38V2C4.5 1.17157 5.17157 0.5 6 0.5Z" fill="#027932" stroke="#027932"/><path d="M25 0L36 11H27C25.8954 11 25 10.1046 25 9V0Z" fill="#15AA51"/><path d="M14.4661 34L12.4261 31.348L12.2461 31.12L9.59406 27.7H11.1541L13.1581 30.316L13.3621 30.58L15.9781 34H14.4661ZM9.60606 34L12.0901 30.76L12.8221 31.636L11.0701 34H9.60606ZM13.4341 30.952L12.7501 30.088L14.2981 27.7H15.7621L13.4341 30.952ZM17.0403 34V25.12H18.2763V34H17.0403ZM22.1281 34.12C21.6001 34.12 21.1241 34.028 20.7001 33.844C20.2761 33.66 19.9241 33.388 19.6441 33.028L20.4841 32.308C20.7241 32.588 20.9841 32.792 21.2641 32.92C21.5521 33.04 21.8761 33.1 22.2361 33.1C22.3801 33.1 22.5121 33.084 22.6321 33.052C22.7601 33.012 22.8681 32.956 22.9561 32.884C23.0521 32.812 23.1241 32.728 23.1721 32.632C23.2201 32.528 23.2441 32.416 23.2441 32.296C23.2441 32.088 23.1681 31.92 23.0161 31.792C22.9361 31.736 22.8081 31.676 22.6321 31.612C22.4641 31.54 22.2441 31.468 21.9721 31.396C21.5081 31.276 21.1281 31.14 20.8321 30.988C20.5361 30.836 20.3081 30.664 20.1481 30.472C20.0281 30.32 19.9401 30.156 19.8841 29.98C19.8281 29.796 19.8001 29.596 19.8001 29.38C19.8001 29.116 19.8561 28.876 19.9681 28.66C20.0881 28.436 20.2481 28.244 20.4481 28.084C20.6561 27.916 20.8961 27.788 21.1681 27.7C21.4481 27.612 21.7441 27.568 22.0561 27.568C22.3521 27.568 22.6441 27.608 22.9321 27.688C23.2281 27.768 23.5001 27.884 23.7481 28.036C23.9961 28.188 24.2041 28.368 24.3721 28.576L23.6641 29.356C23.5121 29.204 23.3441 29.072 23.1601 28.96C22.9841 28.84 22.8041 28.748 22.6201 28.684C22.4361 28.62 22.2681 28.588 22.1161 28.588C21.9481 28.588 21.7961 28.604 21.6601 28.636C21.5241 28.668 21.4081 28.716 21.3121 28.78C21.2241 28.844 21.1561 28.924 21.1081 29.02C21.0601 29.116 21.0361 29.224 21.0361 29.344C21.0441 29.448 21.0681 29.548 21.1081 29.644C21.1561 29.732 21.2201 29.808 21.3001 29.872C21.3881 29.936 21.5201 30.004 21.6961 30.076C21.8721 30.148 22.0961 30.216 22.3681 30.28C22.7681 30.384 23.0961 30.5 23.3521 30.628C23.6161 30.748 23.8241 30.888 23.9761 31.048C24.1361 31.2 24.2481 31.376 24.3121 31.576C24.3761 31.776 24.4081 32 24.4081 32.248C24.4081 32.608 24.3041 32.932 24.0961 33.22C23.8961 33.5 23.6241 33.72 23.2801 33.88C22.9361 34.04 22.5521 34.12 22.1281 34.12ZM29.8997 34L27.8597 31.348L27.6797 31.12L25.0277 27.7H26.5877L28.5917 30.316L28.7957 30.58L31.4117 34H29.8997ZM25.0397 34L27.5237 30.76L28.2557 31.636L26.5037 34H25.0397ZM28.8677 30.952L28.1837 30.088L29.7317 27.7H31.1957L28.8677 30.952Z" fill="white"/></g></g></svg>
-              <div class="complete-card-info">
-                <span class="complete-card-name">brokerage-statement.xlsx</span>
-                <span class="complete-card-status">Ready for import</span>
-              </div>
-              <span class="complete-card-badge">
-                <span class="badge-label">1099-B</span>
-                <svg class="badge-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-                <select class="badge-select" aria-label="Form type"><option selected>1099-B</option><option>W-2</option><option>Uncategorized</option></select>
-              </span>
-            </div>
-            <button class="complete-card-close" title="Remove file" aria-label="Remove file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
-          </div>
-        </div>
-    </div>
-    <div class="example">
-      <p class="example-caption">Uncategorized — warning treatment plus the explanation block. Re-classifying returns it to default.</p>
-      <div class="warning-wrapper">
-        <div class="complete-card">
-          <div class="complete-card-inner">
-            <div class="complete-card-left">
-              <svg class="complete-card-pdf-svg" width="32" height="40" viewBox="4 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><g><g><path d="M6 0.5H24.793L35.5 11.207V38C35.5 38.8284 34.8284 39.5 34 39.5H6C5.17157 39.5 4.5 38.8284 4.5 38V2C4.5 1.17157 5.17157 0.5 6 0.5Z" fill="#9549E9" stroke="#9549E9"/><path d="M25 0L36 11H27C25.8954 11 25 10.1046 25 9V0Z" fill="#B77CF0"/><path d="M11.3259 34.12C11.0539 34.12 10.7939 34.084 10.5459 34.012C10.2979 33.94 10.0659 33.836 9.84991 33.7C9.64191 33.564 9.45391 33.404 9.28591 33.22C9.11791 33.028 8.97391 32.82 8.85391 32.596L9.66991 31.744C9.83791 31.984 9.98991 32.176 10.1259 32.32C10.2699 32.464 10.4059 32.576 10.5339 32.656C10.6619 32.736 10.7899 32.792 10.9179 32.824C11.0459 32.848 11.1819 32.86 11.3259 32.86C11.6139 32.86 11.8659 32.796 12.0819 32.668C12.2979 32.532 12.4659 32.348 12.5859 32.116C12.7059 31.884 12.7659 31.62 12.7659 31.324V26.8H11.2299V25.6H15.3579V26.8H14.0619V31.444C14.0619 31.828 13.9939 32.184 13.8579 32.512C13.7299 32.832 13.5419 33.112 13.2939 33.352C13.0539 33.592 12.7659 33.78 12.4299 33.916C12.1019 34.052 11.7339 34.12 11.3259 34.12ZM17.1291 34V25.6H20.5491C21.0051 25.6 21.4171 25.716 21.7851 25.948C22.1611 26.172 22.4611 26.48 22.6851 26.872C22.9091 27.264 23.0211 27.7 23.0211 28.18C23.0211 28.66 22.9091 29.096 22.6851 29.488C22.4611 29.88 22.1611 30.196 21.7851 30.436C21.4171 30.668 21.0051 30.784 20.5491 30.784H18.4251V34H17.1291ZM18.4251 29.536H20.5251C20.7411 29.536 20.9371 29.476 21.1131 29.356C21.2891 29.228 21.4291 29.064 21.5331 28.864C21.6451 28.656 21.7011 28.428 21.7011 28.18C21.7011 27.932 21.6451 27.708 21.5331 27.508C21.4291 27.308 21.2891 27.148 21.1131 27.028C20.9371 26.908 20.7411 26.848 20.5251 26.848H18.4251V29.536ZM28.4906 34.12C27.8826 34.12 27.3146 34.012 26.7866 33.796C26.2586 33.572 25.7946 33.264 25.3946 32.872C24.9946 32.48 24.6826 32.024 24.4586 31.504C24.2426 30.976 24.1346 30.408 24.1346 29.8C24.1346 29.2 24.2426 28.64 24.4586 28.12C24.6826 27.6 24.9906 27.148 25.3826 26.764C25.7826 26.372 26.2466 26.068 26.7746 25.852C27.3026 25.636 27.8706 25.528 28.4786 25.528C28.9026 25.528 29.3146 25.588 29.7146 25.708C30.1226 25.828 30.4906 25.996 30.8186 26.212C31.1466 26.428 31.4146 26.676 31.6226 26.956L30.7826 27.832C30.5426 27.6 30.2946 27.408 30.0386 27.256C29.7906 27.104 29.5346 26.988 29.2706 26.908C29.0066 26.828 28.7426 26.788 28.4786 26.788C28.0466 26.788 27.6466 26.864 27.2786 27.016C26.9186 27.168 26.5986 27.38 26.3186 27.652C26.0466 27.924 25.8346 28.244 25.6826 28.612C25.5306 28.972 25.4546 29.368 25.4546 29.8C25.4546 30.216 25.5346 30.612 25.6946 30.988C25.8546 31.356 26.0746 31.68 26.3546 31.96C26.6426 32.24 26.9706 32.46 27.3386 32.62C27.7146 32.78 28.1106 32.86 28.5266 32.86C28.8386 32.86 29.1346 32.816 29.4146 32.728C29.6946 32.632 29.9426 32.5 30.1586 32.332C30.3746 32.164 30.5426 31.972 30.6626 31.756C30.7826 31.532 30.8426 31.296 30.8426 31.048V30.808L31.0226 30.976H28.4546V29.692H32.1746C32.1906 29.78 32.2026 29.868 32.2106 29.956C32.2186 30.036 32.2226 30.116 32.2226 30.196C32.2306 30.268 32.2346 30.34 32.2346 30.412C32.2346 30.964 32.1386 31.468 31.9466 31.924C31.7546 32.372 31.4866 32.76 31.1426 33.088C30.8066 33.416 30.4106 33.672 29.9546 33.856C29.5066 34.032 29.0186 34.12 28.4906 34.12Z" fill="white"/></g></g></svg>
-              <div class="complete-card-info">
-                <span class="complete-card-name">kfcreceipt.jpg</span>
-                <span class="complete-card-status">Ready for import</span>
-              </div>
-              <span class="complete-card-badge">
-                <span class="badge-label">Uncategorized</span>
-                <svg class="badge-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-                <select class="badge-select" aria-label="Form type"><option selected>Uncategorized</option><option>W-2</option><option>1099-INT</option></select>
-              </span>
-            </div>
-            <button class="complete-card-close" title="Remove file" aria-label="Remove file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
-          </div>
-        </div>
-        <div class="warning-divider"></div>
-        <div class="warning-message">
-          <svg class="warning-message-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg>
-          <div class="warning-message-content">
-            <span class="warning-message-title">Uncategorized Document</span>
-            <span class="warning-message-text">Uncategorized files will be saved in <a href="#">My Tax Files</a>, but won&rsquo;t be included with your return.</span>
+        <div class="alert warning-message" aria-live="polite" aria-atomic="false">
+          <span class="icon" aria-hidden="true" style="mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMS45OTk4IDguOTk5OTlWMTNNMTEuOTk5OCAxN0gxMi4wMDk4TTEwLjYxNTEgMy44OTE3MUwyLjM5MDE5IDE4LjA5ODNDMS45MzM5OCAxOC44ODYzIDEuNzA1ODggMTkuMjgwMyAxLjczOTU5IDE5LjYwMzdDMS43NjkgMTkuODg1NyAxLjkxNjc3IDIwLjE0MiAyLjE0NjEzIDIwLjMwODhDMi40MDkwOCAyMC41IDIuODY0MzUgMjAuNSAzLjc3NDg3IDIwLjVIMjAuMjI0NkMyMS4xMzUyIDIwLjUgMjEuNTkwNCAyMC41IDIxLjg1MzQgMjAuMzA4OEMyMi4wODI3IDIwLjE0MiAyMi4yMzA1IDE5Ljg4NTcgMjIuMjU5OSAxOS42MDM3QzIyLjI5MzYgMTkuMjgwMyAyMi4wNjU1IDE4Ljg4NjMgMjEuNjA5MyAxOC4wOTgzTDEzLjM4NDQgMy44OTE3MUMxMi45Mjk5IDMuMTA2NTQgMTIuNzAyNiAyLjcxMzk2IDEyLjQwNjEgMi41ODIxMUMxMi4xNDc0IDIuNDY3MSAxMS44NTIxIDIuNDY3MSAxMS41OTM1IDIuNTgyMTFDMTEuMjk2OSAyLjcxMzk2IDExLjA2OTYgMy4xMDY1NSAxMC42MTUxIDMuODkxNzFaIi8+PC9zdmc+') no-repeat center / contain; -webkit-mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMS45OTk4IDguOTk5OTlWMTNNMTEuOTk5OCAxN0gxMi4wMDk4TTEwLjYxNTEgMy44OTE3MUwyLjM5MDE5IDE4LjA5ODNDMS45MzM5OCAxOC44ODYzIDEuNzA1ODggMTkuMjgwMyAxLjczOTU5IDE5LjYwMzdDMS43NjkgMTkuODg1NyAxLjkxNjc3IDIwLjE0MiAyLjE0NjEzIDIwLjMwODhDMi40MDkwOCAyMC41IDIuODY0MzUgMjAuNSAzLjc3NDg3IDIwLjVIMjAuMjI0NkMyMS4xMzUyIDIwLjUgMjEuNTkwNCAyMC41IDIxLjg1MzQgMjAuMzA4OEMyMi4wODI3IDIwLjE0MiAyMi4yMzA1IDE5Ljg4NTcgMjIuMjU5OSAxOS42MDM3QzIyLjI5MzYgMTkuMjgwMyAyMi4wNjU1IDE4Ljg4NjMgMjEuNjA5MyAxOC4wOTgzTDEzLjM4NDQgMy44OTE3MUMxMi45Mjk5IDMuMTA2NTQgMTIuNzAyNiAyLjcxMzk2IDEyLjQwNjEgMi41ODIxMUMxMi4xNDc0IDIuNDY3MSAxMS44NTIxIDIuNDY3MSAxMS41OTM1IDIuNTgyMTFDMTEuMjk2OSAyLjcxMzk2IDExLjA2OTYgMy4xMDY1NSAxMC42MTUxIDMuODkxNzFaIi8+PC9zdmc+') no-repeat center / contain;"></span>
+          <div class="message-content">
+            <p class="message m-0"><b>Uncategorized Document</b></p>
+            <p class="message m-0">Uncategorized files will be saved in <a href="#">My Tax Files</a>, but won&rsquo;t be included with your return.</p>
           </div>
         </div>
       </div>
     </div>
 
     <div class="example">
-      <p class="example-caption">Error — upload failed. Generic document icon, no badge, fixed status line.</p>
-      <div class="complete-card card-error">
-        <div class="complete-card-inner">
-          <div class="complete-card-left">
-            <svg class="generic-file-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H8.8c-1.68 0-2.52 0-3.162.327a3 3 0 0 0-1.311 1.311C4 4.28 4 5.12 4 6.8v10.4c0 1.68 0 2.52.327 3.162a3 3 0 0 0 1.311 1.311C6.28 22 7.12 22 8.8 22h6.4c1.68 0 2.52 0 3.162-.327a3 3 0 0 0 1.311-1.311C20 19.72 20 18.88 20 17.2V8m-6-6 6 6m-6-6v4.8c0 .56 0 .84.109 1.054a1 1 0 0 0 .437.437C14.76 8 15.04 8 15.6 8H20"/></svg>
-            <div class="complete-card-info">
-              <span class="complete-card-name">w-2-employer2.jpg</span>
-              <span class="complete-card-status">Upload failed, please try again</span>
+      <p class="example-caption">Uncategorized — warning treatment plus the attached explanation block. Re-classifying via the badge returns it to the default state.</p>
+      <div class="import-card uncategorized">
+        <div id="progress-4" class="card-progress"></div>
+        <div class="import-card-main">
+          <div class="import-card-left">
+            <svg class="import-card-icon" width="32" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 0.5H24.793L35.5 11.207V38C35.5 38.8284 34.8284 39.5 34 39.5H6C5.17157 39.5 4.5 38.8284 4.5 38V2C4.5 1.17157 5.17157 0.5 6 0.5Z" fill="#9549E9" stroke="#9549E9"/><path d="M25 0L36 11H27C25.8954 11 25 10.1046 25 9V0Z" fill="#B77CF0"/><path d="M11.3259 34.12C11.0539 34.12 10.7939 34.084 10.5459 34.012C10.2979 33.94 10.0659 33.836 9.84991 33.7C9.64191 33.564 9.45391 33.404 9.28591 33.22C9.11791 33.028 8.97391 32.82 8.85391 32.596L9.66991 31.744C9.83791 31.984 9.98991 32.176 10.1259 32.32C10.2699 32.464 10.4059 32.576 10.5339 32.656C10.6619 32.736 10.7899 32.792 10.9179 32.824C11.0459 32.848 11.1819 32.86 11.3259 32.86C11.6139 32.86 11.8659 32.796 12.0819 32.668C12.2979 32.532 12.4659 32.348 12.5859 32.116C12.7059 31.884 12.7659 31.62 12.7659 31.324V26.8H11.2299V25.6H15.3579V26.8H14.0619V31.444C14.0619 31.828 13.9939 32.184 13.8579 32.512C13.7299 32.832 13.5419 33.112 13.2939 33.352C13.0539 33.592 12.7659 33.78 12.4299 33.916C12.1019 34.052 11.7339 34.12 11.3259 34.12ZM17.1291 34V25.6H20.5491C21.0051 25.6 21.4171 25.716 21.7851 25.948C22.1611 26.172 22.4611 26.48 22.6851 26.872C22.9091 27.264 23.0211 27.7 23.0211 28.18C23.0211 28.66 22.9091 29.096 22.6851 29.488C22.4611 29.88 22.1611 30.196 21.7851 30.436C21.4171 30.668 21.0051 30.784 20.5491 30.784H18.4251V34H17.1291ZM18.4251 29.536H20.5251C20.7411 29.536 20.9371 29.476 21.1131 29.356C21.2891 29.228 21.4291 29.064 21.5331 28.864C21.6451 28.656 21.7011 28.428 21.7011 28.18C21.7011 27.932 21.6451 27.708 21.5331 27.508C21.4291 27.308 21.2891 27.148 21.1131 27.028C20.9371 26.908 20.7411 26.848 20.5251 26.848H18.4251V29.536ZM28.4906 34.12C27.8826 34.12 27.3146 34.012 26.7866 33.796C26.2586 33.572 25.7946 33.264 25.3946 32.872C24.9946 32.48 24.6826 32.024 24.4586 31.504C24.2426 30.976 24.1346 30.408 24.1346 29.8C24.1346 29.2 24.2426 28.64 24.4586 28.12C24.6826 27.6 24.9906 27.148 25.3826 26.764C25.7826 26.372 26.2466 26.068 26.7746 25.852C27.3026 25.636 27.8706 25.528 28.4786 25.528C28.9026 25.528 29.3146 25.588 29.7146 25.708C30.1226 25.828 30.4906 25.996 30.8186 26.212C31.1466 26.428 31.4146 26.676 31.6226 26.956L30.7826 27.832C30.5426 27.6 30.2946 27.408 30.0386 27.256C29.7906 27.104 29.5346 26.988 29.2706 26.908C29.0066 26.828 28.7426 26.788 28.4786 26.788C28.0466 26.788 27.6466 26.864 27.2786 27.016C26.9186 27.168 26.5986 27.38 26.3186 27.652C26.0466 27.924 25.8346 28.244 25.6826 28.612C25.5306 28.972 25.4546 29.368 25.4546 29.8C25.4546 30.216 25.5346 30.612 25.6946 30.988C25.8546 31.356 26.0746 31.68 26.3546 31.96C26.6426 32.24 26.9706 32.46 27.3386 32.62C27.7146 32.78 28.1106 32.86 28.5266 32.86C28.8386 32.86 29.1346 32.816 29.4146 32.728C29.6946 32.632 29.9426 32.5 30.1586 32.332C30.3746 32.164 30.5426 31.972 30.6626 31.756C30.7826 31.532 30.8426 31.296 30.8426 31.048V30.808L31.0226 30.976H28.4546V29.692H32.1746C32.1906 29.78 32.2026 29.868 32.2106 29.956C32.2186 30.036 32.2226 30.116 32.2226 30.196C32.2306 30.268 32.2346 30.34 32.2346 30.412C32.2346 30.964 32.1386 31.468 31.9466 31.924C31.7546 32.372 31.4866 32.76 31.1426 33.088C30.8066 33.416 30.4106 33.672 29.9546 33.856C29.5066 34.032 29.0186 34.12 28.4906 34.12Z" fill="white"/></svg>
+            <span class="import-card-error-icon" aria-hidden="true" style="mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMiA4VjEyTTEyIDE2SDEyLjAxTTIgOC41MjI3NFYxNS40NzczQzIgMTUuNzIxOCAyIDE1Ljg0NDEgMi4wMjc2MyAxNS45NTkyQzIuMDUyMTMgMTYuMDYxMyAyLjA5MjUzIDE2LjE1ODggMi4xNDczNiAxNi4yNDgzQzIuMjA5MiAxNi4zNDkyIDIuMjk1NjggMTYuNDM1NyAyLjQ2ODYzIDE2LjYwODZMNy4zOTEzNyAyMS41MzE0QzcuNTY0MzIgMjEuNzA0MyA3LjY1MDggMjEuNzkwOCA3Ljc1MTcyIDIxLjg1MjZDNy44NDExOSAyMS45MDc1IDcuOTM4NzMgMjEuOTQ3OSA4LjA0MDc3IDIxLjk3MjRDOC4xNTU4NiAyMiA4LjI3ODE1IDIyIDguNTIyNzQgMjJIMTUuNDc3M0MxNS43MjE4IDIyIDE1Ljg0NDEgMjIgMTUuOTU5MiAyMS45NzI0QzE2LjA2MTMgMjEuOTQ3OSAxNi4xNTg4IDIxLjkwNzUgMTYuMjQ4MyAyMS44NTI2QzE2LjM0OTIgMjEuNzkwOCAxNi40MzU3IDIxLjcwNDMgMTYuNjA4NiAyMS41MzE0TDIxLjUzMTQgMTYuNjA4NkMyMS43MDQzIDE2LjQzNTcgMjEuNzkwOCAxNi4zNDkyIDIxLjg1MjYgMTYuMjQ4M0MyMS45MDc1IDE2LjE1ODggMjEuOTQ3OSAxNi4wNjEzIDIxLjk3MjQgMTUuOTU5MkMyMiAxNS44NDQxIDIyIDE1LjcyMTggMjIgMTUuNDc3M1Y4LjUyMjc0QzIyIDguMjc4MTUgMjIgOC4xNTU4NiAyMS45NzI0IDguMDQwNzdDMjEuOTQ3OSA3LjkzODczIDIxLjkwNzUgNy44NDExOSAyMS44NTI2IDcuNzUxNzJDMjEuNzkwOCA3LjY1MDggMjEuNzA0MyA3LjU2NDMyIDIxLjUzMTQgNy4zOTEzN0wxNi42MDg2IDIuNDY4NjNDMTYuNDM1NyAyLjI5NTY4IDE2LjM0OTIgMi4yMDkyIDE2LjI0ODMgMi4xNDczNkMxNi4xNTg4IDIuMDkyNTMgMTYuMDYxMyAyLjA1MjEzIDE1Ljk1OTIgMi4wMjc2M0MxNS44NDQxIDIgMTUuNzIxOCAyIDE1LjQ3NzMgMkg4LjUyMjc0QzguMjc4MTUgMiA4LjE1NTg2IDIgOC4wNDA3NyAyLjAyNzYzQzcuOTM4NzMgMi4wNTIxMyA3Ljg0MTE5IDIuMDkyNTMgNy43NTE3MiAyLjE0NzM2QzcuNjUwOCAyLjIwOTIgNy41NjQzMiAyLjI5NTY4IDcuMzkxMzcgMi40Njg2M0wyLjQ2ODYzIDcuMzkxMzdDMi4yOTU2OCA3LjU2NDMyIDIuMjA5MiA3LjY1MDggMi4xNDczNiA3Ljc1MTcyQzIuMDkyNTMgNy44NDExOSAyLjA1MjEzIDcuOTM4NzMgMi4wMjc2MyA4LjA0MDc3QzIgOC4xNTU4NiAyIDguMjc4MTUgMiA4LjUyMjc0WiIvPjwvc3ZnPg==') no-repeat center / contain; -webkit-mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMiA4VjEyTTEyIDE2SDEyLjAxTTIgOC41MjI3NFYxNS40NzczQzIgMTUuNzIxOCAyIDE1Ljg0NDEgMi4wMjc2MyAxNS45NTkyQzIuMDUyMTMgMTYuMDYxMyAyLjA5MjUzIDE2LjE1ODggMi4xNDczNiAxNi4yNDgzQzIuMjA5MiAxNi4zNDkyIDIuMjk1NjggMTYuNDM1NyAyLjQ2ODYzIDE2LjYwODZMNy4zOTEzNyAyMS41MzE0QzcuNTY0MzIgMjEuNzA0MyA3LjY1MDggMjEuNzkwOCA3Ljc1MTcyIDIxLjg1MjZDNy44NDExOSAyMS45MDc1IDcuOTM4NzMgMjEuOTQ3OSA4LjA0MDc3IDIxLjk3MjRDOC4xNTU4NiAyMiA4LjI3ODE1IDIyIDguNTIyNzQgMjJIMTUuNDc3M0MxNS43MjE4IDIyIDE1Ljg0NDEgMjIgMTUuOTU5MiAyMS45NzI0QzE2LjA2MTMgMjEuOTQ3OSAxNi4xNTg4IDIxLjkwNzUgMTYuMjQ4MyAyMS44NTI2QzE2LjM0OTIgMjEuNzkwOCAxNi40MzU3IDIxLjcwNDMgMTYuNjA4NiAyMS41MzE0TDIxLjUzMTQgMTYuNjA4NkMyMS43MDQzIDE2LjQzNTcgMjEuNzkwOCAxNi4zNDkyIDIxLjg1MjYgMTYuMjQ4M0MyMS45MDc1IDE2LjE1ODggMjEuOTQ3OSAxNi4wNjEzIDIxLjk3MjQgMTUuOTU5MkMyMiAxNS44NDQxIDIyIDE1LjcyMTggMjIgMTUuNDc3M1Y4LjUyMjc0QzIyIDguMjc4MTUgMjIgOC4xNTU4NiAyMS45NzI0IDguMDQwNzdDMjEuOTQ3OSA3LjkzODczIDIxLjkwNzUgNy44NDExOSAyMS44NTI2IDcuNzUxNzJDMjEuNzkwOCA3LjY1MDggMjEuNzA0MyA3LjU2NDMyIDIxLjUzMTQgNy4zOTEzN0wxNi42MDg2IDIuNDY4NjNDMTYuNDM1NyAyLjI5NTY4IDE2LjM0OTIgMi4yMDkyIDE2LjI0ODMgMi4xNDczNkMxNi4xNTg4IDIuMDkyNTMgMTYuMDYxMyAyLjA1MjEzIDE1Ljk1OTIgMi4wMjc2M0MxNS44NDQxIDIgMTUuNzIxOCAyIDE1LjQ3NzMgMkg4LjUyMjc0QzguMjc4MTUgMiA4LjE1NTg2IDIgOC4wNDA3NyAyLjAyNzYzQzcuOTM4NzMgMi4wNTIxMyA3Ljg0MTE5IDIuMDkyNTMgNy43NTE3MiAyLjE0NzM2QzcuNjUwOCAyLjIwOTIgNy41NjQzMiAyLjI5NTY4IDcuMzkxMzcgMi40Njg2M0wyLjQ2ODYzIDcuMzkxMzdDMi4yOTU2OCA3LjU2NDMyIDIuMjA5MiA3LjY1MDggMi4xNDczNiA3Ljc1MTcyQzIuMDkyNTMgNy44NDExOSAyLjA1MjEzIDcuOTM4NzMgMi4wMjc2MyA4LjA0MDc3QzIgOC4xNTU4NiAyIDguMjc4MTUgMiA4LjUyMjc0WiIvPjwvc3ZnPg==') no-repeat center / contain;"></span>
+            <div class="import-card-info">
+              <h3 class="import-card-name">kfcreceipt.jpg</h3>
+              <p class="import-card-status">Ready for import</p>
             </div>
+            <div class="badge clickable badge-dropdown">
+              <select id="tmpSelect-5" class="width-temp-select"><option id="tmpOption-5" class="width-temp-option"></option></select>
+              <select id="formType-5" aria-label="Form type">
+                <option value="uncategorized" selected>Uncategorized</option>
+                <option value="w2">W-2</option>
+                <option value="1099-int">1099-INT</option>
+              </select>
+              <span class="chevron" aria-hidden="true" style="mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik02IDlMMTIgMTVMMTggOSIvPjwvc3ZnPg==') no-repeat center / contain; -webkit-mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik02IDlMMTIgMTVMMTggOSIvPjwvc3ZnPg==') no-repeat center / contain;"></span>
+            </div>
+            <button type="button" class="badge badge-danger clickable">
+              <span class="pre-icon" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#f03e38" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10C2 10 2.12132 9.15076 5.63604 5.63604C9.15076 2.12132 14.8492 2.12132 18.364 5.63604C19.6092 6.88131 20.4133 8.40072 20.7762 10M2 10V4M2 10H8M22 14C22 14 21.8787 14.8492 18.364 18.364C14.8492 21.8787 9.15076 21.8787 5.63604 18.364C4.39076 17.1187 3.58669 15.5993 3.22383 14M22 14V20M22 14H16"/></svg></span>
+              Retry upload
+            </button>
           </div>
-          <button class="complete-card-close" title="Remove file" aria-label="Remove file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+          <div class="import-card-loading"><img class="spinner-animation" width="24" height="24" src="https://static.freetaxusa.com/email-images/animations/spinner_optimized_transparent.gif" alt=""/></div>
+          <button class="btn btn-icon" aria-label="Remove kfcreceipt.jpg"><span aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#212f45" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 7L7 17M7 7L17 17"/></svg></span></button>
+        </div>
+        <div class="alert warning-message" aria-live="polite" aria-atomic="false">
+          <span class="icon" aria-hidden="true" style="mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMS45OTk4IDguOTk5OTlWMTNNMTEuOTk5OCAxN0gxMi4wMDk4TTEwLjYxNTEgMy44OTE3MUwyLjM5MDE5IDE4LjA5ODNDMS45MzM5OCAxOC44ODYzIDEuNzA1ODggMTkuMjgwMyAxLjczOTU5IDE5LjYwMzdDMS43NjkgMTkuODg1NyAxLjkxNjc3IDIwLjE0MiAyLjE0NjEzIDIwLjMwODhDMi40MDkwOCAyMC41IDIuODY0MzUgMjAuNSAzLjc3NDg3IDIwLjVIMjAuMjI0NkMyMS4xMzUyIDIwLjUgMjEuNTkwNCAyMC41IDIxLjg1MzQgMjAuMzA4OEMyMi4wODI3IDIwLjE0MiAyMi4yMzA1IDE5Ljg4NTcgMjIuMjU5OSAxOS42MDM3QzIyLjI5MzYgMTkuMjgwMyAyMi4wNjU1IDE4Ljg4NjMgMjEuNjA5MyAxOC4wOTgzTDEzLjM4NDQgMy44OTE3MUMxMi45Mjk5IDMuMTA2NTQgMTIuNzAyNiAyLjcxMzk2IDEyLjQwNjEgMi41ODIxMUMxMi4xNDc0IDIuNDY3MSAxMS44NTIxIDIuNDY3MSAxMS41OTM1IDIuNTgyMTFDMTEuMjk2OSAyLjcxMzk2IDExLjA2OTYgMy4xMDY1NSAxMC42MTUxIDMuODkxNzFaIi8+PC9zdmc+') no-repeat center / contain; -webkit-mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMS45OTk4IDguOTk5OTlWMTNNMTEuOTk5OCAxN0gxMi4wMDk4TTEwLjYxNTEgMy44OTE3MUwyLjM5MDE5IDE4LjA5ODNDMS45MzM5OCAxOC44ODYzIDEuNzA1ODggMTkuMjgwMyAxLjczOTU5IDE5LjYwMzdDMS43NjkgMTkuODg1NyAxLjkxNjc3IDIwLjE0MiAyLjE0NjEzIDIwLjMwODhDMi40MDkwOCAyMC41IDIuODY0MzUgMjAuNSAzLjc3NDg3IDIwLjVIMjAuMjI0NkMyMS4xMzUyIDIwLjUgMjEuNTkwNCAyMC41IDIxLjg1MzQgMjAuMzA4OEMyMi4wODI3IDIwLjE0MiAyMi4yMzA1IDE5Ljg4NTcgMjIuMjU5OSAxOS42MDM3QzIyLjI5MzYgMTkuMjgwMyAyMi4wNjU1IDE4Ljg4NjMgMjEuNjA5MyAxOC4wOTgzTDEzLjM4NDQgMy44OTE3MUMxMi45Mjk5IDMuMTA2NTQgMTIuNzAyNiAyLjcxMzk2IDEyLjQwNjEgMi41ODIxMUMxMi4xNDc0IDIuNDY3MSAxMS44NTIxIDIuNDY3MSAxMS41OTM1IDIuNTgyMTFDMTEuMjk2OSAyLjcxMzk2IDExLjA2OTYgMy4xMDY1NSAxMC42MTUxIDMuODkxNzFaIi8+PC9zdmc+') no-repeat center / contain;"></span>
+          <div class="message-content">
+            <p class="message m-0"><b>Uncategorized Document</b></p>
+            <p class="message m-0">Uncategorized files will be saved in <a href="#">My Tax Files</a>, but won&rsquo;t be included with your return.</p>
+          </div>
         </div>
       </div>
     </div>
 
-    <h2>Mobile Preview</h2>
-    <p>Applies below the Bootstrap <code>sm</code> breakpoint (<code>media-breakpoint-down(sm)</code>, &lt;576px). Previewed here at 375px.</p>
+    <div class="example">
+      <p class="example-caption">Failed — new variant, not in the original spec. Processing failed; the file-type icon swaps for an error icon, the badge disappears (there&rsquo;s nothing to classify), and a Retry action takes its place.</p>
+      <div class="import-card failed">
+        <div id="progress-6" class="card-progress"></div>
+        <div class="import-card-main">
+          <div class="import-card-left">
+            <svg class="import-card-icon" width="32" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 38V2C4 0.895431 4.89543 0 6 0H25L36 11V38C36 39.1046 35.1046 40 34 40H6C4.89543 40 4 39.1046 4 38Z" fill="#0850C4"/><path d="M25 0L36 11H27C25.8954 11 25 10.1046 25 9V0Z" fill="#4B9AEE"/><path d="M9.27561 34V25.6H12.6956C13.1516 25.6 13.5636 25.716 13.9316 25.948C14.3076 26.172 14.6076 26.48 14.8316 26.872C15.0556 27.264 15.1676 27.7 15.1676 28.18C15.1676 28.66 15.0556 29.096 14.8316 29.488C14.6076 29.88 14.3076 30.196 13.9316 30.436C13.5636 30.668 13.1516 30.784 12.6956 30.784H10.5716V34H9.27561ZM10.5716 29.536H12.6716C12.8876 29.536 13.0836 29.476 13.2596 29.356C13.4356 29.228 13.5756 29.064 13.6796 28.864C13.7916 28.656 13.8476 28.428 13.8476 28.18C13.8476 27.932 13.7916 27.708 13.6796 27.508C13.5756 27.308 13.4356 27.148 13.2596 27.028C13.0836 26.908 12.8876 26.848 12.6716 26.848H10.5716V29.536ZM16.8811 34V25.6H20.1691C20.7691 25.6 21.3091 25.7 21.7891 25.9C22.2771 26.1 22.6931 26.388 23.0371 26.764C23.3811 27.14 23.6451 27.584 23.8291 28.096C24.0131 28.608 24.1051 29.176 24.1051 29.8C24.1051 30.424 24.0131 30.996 23.8291 31.516C23.6451 32.028 23.3811 32.472 23.0371 32.848C22.7011 33.216 22.2891 33.5 21.8011 33.7C21.3131 33.9 20.7691 34 20.1691 34H16.8811ZM18.1771 32.884L18.1411 32.752H20.1091C20.5331 32.752 20.9091 32.684 21.2371 32.548C21.5731 32.412 21.8531 32.22 22.0771 31.972C22.3091 31.716 22.4851 31.404 22.6051 31.036C22.7251 30.668 22.7851 30.256 22.7851 29.8C22.7851 29.344 22.7251 28.936 22.6051 28.576C22.4851 28.208 22.3091 27.896 22.0771 27.64C21.8451 27.384 21.5651 27.188 21.2371 27.052C20.9091 26.916 20.5331 26.848 20.1091 26.848H18.1051L18.1771 26.74V32.884ZM25.8576 34V25.6H27.1536V34H25.8576ZM26.4336 30.424V29.176H30.7656V30.424H26.4336ZM26.4336 26.848V25.6H31.3056V26.848H26.4336Z" fill="white"/></svg>
+            <span class="import-card-error-icon" aria-hidden="true" style="mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMiA4VjEyTTEyIDE2SDEyLjAxTTIgOC41MjI3NFYxNS40NzczQzIgMTUuNzIxOCAyIDE1Ljg0NDEgMi4wMjc2MyAxNS45NTkyQzIuMDUyMTMgMTYuMDYxMyAyLjA5MjUzIDE2LjE1ODggMi4xNDczNiAxNi4yNDgzQzIuMjA5MiAxNi4zNDkyIDIuMjk1NjggMTYuNDM1NyAyLjQ2ODYzIDE2LjYwODZMNy4zOTEzNyAyMS41MzE0QzcuNTY0MzIgMjEuNzA0MyA3LjY1MDggMjEuNzkwOCA3Ljc1MTcyIDIxLjg1MjZDNy44NDExOSAyMS45MDc1IDcuOTM4NzMgMjEuOTQ3OSA4LjA0MDc3IDIxLjk3MjRDOC4xNTU4NiAyMiA4LjI3ODE1IDIyIDguNTIyNzQgMjJIMTUuNDc3M0MxNS43MjE4IDIyIDE1Ljg0NDEgMjIgMTUuOTU5MiAyMS45NzI0QzE2LjA2MTMgMjEuOTQ3OSAxNi4xNTg4IDIxLjkwNzUgMTYuMjQ4MyAyMS44NTI2QzE2LjM0OTIgMjEuNzkwOCAxNi40MzU3IDIxLjcwNDMgMTYuNjA4NiAyMS41MzE0TDIxLjUzMTQgMTYuNjA4NkMyMS43MDQzIDE2LjQzNTcgMjEuNzkwOCAxNi4zNDkyIDIxLjg1MjYgMTYuMjQ4M0MyMS45MDc1IDE2LjE1ODggMjEuOTQ3OSAxNi4wNjEzIDIxLjk3MjQgMTUuOTU5MkMyMiAxNS44NDQxIDIyIDE1LjcyMTggMjIgMTUuNDc3M1Y4LjUyMjc0QzIyIDguMjc4MTUgMjIgOC4xNTU4NiAyMS45NzI0IDguMDQwNzdDMjEuOTQ3OSA3LjkzODczIDIxLjkwNzUgNy44NDExOSAyMS44NTI2IDcuNzUxNzJDMjEuNzkwOCA3LjY1MDggMjEuNzA0MyA3LjU2NDMyIDIxLjUzMTQgNy4zOTEzN0wxNi42MDg2IDIuNDY4NjNDMTYuNDM1NyAyLjI5NTY4IDE2LjM0OTIgMi4yMDkyIDE2LjI0ODMgMi4xNDczNkMxNi4xNTg4IDIuMDkyNTMgMTYuMDYxMyAyLjA1MjEzIDE1Ljk1OTIgMi4wMjc2M0MxNS44NDQxIDIgMTUuNzIxOCAyIDE1LjQ3NzMgMkg4LjUyMjc0QzguMjc4MTUgMiA4LjE1NTg2IDIgOC4wNDA3NyAyLjAyNzYzQzcuOTM4NzMgMi4wNTIxMyA3Ljg0MTE5IDIuMDkyNTMgNy43NTE3MiAyLjE0NzM2QzcuNjUwOCAyLjIwOTIgNy41NjQzMiAyLjI5NTY4IDcuMzkxMzcgMi40Njg2M0wyLjQ2ODYzIDcuMzkxMzdDMi4yOTU2OCA3LjU2NDMyIDIuMjA5MiA3LjY1MDggMi4xNDczNiA3Ljc1MTcyQzIuMDkyNTMgNy44NDExOSAyLjA1MjEzIDcuOTM4NzMgMi4wMjc2MyA4LjA0MDc3QzIgOC4xNTU4NiAyIDguMjc4MTUgMiA4LjUyMjc0WiIvPjwvc3ZnPg==') no-repeat center / contain; -webkit-mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMiA4VjEyTTEyIDE2SDEyLjAxTTIgOC41MjI3NFYxNS40NzczQzIgMTUuNzIxOCAyIDE1Ljg0NDEgMi4wMjc2MyAxNS45NTkyQzIuMDUyMTMgMTYuMDYxMyAyLjA5MjUzIDE2LjE1ODggMi4xNDczNiAxNi4yNDgzQzIuMjA5MiAxNi4zNDkyIDIuMjk1NjggMTYuNDM1NyAyLjQ2ODYzIDE2LjYwODZMNy4zOTEzNyAyMS41MzE0QzcuNTY0MzIgMjEuNzA0MyA3LjY1MDggMjEuNzkwOCA3Ljc1MTcyIDIxLjg1MjZDNy44NDExOSAyMS45MDc1IDcuOTM4NzMgMjEuOTQ3OSA4LjA0MDc3IDIxLjk3MjRDOC4xNTU4NiAyMiA4LjI3ODE1IDIyIDguNTIyNzQgMjJIMTUuNDc3M0MxNS43MjE4IDIyIDE1Ljg0NDEgMjIgMTUuOTU5MiAyMS45NzI0QzE2LjA2MTMgMjEuOTQ3OSAxNi4xNTg4IDIxLjkwNzUgMTYuMjQ4MyAyMS44NTI2QzE2LjM0OTIgMjEuNzkwOCAxNi40MzU3IDIxLjcwNDMgMTYuNjA4NiAyMS41MzE0TDIxLjUzMTQgMTYuNjA4NkMyMS43MDQzIDE2LjQzNTcgMjEuNzkwOCAxNi4zNDkyIDIxLjg1MjYgMTYuMjQ4M0MyMS45MDc1IDE2LjE1ODggMjEuOTQ3OSAxNi4wNjEzIDIxLjk3MjQgMTUuOTU5MkMyMiAxNS44NDQxIDIyIDE1LjcyMTggMjIgMTUuNDc3M1Y4LjUyMjc0QzIyIDguMjc4MTUgMjIgOC4xNTU4NiAyMS45NzI0IDguMDQwNzdDMjEuOTQ3OSA3LjkzODczIDIxLjkwNzUgNy44NDExOSAyMS44NTI2IDcuNzUxNzJDMjEuNzkwOCA3LjY1MDggMjEuNzA0MyA3LjU2NDMyIDIxLjUzMTQgNy4zOTEzN0wxNi42MDg2IDIuNDY4NjNDMTYuNDM1NyAyLjI5NTY4IDE2LjM0OTIgMi4yMDkyIDE2LjI0ODMgMi4xNDczNkMxNi4xNTg4IDIuMDkyNTMgMTYuMDYxMyAyLjA1MjEzIDE1Ljk1OTIgMi4wMjc2M0MxNS44NDQxIDIgMTUuNzIxOCAyIDE1LjQ3NzMgMkg4LjUyMjc0QzguMjc4MTUgMiA4LjE1NTg2IDIgOC4wNDA3NyAyLjAyNzYzQzcuOTM4NzMgMi4wNTIxMyA3Ljg0MTE5IDIuMDkyNTMgNy43NTE3MiAyLjE0NzM2QzcuNjUwOCAyLjIwOTIgNy41NjQzMiAyLjI5NTY4IDcuMzkxMzcgMi40Njg2M0wyLjQ2ODYzIDcuMzkxMzdDMi4yOTU2OCA3LjU2NDMyIDIuMjA5MiA3LjY1MDggMi4xNDczNiA3Ljc1MTcyQzIuMDkyNTMgNy44NDExOSAyLjA1MjEzIDcuOTM4NzMgMi4wMjc2MyA4LjA0MDc3QzIgOC4xNTU4NiAyIDguMjc4MTUgMiA4LjUyMjc0WiIvPjwvc3ZnPg==') no-repeat center / contain;"></span>
+            <div class="import-card-info">
+              <h3 class="import-card-name">1099.pdf</h3>
+              <p class="import-card-status">Failed to process file</p>
+            </div>
+            <div class="badge clickable badge-dropdown">
+              <select id="tmpSelect-6" class="width-temp-select"><option id="tmpOption-6" class="width-temp-option"></option></select>
+              <select id="formType-6" aria-label="Form type">
+                <option value="1099-int" selected>1099-INT</option>
+                <option value="w2">W-2</option>
+                <option value="uncategorized">Uncategorized</option>
+              </select>
+              <span class="chevron" aria-hidden="true" style="mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik02IDlMMTIgMTVMMTggOSIvPjwvc3ZnPg==') no-repeat center / contain; -webkit-mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik02IDlMMTIgMTVMMTggOSIvPjwvc3ZnPg==') no-repeat center / contain;"></span>
+            </div>
+            <button type="button" class="badge badge-danger clickable">
+              <span class="pre-icon" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#f03e38" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10C2 10 2.12132 9.15076 5.63604 5.63604C9.15076 2.12132 14.8492 2.12132 18.364 5.63604C19.6092 6.88131 20.4133 8.40072 20.7762 10M2 10V4M2 10H8M22 14C22 14 21.8787 14.8492 18.364 18.364C14.8492 21.8787 9.15076 21.8787 5.63604 18.364C4.39076 17.1187 3.58669 15.5993 3.22383 14M22 14V20M22 14H16"/></svg></span>
+              Retry upload
+            </button>
+          </div>
+          <div class="import-card-loading"><img class="spinner-animation" width="24" height="24" src="https://static.freetaxusa.com/email-images/animations/spinner_optimized_transparent.gif" alt=""/></div>
+          <button class="btn btn-icon" aria-label="Remove 1099.pdf"><span aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#212f45" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 7L7 17M7 7L17 17"/></svg></span></button>
+        </div>
+        <!-- warning block is still in the markup here too, just hidden — this card has no way to reach .uncategorized directly, but the handler that flips state never has to know that -->
+        <div class="alert warning-message" aria-live="polite" aria-atomic="false">
+          <span class="icon" aria-hidden="true" style="mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMS45OTk4IDguOTk5OTlWMTNNMTEuOTk5OCAxN0gxMi4wMDk4TTEwLjYxNTEgMy44OTE3MUwyLjM5MDE5IDE4LjA5ODNDMS45MzM5OCAxOC44ODYzIDEuNzA1ODggMTkuMjgwMyAxLjczOTU5IDE5LjYwMzdDMS43NjkgMTkuODg1NyAxLjkxNjc3IDIwLjE0MiAyLjE0NjEzIDIwLjMwODhDMi40MDkwOCAyMC41IDIuODY0MzUgMjAuNSAzLjc3NDg3IDIwLjVIMjAuMjI0NkMyMS4xMzUyIDIwLjUgMjEuNTkwNCAyMC41IDIxLjg1MzQgMjAuMzA4OEMyMi4wODI3IDIwLjE0MiAyMi4yMzA1IDE5Ljg4NTcgMjIuMjU5OSAxOS42MDM3QzIyLjI5MzYgMTkuMjgwMyAyMi4wNjU1IDE4Ljg4NjMgMjEuNjA5MyAxOC4wOTgzTDEzLjM4NDQgMy44OTE3MUMxMi45Mjk5IDMuMTA2NTQgMTIuNzAyNiAyLjcxMzk2IDEyLjQwNjEgMi41ODIxMUMxMi4xNDc0IDIuNDY3MSAxMS44NTIxIDIuNDY3MSAxMS41OTM1IDIuNTgyMTFDMTEuMjk2OSAyLjcxMzk2IDExLjA2OTYgMy4xMDY1NSAxMC42MTUxIDMuODkxNzFaIi8+PC9zdmc+') no-repeat center / contain; -webkit-mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMS45OTk4IDguOTk5OTlWMTNNMTEuOTk5OCAxN0gxMi4wMDk4TTEwLjYxNTEgMy44OTE3MUwyLjM5MDE5IDE4LjA5ODNDMS45MzM5OCAxOC44ODYzIDEuNzA1ODggMTkuMjgwMyAxLjczOTU5IDE5LjYwMzdDMS43NjkgMTkuODg1NyAxLjkxNjc3IDIwLjE0MiAyLjE0NjEzIDIwLjMwODhDMi40MDkwOCAyMC41IDIuODY0MzUgMjAuNSAzLjc3NDg3IDIwLjVIMjAuMjI0NkMyMS4xMzUyIDIwLjUgMjEuNTkwNCAyMC41IDIxLjg1MzQgMjAuMzA4OEMyMi4wODI3IDIwLjE0MiAyMi4yMzA1IDE5Ljg4NTcgMjIuMjU5OSAxOS42MDM3QzIyLjI5MzYgMTkuMjgwMyAyMi4wNjU1IDE4Ljg4NjMgMjEuNjA5MyAxOC4wOTgzTDEzLjM4NDQgMy44OTE3MUMxMi45Mjk5IDMuMTA2NTQgMTIuNzAyNiAyLjcxMzk2IDEyLjQwNjEgMi41ODIxMUMxMi4xNDc0IDIuNDY3MSAxMS44NTIxIDIuNDY3MSAxMS41OTM1IDIuNTgyMTFDMTEuMjk2OSAyLjcxMzk2IDExLjA2OTYgMy4xMDY1NSAxMC42MTUxIDMuODkxNzFaIi8+PC9zdmc+') no-repeat center / contain;"></span>
+          <div class="message-content">
+            <p class="message m-0"><b>Uncategorized Document</b></p>
+            <p class="message m-0">Uncategorized files will be saved in <a href="#">My Tax Files</a>, but won&rsquo;t be included with your return.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2>Mobile preview</h2>
+    <p>Mobile layout rules (375px) — confirmed against the original spec, with one fix made during build:</p>
     <ul>
-      <li>Icon, filename block, and remove button <b>top-align</b> (not vertically centered).</li>
-      <li>The badge drops to a <b>second line</b>, aligned with the text column.</li>
-      <li>Filename wraps to <b>two lines max</b>, then truncates with an ellipsis (all breakpoints).</li>
+      <li>Icon, filename block, and the remove button <b>top-align</b> — not vertically centered. <i>(The first build pass centered the remove button against the full row height at every size; fixed to align to the top below the <code>sm</code> breakpoint.)</i></li>
+      <li>The form-type badge drops to a <b>second line</b>, aligned with the text column, not under the icon.</li>
+      <li>Filename wraps to a maximum of two lines, then truncates with an ellipsis — applies at all breakpoints.</li>
     </ul>
     <div class="phone-frame">
-        <div class="complete-card">
-          <div class="complete-card-inner">
-            <div class="complete-card-left">
-              <svg class="complete-card-pdf-svg" width="32" height="40" viewBox="4 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><g><g><path d="M4 38V2C4 0.895431 4.89543 0 6 0H25L36 11V38C36 39.1046 35.1046 40 34 40H6C4.89543 40 4 39.1046 4 38Z" fill="#0850C4"/><path d="M25 0L36 11H27C25.8954 11 25 10.1046 25 9V0Z" fill="#4B9AEE"/><path d="M9.27561 34V25.6H12.6956C13.1516 25.6 13.5636 25.716 13.9316 25.948C14.3076 26.172 14.6076 26.48 14.8316 26.872C15.0556 27.264 15.1676 27.7 15.1676 28.18C15.1676 28.66 15.0556 29.096 14.8316 29.488C14.6076 29.88 14.3076 30.196 13.9316 30.436C13.5636 30.668 13.1516 30.784 12.6956 30.784H10.5716V34H9.27561ZM10.5716 29.536H12.6716C12.8876 29.536 13.0836 29.476 13.2596 29.356C13.4356 29.228 13.5756 29.064 13.6796 28.864C13.7916 28.656 13.8476 28.428 13.8476 28.18C13.8476 27.932 13.7916 27.708 13.6796 27.508C13.5756 27.308 13.4356 27.148 13.2596 27.028C13.0836 26.908 12.8876 26.848 12.6716 26.848H10.5716V29.536ZM16.8811 34V25.6H20.1691C20.7691 25.6 21.3091 25.7 21.7891 25.9C22.2771 26.1 22.6931 26.388 23.0371 26.764C23.3811 27.14 23.6451 27.584 23.8291 28.096C24.0131 28.608 24.1051 29.176 24.1051 29.8C24.1051 30.424 24.0131 30.996 23.8291 31.516C23.6451 32.028 23.3811 32.472 23.0371 32.848C22.7011 33.216 22.2891 33.5 21.8011 33.7C21.3131 33.9 20.7691 34 20.1691 34H16.8811ZM18.1771 32.884L18.1411 32.752H20.1091C20.5331 32.752 20.9091 32.684 21.2371 32.548C21.5731 32.412 21.8531 32.22 22.0771 31.972C22.3091 31.716 22.4851 31.404 22.6051 31.036C22.7251 30.668 22.7851 30.256 22.7851 29.8C22.7851 29.344 22.7251 28.936 22.6051 28.576C22.4851 28.208 22.3091 27.896 22.0771 27.64C21.8451 27.384 21.5651 27.188 21.2371 27.052C20.9091 26.916 20.5331 26.848 20.1091 26.848H18.1051L18.1771 26.74V32.884ZM25.8576 34V25.6H27.1536V34H25.8576ZM26.4336 30.424V29.176H30.7656V30.424H26.4336ZM26.4336 26.848V25.6H31.3056V26.848H26.4336Z" fill="white"/></g></g></svg>
-              <div class="complete-card-info">
-                <span class="complete-card-name">myworkW2.pdf</span>
-                <span class="complete-card-status">Ready for import</span>
-              </div>
-              <span class="complete-card-badge">
-                <span class="badge-label">W-2</span>
-                <svg class="badge-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-                <select class="badge-select" aria-label="Form type"><option selected>W-2</option><option>Uncategorized</option><option>1099-INT</option></select>
-              </span>
+      <div class="import-card">
+        <div id="progress-7" class="card-progress"></div>
+        <div class="import-card-main">
+          <div class="import-card-left">
+            <svg class="import-card-icon" width="32" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 38V2C4 0.895431 4.89543 0 6 0H25L36 11V38C36 39.1046 35.1046 40 34 40H6C4.89543 40 4 39.1046 4 38Z" fill="#0850C4"/><path d="M25 0L36 11H27C25.8954 11 25 10.1046 25 9V0Z" fill="#4B9AEE"/><path d="M9.27561 34V25.6H12.6956C13.1516 25.6 13.5636 25.716 13.9316 25.948C14.3076 26.172 14.6076 26.48 14.8316 26.872C15.0556 27.264 15.1676 27.7 15.1676 28.18C15.1676 28.66 15.0556 29.096 14.8316 29.488C14.6076 29.88 14.3076 30.196 13.9316 30.436C13.5636 30.668 13.1516 30.784 12.6956 30.784H10.5716V34H9.27561ZM10.5716 29.536H12.6716C12.8876 29.536 13.0836 29.476 13.2596 29.356C13.4356 29.228 13.5756 29.064 13.6796 28.864C13.7916 28.656 13.8476 28.428 13.8476 28.18C13.8476 27.932 13.7916 27.708 13.6796 27.508C13.5756 27.308 13.4356 27.148 13.2596 27.028C13.0836 26.908 12.8876 26.848 12.6716 26.848H10.5716V29.536ZM16.8811 34V25.6H20.1691C20.7691 25.6 21.3091 25.7 21.7891 25.9C22.2771 26.1 22.6931 26.388 23.0371 26.764C23.3811 27.14 23.6451 27.584 23.8291 28.096C24.0131 28.608 24.1051 29.176 24.1051 29.8C24.1051 30.424 24.0131 30.996 23.8291 31.516C23.6451 32.028 23.3811 32.472 23.0371 32.848C22.7011 33.216 22.2891 33.5 21.8011 33.7C21.3131 33.9 20.7691 34 20.1691 34H16.8811ZM18.1771 32.884L18.1411 32.752H20.1091C20.5331 32.752 20.9091 32.684 21.2371 32.548C21.5731 32.412 21.8531 32.22 22.0771 31.972C22.3091 31.716 22.4851 31.404 22.6051 31.036C22.7251 30.668 22.7851 30.256 22.7851 29.8C22.7851 29.344 22.7251 28.936 22.6051 28.576C22.4851 28.208 22.3091 27.896 22.0771 27.64C21.8451 27.384 21.5651 27.188 21.2371 27.052C20.9091 26.916 20.5331 26.848 20.1091 26.848H18.1051L18.1771 26.74V32.884ZM25.8576 34V25.6H27.1536V34H25.8576ZM26.4336 30.424V29.176H30.7656V30.424H26.4336ZM26.4336 26.848V25.6H31.3056V26.848H26.4336Z" fill="white"/></svg>
+            <span class="import-card-error-icon" aria-hidden="true" style="mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMiA4VjEyTTEyIDE2SDEyLjAxTTIgOC41MjI3NFYxNS40NzczQzIgMTUuNzIxOCAyIDE1Ljg0NDEgMi4wMjc2MyAxNS45NTkyQzIuMDUyMTMgMTYuMDYxMyAyLjA5MjUzIDE2LjE1ODggMi4xNDczNiAxNi4yNDgzQzIuMjA5MiAxNi4zNDkyIDIuMjk1NjggMTYuNDM1NyAyLjQ2ODYzIDE2LjYwODZMNy4zOTEzNyAyMS41MzE0QzcuNTY0MzIgMjEuNzA0MyA3LjY1MDggMjEuNzkwOCA3Ljc1MTcyIDIxLjg1MjZDNy44NDExOSAyMS45MDc1IDcuOTM4NzMgMjEuOTQ3OSA4LjA0MDc3IDIxLjk3MjRDOC4xNTU4NiAyMiA4LjI3ODE1IDIyIDguNTIyNzQgMjJIMTUuNDc3M0MxNS43MjE4IDIyIDE1Ljg0NDEgMjIgMTUuOTU5MiAyMS45NzI0QzE2LjA2MTMgMjEuOTQ3OSAxNi4xNTg4IDIxLjkwNzUgMTYuMjQ4MyAyMS44NTI2QzE2LjM0OTIgMjEuNzkwOCAxNi40MzU3IDIxLjcwNDMgMTYuNjA4NiAyMS41MzE0TDIxLjUzMTQgMTYuNjA4NkMyMS43MDQzIDE2LjQzNTcgMjEuNzkwOCAxNi4zNDkyIDIxLjg1MjYgMTYuMjQ4M0MyMS45MDc1IDE2LjE1ODggMjEuOTQ3OSAxNi4wNjEzIDIxLjk3MjQgMTUuOTU5MkMyMiAxNS44NDQxIDIyIDE1LjcyMTggMjIgMTUuNDc3M1Y4LjUyMjc0QzIyIDguMjc4MTUgMjIgOC4xNTU4NiAyMS45NzI0IDguMDQwNzdDMjEuOTQ3OSA3LjkzODczIDIxLjkwNzUgNy44NDExOSAyMS44NTI2IDcuNzUxNzJDMjEuNzkwOCA3LjY1MDggMjEuNzA0MyA3LjU2NDMyIDIxLjUzMTQgNy4zOTEzN0wxNi42MDg2IDIuNDY4NjNDMTYuNDM1NyAyLjI5NTY4IDE2LjM0OTIgMi4yMDkyIDE2LjI0ODMgMi4xNDczNkMxNi4xNTg4IDIuMDkyNTMgMTYuMDYxMyAyLjA1MjEzIDE1Ljk1OTIgMi4wMjc2M0MxNS44NDQxIDIgMTUuNzIxOCAyIDE1LjQ3NzMgMkg4LjUyMjc0QzguMjc4MTUgMiA4LjE1NTg2IDIgOC4wNDA3NyAyLjAyNzYzQzcuOTM4NzMgMi4wNTIxMyA3Ljg0MTE5IDIuMDkyNTMgNy43NTE3MiAyLjE0NzM2QzcuNjUwOCAyLjIwOTIgNy41NjQzMiAyLjI5NTY4IDcuMzkxMzcgMi40Njg2M0wyLjQ2ODYzIDcuMzkxMzdDMi4yOTU2OCA3LjU2NDMyIDIuMjA5MiA3LjY1MDggMi4xNDczNiA3Ljc1MTcyQzIuMDkyNTMgNy44NDExOSAyLjA1MjEzIDcuOTM4NzMgMi4wMjc2MyA4LjA0MDc3QzIgOC4xNTU4NiAyIDguMjc4MTUgMiA4LjUyMjc0WiIvPjwvc3ZnPg==') no-repeat center / contain; -webkit-mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMiA4VjEyTTEyIDE2SDEyLjAxTTIgOC41MjI3NFYxNS40NzczQzIgMTUuNzIxOCAyIDE1Ljg0NDEgMi4wMjc2MyAxNS45NTkyQzIuMDUyMTMgMTYuMDYxMyAyLjA5MjUzIDE2LjE1ODggMi4xNDczNiAxNi4yNDgzQzIuMjA5MiAxNi4zNDkyIDIuMjk1NjggMTYuNDM1NyAyLjQ2ODYzIDE2LjYwODZMNy4zOTEzNyAyMS41MzE0QzcuNTY0MzIgMjEuNzA0MyA3LjY1MDggMjEuNzkwOCA3Ljc1MTcyIDIxLjg1MjZDNy44NDExOSAyMS45MDc1IDcuOTM4NzMgMjEuOTQ3OSA4LjA0MDc3IDIxLjk3MjRDOC4xNTU4NiAyMiA4LjI3ODE1IDIyIDguNTIyNzQgMjJIMTUuNDc3M0MxNS43MjE4IDIyIDE1Ljg0NDEgMjIgMTUuOTU5MiAyMS45NzI0QzE2LjA2MTMgMjEuOTQ3OSAxNi4xNTg4IDIxLjkwNzUgMTYuMjQ4MyAyMS44NTI2QzE2LjM0OTIgMjEuNzkwOCAxNi40MzU3IDIxLjcwNDMgMTYuNjA4NiAyMS41MzE0TDIxLjUzMTQgMTYuNjA4NkMyMS43MDQzIDE2LjQzNTcgMjEuNzkwOCAxNi4zNDkyIDIxLjg1MjYgMTYuMjQ4M0MyMS45MDc1IDE2LjE1ODggMjEuOTQ3OSAxNi4wNjEzIDIxLjk3MjQgMTUuOTU5MkMyMiAxNS44NDQxIDIyIDE1LjcyMTggMjIgMTUuNDc3M1Y4LjUyMjc0QzIyIDguMjc4MTUgMjIgOC4xNTU4NiAyMS45NzI0IDguMDQwNzdDMjEuOTQ3OSA3LjkzODczIDIxLjkwNzUgNy44NDExOSAyMS44NTI2IDcuNzUxNzJDMjEuNzkwOCA3LjY1MDggMjEuNzA0MyA3LjU2NDMyIDIxLjUzMTQgNy4zOTEzN0wxNi42MDg2IDIuNDY4NjNDMTYuNDM1NyAyLjI5NTY4IDE2LjM0OTIgMi4yMDkyIDE2LjI0ODMgMi4xNDczNkMxNi4xNTg4IDIuMDkyNTMgMTYuMDYxMyAyLjA1MjEzIDE1Ljk1OTIgMi4wMjc2M0MxNS44NDQxIDIgMTUuNzIxOCAyIDE1LjQ3NzMgMkg4LjUyMjc0QzguMjc4MTUgMiA4LjE1NTg2IDIgOC4wNDA3NyAyLjAyNzYzQzcuOTM4NzMgMi4wNTIxMyA3Ljg0MTE5IDIuMDkyNTMgNy43NTE3MiAyLjE0NzM2QzcuNjUwOCAyLjIwOTIgNy41NjQzMiAyLjI5NTY4IDcuMzkxMzcgMi40Njg2M0wyLjQ2ODYzIDcuMzkxMzdDMi4yOTU2OCA3LjU2NDMyIDIuMjA5MiA3LjY1MDggMi4xNDczNiA3Ljc1MTcyQzIuMDkyNTMgNy44NDExOSAyLjA1MjEzIDcuOTM4NzMgMi4wMjc2MyA4LjA0MDc3QzIgOC4xNTU4NiAyIDguMjc4MTUgMiA4LjUyMjc0WiIvPjwvc3ZnPg==') no-repeat center / contain;"></span>
+            <div class="import-card-info">
+              <h3 class="import-card-name">myworkW2.pdf</h3>
+              <p class="import-card-status">Ready for import</p>
             </div>
-            <button class="complete-card-close" title="Remove file" aria-label="Remove file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
-          </div>
-        </div>
-
-        <div class="complete-card">
-          <div class="complete-card-inner">
-            <div class="complete-card-left">
-              <svg class="complete-card-pdf-svg" width="32" height="40" viewBox="4 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><g><g><path d="M6 0.5H24.793L35.5 11.207V38C35.5 38.8284 34.8284 39.5 34 39.5H6C5.17157 39.5 4.5 38.8284 4.5 38V2C4.5 1.17157 5.17157 0.5 6 0.5Z" fill="#9549E9" stroke="#9549E9"/><path d="M25 0L36 11H27C25.8954 11 25 10.1046 25 9V0Z" fill="#B77CF0"/><path d="M8.5217 34V25.6H11.9417C12.3977 25.6 12.8097 25.716 13.1777 25.948C13.5537 26.172 13.8537 26.48 14.0777 26.872C14.3017 27.264 14.4137 27.7 14.4137 28.18C14.4137 28.66 14.3017 29.096 14.0777 29.488C13.8537 29.88 13.5537 30.196 13.1777 30.436C12.8097 30.668 12.3977 30.784 11.9417 30.784H9.8177V34H8.5217ZM9.8177 29.536H11.9177C12.1337 29.536 12.3297 29.476 12.5057 29.356C12.6817 29.228 12.8217 29.064 12.9257 28.864C13.0377 28.656 13.0937 28.428 13.0937 28.18C13.0937 27.932 13.0377 27.708 12.9257 27.508C12.8217 27.308 12.6817 27.148 12.5057 27.028C12.3297 26.908 12.1337 26.848 11.9177 26.848H9.8177V29.536ZM16.1272 34V25.6H17.2912L22.4272 32.476L22.2352 32.584C22.2032 32.384 22.1752 32.168 22.1512 31.936C22.1272 31.696 22.1032 31.444 22.0792 31.18C22.0632 30.908 22.0472 30.624 22.0312 30.328C22.0232 30.024 22.0152 29.708 22.0072 29.38C21.9992 29.052 21.9952 28.712 21.9952 28.36V25.6H23.2912V34H22.1032L17.0512 27.376L17.1832 27.208C17.2232 27.696 17.2552 28.112 17.2792 28.456C17.3112 28.792 17.3352 29.08 17.3512 29.32C17.3752 29.552 17.3912 29.744 17.3992 29.896C17.4072 30.04 17.4112 30.16 17.4112 30.256C17.4192 30.352 17.4232 30.436 17.4232 30.508V34H16.1272ZM29.3988 34.12C28.7908 34.12 28.2228 34.012 27.6948 33.796C27.1668 33.572 26.7028 33.264 26.3028 32.872C25.9028 32.48 25.5908 32.024 25.3668 31.504C25.1508 30.976 25.0428 30.408 25.0428 29.8C25.0428 29.2 25.1508 28.64 25.3668 28.12C25.5908 27.6 25.8988 27.148 26.2908 26.764C26.6908 26.372 27.1548 26.068 27.6828 25.852C28.2108 25.636 28.7788 25.528 29.3868 25.528C29.8108 25.528 30.2228 25.588 30.6228 25.708C31.0308 25.828 31.3988 25.996 31.7268 26.212C32.0548 26.428 32.3228 26.676 32.5308 26.956L31.6908 27.832C31.4508 27.6 31.2028 27.408 30.9468 27.256C30.6988 27.104 30.4428 26.988 30.1788 26.908C29.9148 26.828 29.6508 26.788 29.3868 26.788C28.9548 26.788 28.5548 26.864 28.1868 27.016C27.8268 27.168 27.5068 27.38 27.2268 27.652C26.9548 27.924 26.7428 28.244 26.5908 28.612C26.4388 28.972 26.3628 29.368 26.3628 29.8C26.3628 30.216 26.4428 30.612 26.6028 30.988C26.7628 31.356 26.9828 31.68 27.2628 31.96C27.5508 32.24 27.8788 32.46 28.2468 32.62C28.6228 32.78 29.0188 32.86 29.4348 32.86C29.7468 32.86 30.0428 32.816 30.3228 32.728C30.6028 32.632 30.8508 32.5 31.0668 32.332C31.2828 32.164 31.4508 31.972 31.5708 31.756C31.6908 31.532 31.7508 31.296 31.7508 31.048V30.808L31.9308 30.976H29.3628V29.692H33.0828C33.0988 29.78 33.1108 29.868 33.1188 29.956C33.1268 30.036 33.1308 30.116 33.1308 30.196C33.1388 30.268 33.1428 30.34 33.1428 30.412C33.1428 30.964 33.0468 31.468 32.8548 31.924C32.6628 32.372 32.3948 32.76 32.0508 33.088C31.7148 33.416 31.3188 33.672 30.8628 33.856C30.4148 34.032 29.9268 34.12 29.3988 34.12Z" fill="white"/></g></g></svg>
-              <div class="complete-card-info">
-                <span class="complete-card-name">Screenshot 2025-04-11 at 2.31.09 PM.png</span>
-                <span class="complete-card-status">Ready for import</span>
-              </div>
-              <span class="complete-card-badge">
-                <span class="badge-label">1099-INT</span>
-                <svg class="badge-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-                <select class="badge-select" aria-label="Form type"><option selected>1099-INT</option><option>W-2</option><option>Uncategorized</option></select>
-              </span>
+            <div class="badge clickable badge-dropdown">
+              <select id="tmpSelect-7" class="width-temp-select"><option id="tmpOption-7" class="width-temp-option"></option></select>
+              <select id="formType-7" aria-label="Form type">
+                <option value="w2" selected>W-2</option>
+                <option value="uncategorized">Uncategorized</option>
+                <option value="1099-int">1099-INT</option>
+              </select>
+              <span class="chevron" aria-hidden="true" style="mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik02IDlMMTIgMTVMMTggOSIvPjwvc3ZnPg==') no-repeat center / contain; -webkit-mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik02IDlMMTIgMTVMMTggOSIvPjwvc3ZnPg==') no-repeat center / contain;"></span>
             </div>
-            <button class="complete-card-close" title="Remove file" aria-label="Remove file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+            <button type="button" class="badge badge-danger clickable">
+              <span class="pre-icon" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#f03e38" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10C2 10 2.12132 9.15076 5.63604 5.63604C9.15076 2.12132 14.8492 2.12132 18.364 5.63604C19.6092 6.88131 20.4133 8.40072 20.7762 10M2 10V4M2 10H8M22 14C22 14 21.8787 14.8492 18.364 18.364C14.8492 21.8787 9.15076 21.8787 5.63604 18.364C4.39076 17.1187 3.58669 15.5993 3.22383 14M22 14V20M22 14H16"/></svg></span>
+              Retry upload
+            </button>
           </div>
+          <div class="import-card-loading"><img class="spinner-animation" width="24" height="24" src="https://static.freetaxusa.com/email-images/animations/spinner_optimized_transparent.gif" alt=""/></div>
+          <button class="btn btn-icon" aria-label="Remove myworkW2.pdf"><span aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#212f45" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 7L7 17M7 7L17 17"/></svg></span></button>
         </div>
-
-      <div class="warning-wrapper">
-        <div class="complete-card">
-          <div class="complete-card-inner">
-            <div class="complete-card-left">
-              <svg class="complete-card-pdf-svg" width="32" height="40" viewBox="4 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg"><g><g><path d="M6 0.5H24.793L35.5 11.207V38C35.5 38.8284 34.8284 39.5 34 39.5H6C5.17157 39.5 4.5 38.8284 4.5 38V2C4.5 1.17157 5.17157 0.5 6 0.5Z" fill="#9549E9" stroke="#9549E9"/><path d="M25 0L36 11H27C25.8954 11 25 10.1046 25 9V0Z" fill="#B77CF0"/><path d="M11.3259 34.12C11.0539 34.12 10.7939 34.084 10.5459 34.012C10.2979 33.94 10.0659 33.836 9.84991 33.7C9.64191 33.564 9.45391 33.404 9.28591 33.22C9.11791 33.028 8.97391 32.82 8.85391 32.596L9.66991 31.744C9.83791 31.984 9.98991 32.176 10.1259 32.32C10.2699 32.464 10.4059 32.576 10.5339 32.656C10.6619 32.736 10.7899 32.792 10.9179 32.824C11.0459 32.848 11.1819 32.86 11.3259 32.86C11.6139 32.86 11.8659 32.796 12.0819 32.668C12.2979 32.532 12.4659 32.348 12.5859 32.116C12.7059 31.884 12.7659 31.62 12.7659 31.324V26.8H11.2299V25.6H15.3579V26.8H14.0619V31.444C14.0619 31.828 13.9939 32.184 13.8579 32.512C13.7299 32.832 13.5419 33.112 13.2939 33.352C13.0539 33.592 12.7659 33.78 12.4299 33.916C12.1019 34.052 11.7339 34.12 11.3259 34.12ZM17.1291 34V25.6H20.5491C21.0051 25.6 21.4171 25.716 21.7851 25.948C22.1611 26.172 22.4611 26.48 22.6851 26.872C22.9091 27.264 23.0211 27.7 23.0211 28.18C23.0211 28.66 22.9091 29.096 22.6851 29.488C22.4611 29.88 22.1611 30.196 21.7851 30.436C21.4171 30.668 21.0051 30.784 20.5491 30.784H18.4251V34H17.1291ZM18.4251 29.536H20.5251C20.7411 29.536 20.9371 29.476 21.1131 29.356C21.2891 29.228 21.4291 29.064 21.5331 28.864C21.6451 28.656 21.7011 28.428 21.7011 28.18C21.7011 27.932 21.6451 27.708 21.5331 27.508C21.4291 27.308 21.2891 27.148 21.1131 27.028C20.9371 26.908 20.7411 26.848 20.5251 26.848H18.4251V29.536ZM28.4906 34.12C27.8826 34.12 27.3146 34.012 26.7866 33.796C26.2586 33.572 25.7946 33.264 25.3946 32.872C24.9946 32.48 24.6826 32.024 24.4586 31.504C24.2426 30.976 24.1346 30.408 24.1346 29.8C24.1346 29.2 24.2426 28.64 24.4586 28.12C24.6826 27.6 24.9906 27.148 25.3826 26.764C25.7826 26.372 26.2466 26.068 26.7746 25.852C27.3026 25.636 27.8706 25.528 28.4786 25.528C28.9026 25.528 29.3146 25.588 29.7146 25.708C30.1226 25.828 30.4906 25.996 30.8186 26.212C31.1466 26.428 31.4146 26.676 31.6226 26.956L30.7826 27.832C30.5426 27.6 30.2946 27.408 30.0386 27.256C29.7906 27.104 29.5346 26.988 29.2706 26.908C29.0066 26.828 28.7426 26.788 28.4786 26.788C28.0466 26.788 27.6466 26.864 27.2786 27.016C26.9186 27.168 26.5986 27.38 26.3186 27.652C26.0466 27.924 25.8346 28.244 25.6826 28.612C25.5306 28.972 25.4546 29.368 25.4546 29.8C25.4546 30.216 25.5346 30.612 25.6946 30.988C25.8546 31.356 26.0746 31.68 26.3546 31.96C26.6426 32.24 26.9706 32.46 27.3386 32.62C27.7146 32.78 28.1106 32.86 28.5266 32.86C28.8386 32.86 29.1346 32.816 29.4146 32.728C29.6946 32.632 29.9426 32.5 30.1586 32.332C30.3746 32.164 30.5426 31.972 30.6626 31.756C30.7826 31.532 30.8426 31.296 30.8426 31.048V30.808L31.0226 30.976H28.4546V29.692H32.1746C32.1906 29.78 32.2026 29.868 32.2106 29.956C32.2186 30.036 32.2226 30.116 32.2226 30.196C32.2306 30.268 32.2346 30.34 32.2346 30.412C32.2346 30.964 32.1386 31.468 31.9466 31.924C31.7546 32.372 31.4866 32.76 31.1426 33.088C30.8066 33.416 30.4106 33.672 29.9546 33.856C29.5066 34.032 29.0186 34.12 28.4906 34.12Z" fill="white"/></g></g></svg>
-              <div class="complete-card-info">
-                <span class="complete-card-name">kfcreceipt.jpg</span>
-                <span class="complete-card-status">Ready for import</span>
-              </div>
-              <span class="complete-card-badge">
-                <span class="badge-label">Uncategorized</span>
-                <svg class="badge-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-                <select class="badge-select" aria-label="Form type"><option selected>Uncategorized</option><option>W-2</option><option>1099-INT</option></select>
-              </span>
-            </div>
-            <button class="complete-card-close" title="Remove file" aria-label="Remove file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+        <div class="alert warning-message" aria-live="polite" aria-atomic="false">
+          <span class="icon" aria-hidden="true" style="mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMS45OTk4IDguOTk5OTlWMTNNMTEuOTk5OCAxN0gxMi4wMDk4TTEwLjYxNTEgMy44OTE3MUwyLjM5MDE5IDE4LjA5ODNDMS45MzM5OCAxOC44ODYzIDEuNzA1ODggMTkuMjgwMyAxLjczOTU5IDE5LjYwMzdDMS43NjkgMTkuODg1NyAxLjkxNjc3IDIwLjE0MiAyLjE0NjEzIDIwLjMwODhDMi40MDkwOCAyMC41IDIuODY0MzUgMjAuNSAzLjc3NDg3IDIwLjVIMjAuMjI0NkMyMS4xMzUyIDIwLjUgMjEuNTkwNCAyMC41IDIxLjg1MzQgMjAuMzA4OEMyMi4wODI3IDIwLjE0MiAyMi4yMzA1IDE5Ljg4NTcgMjIuMjU5OSAxOS42MDM3QzIyLjI5MzYgMTkuMjgwMyAyMi4wNjU1IDE4Ljg4NjMgMjEuNjA5MyAxOC4wOTgzTDEzLjM4NDQgMy44OTE3MUMxMi45Mjk5IDMuMTA2NTQgMTIuNzAyNiAyLjcxMzk2IDEyLjQwNjEgMi41ODIxMUMxMi4xNDc0IDIuNDY3MSAxMS44NTIxIDIuNDY3MSAxMS41OTM1IDIuNTgyMTFDMTEuMjk2OSAyLjcxMzk2IDExLjA2OTYgMy4xMDY1NSAxMC42MTUxIDMuODkxNzFaIi8+PC9zdmc+') no-repeat center / contain; -webkit-mask: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMS45OTk4IDguOTk5OTlWMTNNMTEuOTk5OCAxN0gxMi4wMDk4TTEwLjYxNTEgMy44OTE3MUwyLjM5MDE5IDE4LjA5ODNDMS45MzM5OCAxOC44ODYzIDEuNzA1ODggMTkuMjgwMyAxLjczOTU5IDE5LjYwMzdDMS43NjkgMTkuODg1NyAxLjkxNjc3IDIwLjE0MiAyLjE0NjEzIDIwLjMwODhDMi40MDkwOCAyMC41IDIuODY0MzUgMjAuNSAzLjc3NDg3IDIwLjVIMjAuMjI0NkMyMS4xMzUyIDIwLjUgMjEuNTkwNCAyMC41IDIxLjg1MzQgMjAuMzA4OEMyMi4wODI3IDIwLjE0MiAyMi4yMzA1IDE5Ljg4NTcgMjIuMjU5OSAxOS42MDM3QzIyLjI5MzYgMTkuMjgwMyAyMi4wNjU1IDE4Ljg4NjMgMjEuNjA5MyAxOC4wOTgzTDEzLjM4NDQgMy44OTE3MUMxMi45Mjk5IDMuMTA2NTQgMTIuNzAyNiAyLjcxMzk2IDEyLjQwNjEgMi41ODIxMUMxMi4xNDc0IDIuNDY3MSAxMS44NTIxIDIuNDY3MSAxMS41OTM1IDIuNTgyMTFDMTEuMjk2OSAyLjcxMzk2IDExLjA2OTYgMy4xMDY1NSAxMC42MTUxIDMuODkxNzFaIi8+PC9zdmc+') no-repeat center / contain;"></span>
+          <div class="message-content">
+            <p class="message m-0"><b>Uncategorized Document</b></p>
+            <p class="message m-0">Uncategorized files will be saved in <a href="#">My Tax Files</a>, but won&rsquo;t be included with your return.</p>
           </div>
-        </div>
-        <div class="warning-divider"></div>
-        <div class="warning-message">
-          <svg class="warning-message-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg>
-          <div class="warning-message-content">
-            <span class="warning-message-title">Uncategorized Document</span>
-            <span class="warning-message-text">Uncategorized files will be saved in <a href="#">My Tax Files</a>, but won&rsquo;t be included with your return.</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="complete-card card-error">
-        <div class="complete-card-inner">
-          <div class="complete-card-left">
-            <svg class="generic-file-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H8.8c-1.68 0-2.52 0-3.162.327a3 3 0 0 0-1.311 1.311C4 4.28 4 5.12 4 6.8v10.4c0 1.68 0 2.52.327 3.162a3 3 0 0 0 1.311 1.311C6.28 22 7.12 22 8.8 22h6.4c1.68 0 2.52 0 3.162-.327a3 3 0 0 0 1.311-1.311C20 19.72 20 18.88 20 17.2V8m-6-6 6 6m-6-6v4.8c0 .56 0 .84.109 1.054a1 1 0 0 0 .437.437C14.76 8 15.04 8 15.6 8H20"/></svg>
-            <div class="complete-card-info">
-              <span class="complete-card-name">w-2-employer2.jpg</span>
-              <span class="complete-card-status">Upload failed, please try again</span>
-            </div>
-          </div>
-          <button class="complete-card-close" title="Remove file" aria-label="Remove file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
         </div>
       </div>
     </div>
@@ -448,376 +314,460 @@
     <h2>Anatomy</h2>
     <table>
       <tr><th>Part</th><th>Spec</th></tr>
-      <tr><td>File-type icon</td><td>Official set (32&times;40, Figma node 4605-20616 — download as provided; static multi-color SVGs, not mask icons), one per card, leading. <b>Error variant:</b> generic document icon instead (<code>files/file-01.svg</code>, 20&times;20 stroke, <code>$danger-600</code>).</td></tr>
-      <tr><td>Filename</td><td>Text md/Medium, <code>$text-default</code>. Max two lines, then ellipsis — all breakpoints.</td></tr>
-      <tr><td>Status line</td><td>Text sm/Regular. &ldquo;Ready for import&rdquo; (<code>$text-help</code>); error: &ldquo;Upload failed, please try again&rdquo; (<code>$text-subtle</code>).</td></tr>
-      <tr><td>Form-type badge</td><td>The package badge (<code>.badge.badge-primary.clickable</code> / <code>.badge-warning.clickable</code>) over an invisible native <code>&lt;select&gt;</code>. The only classification control. Not rendered in the error variant. See the badge differences section below.</td></tr>
-      <tr><td>Remove button</td><td>40&times;40 icon button, 24px x-close, <code>$text-default</code>, <code>aria-label="Remove &lt;filename&gt;"</code>. Hover: variant surface tint + <code>mix-blend-mode: multiply</code> — brand at shade 50, warning/danger at 100 (50 reads too faint on the warm 25 surfaces).</td></tr>
-      <tr><td>Warning block</td><td>Uncategorized only: divider (<code>$border-warning</code>), alert-triangle (<code>$svg-warning</code>), &ldquo;Uncategorized Document&rdquo; title, body with My Tax Files link. Added/removed in place as the badge changes; <code>aria-live="polite"</code>.</td></tr>
+      <tr><td>File-type icon</td><td>Official set (32&times;40, Figma node 4605-20616 — download as provided; static multi-color SVGs, not mask icons), one per card, leading. The failed variant hides it and shows a 24px <code>alerts-feedback/alert-octagon.svg</code> in <code>$svg-danger</code> instead.</td></tr>
+      <tr><td>Filename</td><td>Text md/Medium, <code>$text-default</code> (failed: <code>$text-subtle</code>). Max two lines, then ellipsis — all breakpoints.</td></tr>
+      <tr><td>Status line</td><td>Text sm/Regular, <code>$text-help</code> (failed: <code>$text-subtle</code>). Copy per state: &ldquo;Ready for import&rdquo; / &ldquo;Failed to process file&rdquo;.</td></tr>
+      <tr><td>Form-type badge</td><td>Package badge (<code>badge-style(primary)</code>; warning in the uncategorized variant) over a native <code>&lt;select&gt;</code> with a width-sync <code>select.width-temp-select</code> twin. Hidden in the failed and loading variants.</td></tr>
+      <tr><td>Retry badge</td><td>Failed only — danger badge with refresh icon in the form-type badge&rsquo;s grid slot. Styled and in the markup, but not wired to a retry action yet (planned).</td></tr>
+      <tr><td>Remove button</td><td><code>.btn.btn-icon</code>, 40&times;40, 24px x icon, <code>aria-label="Remove &lt;filename&gt;"</code>. Hover: variant surface tint + <code>mix-blend-mode: multiply</code>. Hidden while loading.</td></tr>
+      <tr><td>Warning block</td><td>Uncategorized only: <code>.alert.warning-message</code> with alert-triangle (<code>$svg-warning</code>), &ldquo;Uncategorized Document&rdquo; title, body with My Tax Files link (consumer sets the <code>href</code>). <code>aria-live="polite"</code>.</td></tr>
+      <tr><td>Progress overlay</td><td><code>.card-progress</code> — brand-tinted bar behind the content; width driven by JS during upload.</td></tr>
     </table>
-
     <h2>Behavior</h2>
     <ol>
-      <li>The badge opens a native <code>&lt;select&gt;</code> with the full SWOOP form-type list. The label updates immediately.</li>
-      <li>Uncategorized &harr; default converts in place, adding or removing the warning block.</li>
-      <li>A failed upload shows the error variant. Recovery is remove and re-upload.</li>
-      <li>Remove deletes the card with no confirmation (recoverable by re-uploading).</li>
-      <li>Only the badge and remove button are interactive. The card itself is not clickable.</li>
+      <li>The badge opens a native <code>&lt;select&gt;</code> with the full SWOOP form-type list; the label updates immediately (width synced via the package&rsquo;s dropdown listener).</li>
+      <li>Selecting Uncategorized toggles the <code>.uncategorized</code> class on the root via the package&rsquo;s <code>index.js</code> listener, revealing the warning block; selecting a real form type reverts it. Live in the examples above.</li>
+      <li>Remove deletes the card, no confirmation (recoverable by re-uploading).</li>
+      <li>A failed card has no classification control; the retry badge sits in its place but is not wired yet — today recovery is remove and re-upload.</li>
+      <li>Every card renders the full markup up front; the <code>.uncategorized</code> / <code>.failed</code> / <code>.loading</code> classes on the root show and hide the parts. No wrappers, no per-element JS.</li>
     </ol>
-
     <h2>Accessibility</h2>
     <ul>
-      <li>The badge must remain a real <code>&lt;select&gt;</code>. Focus ring via the JS-toggled <code>.focused</code> class.</li>
-      <li>Warning block and error status changes announce via <code>aria-live="polite" aria-atomic="false"</code>.</li>
+      <li>The badge remains a real <code>&lt;select&gt;</code>; focus styling comes from the package badge&rsquo;s <code>:focus-within</code> states.</li>
+      <li>The warning block carries <code>aria-live="polite" aria-atomic="false"</code>.</li>
       <li>Remove button: <code>aria-label="Remove &lt;filename&gt;"</code>. All icons <code>aria-hidden="true"</code>.</li>
       <li>Text/surface pairs meet 4.5:1 contrast.</li>
     </ul>
-
     <h2>Build Notes</h2>
     <ul>
-      <li>Ships in <code>@taxhawk-swoop/common</code>: <code>_complete_card.scss</code> plus a docs page. Single base class with variant modifiers.</li>
-      <li>Missing tokens are FIXME-marked in the SCSS. No raw hex, no scoped overrides of other components.</li>
-      <li>New mask-icon URLs need pre-loading in <code>_theme.scss</code> (<code>:root::after</code>).</li>
-      <li>JS (badge label sync, variant toggle, <code>.focused</code>/<code>.open</code>) lives in the package&rsquo;s <code>index.js</code>.</li>
-      <li>Class names are working names. Final naming TBD at build.</li>
+      <li>Shipped in <code>@taxhawk-swoop/common</code> v3.5.0: <code>src/scss/components/_import_card.scss</code>, markup in <code>test/index.html</code>, listeners in <code>src/scripts/index.js</code>.</li>
+      <li>Three FIXME primitives remain in the shipped SCSS: the uncategorized/failed card surfaces (<code>$warning-25</code> / <code>$danger-25</code> — new <code>$surface-warning-light</code> / <code>$surface-danger-light</code> tokens approved 2026-08-14) and the warning divider (<code>$warning-100</code> — resolved to reuse <code>$border-warning</code>).</li>
+      <li>Consumers import the package SCSS and <code>index.js</code>; the jQuery listeners at the bottom of this page are the package&rsquo;s own, reproduced so the examples are live.</li>
     </ul>
-
     <h2>Do / Don&rsquo;t</h2>
     <div class="do-dont">
-      <div class="do"><b>Do</b>One card per uploaded file, stacked oldest-first, 8px gap.</div>
-      <div class="dont"><b>Don&rsquo;t</b>Reuse for in-progress uploads (failed uploads are this component; in-progress is not), add extra action buttons, or use outside an upload list.</div>
+      <div class="do"><b>Do</b>One card per uploaded file, stacked oldest-first (the component adds the 8px gap between cards).</div>
+      <div class="dont"><b>Don&rsquo;t</b>Add extra action buttons, remove parts from the markup (variant classes rely on the full structure), or use outside an upload list.</div>
     </div>
-
-    <h2>Badge Differences from the Package Badge</h2>
-    <p>This badge differs from the package badge (<code>_badge_new.scss</code>) in three ways. Pick a side on each before building:</p>
-    <ul>
-      <li><b>Type size:</b> mock is Text sm/Medium (14/20); package badge is <code>textXSMed</code> (12/18).</li>
-      <li><b>Padding:</b> mock is <code>2px 4px 2px 8px</code> (tighter right edge around the chevron); package is <code>2px 8px</code>.</li>
-      <li><b>Hover:</b> mock darkens the text (<code>$brand-700</code> / <code>$warning-800</code>, no tokens) and underlines; package badge only changes surface/border on hover and underlines on focus.</li>
-    </ul>
 
     <h2>Open Questions</h2>
     <ul>
-      <li>Final component/tag name (working name: Complete Card).</li>
-      <li>Badge differences above — adopt the package badge as-is, or update <code>_badge_new.scss</code>?</li>
-      <li>Is <code>media-breakpoint-down(sm)</code> the right switch point for the stacked layout, or should tablet (<code>md</code>) stack too? Tablet is untested.</li>
-      <li>Should the warning block&rsquo;s &ldquo;My Tax Files&rdquo; link be configurable or fixed?</li>
+      <li>Retry badge: wire it to a real retry action, or drop it until the upload-flow rewrite lands? (Earlier UX direction removed retry; the shipped version styles it as planned.)</li>
+      <li>Token follow-ups approved 2026-08-14: add <code>$surface-warning-light</code> / <code>$surface-danger-light</code> and switch the divider to <code>$border-warning</code> — swap out the three FIXMEs when they land.</li>
     </ul>
-    <h2>Reference SCSS — Proposed <code>_complete_card.scss</code></h2>
-    <p>The spec of record, written to package conventions: tokens with <code>FIXME</code> comments where none exists, <code>font-props</code>/<code>svg-mask-full</code>/<code>shadow</code> mixins, no <code>:has()</code> (JS-toggled classes instead). The badge reuses the package badge — this file only adds the <code>&lt;select&gt;</code> overlay.</p>
-    <pre class="code-block"><code><span class="cmt">// Complete Card (Components)
+    <h2>Reference SCSS — <code>_import_card.scss</code> (as shipped)</h2>
+    <p>Verbatim from <code>src/scss/components/_import_card.scss</code> in the SWOOP package (v3.5.0).</p>
+    <pre class="code-block"><code>// IMPORT CARD
 //
-// One uploaded document that finished uploading and is ready to import.
-// Base (brand) card + .uncategorized (warning) variant with attached message block.
-// Form-type badge reuses .badge styles from _badge_new.scss with a native &lt;select&gt; overlay.</span>
+// Messages for uploaded files, with an icon, the file name, category and dropdown, status, and remove button. Default, uncategorized, loading, and failed variants.
 
-.complete-card {
-	@include border-radius($radius-sm);
+.card-progress {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 0%;
+	background: rgba(1, 110, 230, 0.14);
+	border-radius: 4px;
+	z-index: 0;
+	transition: width 25s linear;
+}
 
-	& {
-		background: $surface-brand-light;
-		border: $border-width solid $border-brand;
-		overflow: hidden;
+.import-card {
+	@include border-radius(4px);
+
+	&amp; {
+		padding: 0 1rem;
+		width: 100%;
+		background-color: $surface-brand-light;
+		border: 1px solid $border-brand;
+		position: relative;
 	}
 
-	.complete-card-body {
+	.import-card-main {
 		display: flex;
-		align-items: center;
+		align-items: flex-start;
 		justify-content: space-between;
-		padding: $scale-400;
-	}
+		padding: 1rem 0;
 
-	.complete-card-left {
-		display: flex;
-		align-items: center;
-		gap: $scale-400;
-		min-width: 0;
-	}
-
-	.file-icon {
-		width: 32px;
-		height: 40px;
-		flex-shrink: 0;
-	}
-
-	.complete-card-info {
-		display: flex;
-		flex-direction: column;
-		min-width: 0;
-	}
-
-	.complete-card-name {
-		@include font-props(textMDMed);
-
-		& {
-			display: -webkit-box;
-			-webkit-line-clamp: 2;
-			-webkit-box-orient: vertical;
-			overflow: hidden;
-			overflow-wrap: anywhere;
-		}
-	}
-
-	.complete-card-status {
-		@include font-props(textSM);
-
-		& {
-			color: $text-help;
-		}
-	}
-
-	<span class="cmt">// Form-type selector: package badge + invisible native &lt;select&gt; overlay.
-	// The &lt;select&gt; must stay a real element (a11y). Focus ring comes from a
-	// JS-toggled .focused class (index.js focus tracking) — no :has().</span>
-	.badge {
-		& {
-			position: relative;
-			flex-shrink: 0;
-			margin-inline-start: $scale-200;
-		}
-
-		.badge-select {
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			opacity: 0;
-			cursor: pointer;
-		}
-
-		&.focused {
-			@include shadow($blue-box-shadow);
-		}
-	}
-
-	.complete-card-close {
-		@include border-radius(50%);
-
-		& {
-			width: 40px;
-			height: 40px;
-			flex-shrink: 0;
-			display: flex;
+		@include media-breakpoint-up(sm) {
 			align-items: center;
-			justify-content: center;
-			background: none;
-			border: none;
-			cursor: pointer;
 		}
 
-		[data-th-icon] {
-			@include svg-mask-full('#{$icon-base-path}/general/x-close.svg', center center, 24px 24px, no-repeat);
+		.import-card-left {
+			display: grid;
+			grid-template-areas:
+				&#x27;icon info&#x27;
+				&#x27;icon badge&#x27;;
+			row-gap: 0.5rem;
+			column-gap: 1rem;
 
-			& {
-				width: 24px;
-				height: 24px;
-			}
-		}
-
-		<span class="cmt">// Icon-button hover convention (per dev): shade-50 surface token
-		// blended into the card surface with mix-blend-mode: multiply</span>
-		&:hover {
-			background: $surface-brand;
-			mix-blend-mode: multiply;
-		}
-
-		&:focus-visible {
-			@include shadow($blue-box-shadow);
-
-			& {
-				outline: none;
-			}
-		}
-	}
-
-	<span class="cmt">// Divider + message exist only in the uncategorized variant</span>
-	.complete-card-divider {
-		height: $border-width;
-		margin: 0 $scale-400;
-		background: $border-warning;
-	}
-
-	.complete-card-message {
-		display: flex;
-		gap: $scale-400;
-		padding: $scale-400;
-
-		[data-th-icon] {
-			@include svg-mask-full('#{$icon-base-path}/alerts-feedback/alert-triangle.svg', center center, 24px 24px, no-repeat, $svg-warning, $icon-warning);
-
-			& {
-				width: 24px;
-				height: 24px;
-				flex-shrink: 0;
-			}
-		}
-
-		.message-content {
-			display: flex;
-			flex-direction: column;
-			gap: $scale-100;
-		}
-
-		.message-title {
-			@include font-props(textMDSemi);
-
-			& {
-				color: $text-subtle;
-			}
-		}
-
-		.message-text {
-			@include font-props(textMD);
-
-			& {
-				color: $text-subtle;
+			.import-card-icon {
+				grid-area: icon;
+				display: block;
+				width: 32px;
+				height: 40px;
 			}
 
-			a {
-				color: $text-link;
+			.import-card-error-icon {
+				display: none;
+			}
 
-				&:hover {
-					color: $text-link-hover;
-					text-decoration: underline;
+			.import-card-info {
+				grid-area: info;
+
+				.import-card-name {
+					@include font-props(textMDMed);
+
+					&amp; {
+						display: -webkit-box;
+						-webkit-line-clamp: 2;
+						-webkit-box-orient: vertical;
+						overflow: hidden;
+						overflow-wrap: anywhere;
+						margin: 0;
+					}
+				}
+
+				.import-card-status {
+					@include font-props(textSM);
+
+					&amp; {
+						color: $text-help;
+						margin: 0;
+					}
+				}
+			}
+
+			.badge-dropdown {
+				@include badge-style(primary);
+
+				&amp; {
+					display: flex;
+					grid-area: badge;
+				}
+			}
+
+			.badge-danger {
+				display: none;
+			}
+
+			@include media-breakpoint-up(sm) {
+				grid-template-areas: &#x27;icon info badge&#x27;;
+
+				.import-card-icon,
+				.import-card-info,
+				.badge-dropdown,
+				.badge-danger {
+					height: fit-content;
+					align-self: center;
 				}
 			}
 		}
-	}
 
-	&.uncategorized {
-		& {
-			background: $surface-warning-light; <span class="cmt">// new token, approved 2026-08-14 = $warning-25</span>
-			border-color: $border-warning;
+		.import-card-loading {
+			display: none;
 		}
 
-		.badge.focused {
-			@include shadow($yellow-box-shadow);
-		}
+		.btn.btn-icon {
+			flex-shrink: 0;
+			display: flex;
+			width: 40px;
+			height: 40px;
 
-		.complete-card-close {
-			&:hover {
-				background: $surface-warning-hover; <span class="cmt">// one shade up ($warning-100) — warning-50 reads too faint over the warning-25 card; multiply inherited</span>
+			[data-th-icon] {
+				@include svg-mask-full(&#x27;#{$icon-base-path}/general/x.svg&#x27;, center, contain, no-repeat, $svg-default, $icon-default);
+
+				&amp; {
+					width: 24px;
+					height: 24px;
+				}
 			}
 
-			&:focus-visible {
-				@include shadow($yellow-box-shadow);
+			&amp;:hover,
+			&amp;:active,
+			&amp;:focus,
+			&amp;:focus-visible,
+			&amp;:focus-within,
+			&amp;:focus-within:hover {
+				background-color: $surface-brand;
+				mix-blend-mode: multiply;
 			}
 		}
 	}
 
-	&.upload-error {
-		& {
-			background: $surface-danger-light; <span class="cmt">// new token, approved 2026-08-14 = $danger-25</span>
-			border-color: $border-danger;
-		}
+	.alert {
+		display: none;
+	}
 
-		<span class="cmt">// No badge in the error state (no detected form type); the file-type
-		// icon is replaced by the generic document icon in the error color.
-		// Status copy is fixed: "Upload failed, please try again"</span>
-		.generic-file-icon {
-			@include svg-mask-full('#{$icon-base-path}/files/file-01.svg', center center, 20px 20px, no-repeat, $danger-600, $filter-danger-600); <span class="cmt">// FIXME: missing token - notify UX ($svg-danger is danger-500)</span>
+	&amp; + .import-card {
+		margin-top: 0.5rem;
+	}
 
-			& {
-				width: 20px;
-				height: 20px;
+	&amp;.loading {
+		.import-card-main {
+			.import-card-left {
+				.badge-dropdown,
+				.badge-danger {
+					display: none;
+				}
+			}
+
+			.import-card-loading {
 				flex-shrink: 0;
-			}
-		}
+				width: 24px;
+				height: 24px;
+				display: block;
 
-		.complete-card-status {
-			color: $text-subtle;
-		}
-
-		.complete-card-close {
-			&:hover {
-				background: $surface-danger-hover; <span class="cmt">// one shade up ($danger-100) — danger-50 reads too faint over the danger-25 card; multiply inherited</span>
+				.spinner-animation {
+					width: 24px;
+					height: 24px;
+				}
 			}
 
-			&:focus-visible {
-				@include shadow($red-box-shadow);
+			.btn.btn-icon {
+				display: none;
 			}
 		}
 	}
 
-	<span class="cmt">// Mobile (&lt;576px): top-align, badge drops to a second line under the text column</span>
-	@include media-breakpoint-down(sm) {
-		.complete-card-body {
-			align-items: flex-start;
+	&amp;.uncategorized {
+		// FIXME: missing token - notify UX
+		background-color: $warning-25;
+		border: 1px solid $border-warning;
+
+		.import-card-main {
+			.import-card-left .badge-dropdown {
+				@include badge-style(warning);
+			}
+
+			.btn.btn-icon {
+				&amp;:hover,
+				&amp;:active,
+				&amp;:focus,
+				&amp;:focus-visible,
+				&amp;:focus-within,
+				&amp;:focus-within:hover {
+					background-color: $surface-warning;
+				}
+			}
 		}
 
-		.complete-card-left {
-			display: grid;
-			grid-template-columns: 32px 1fr;
-			column-gap: $scale-400;
-			row-gap: $scale-200;
-			align-items: start;
-		}
+		.alert {
+			display: flex;
+			background-color: transparent;
+			padding: 1rem 0;
+			margin-bottom: 0;
 
-		.badge {
-			grid-column: 2;
-			justify-self: start;
-			margin-inline-start: 0;
+			// FIXME: missing token - notify UX
+			border-top: 1px solid $warning-100;
+		}
+	}
+
+	&amp;.failed {
+		// FIXME: missing token - notify UX
+		background-color: $danger-25;
+		border: 1px solid $border-danger;
+
+		.import-card-main {
+			.import-card-left {
+				.import-card-icon {
+					grid-area: unset;
+					display: none;
+				}
+
+				.import-card-error-icon {
+					@include svg-mask-full(&#x27;#{$icon-base-path}/alerts-feedback/alert-octagon.svg&#x27;, 0 0, contain, no-repeat, $svg-danger, $icon-danger);
+
+					&amp; {
+						grid-area: icon;
+						display: block;
+						width: 24px;
+						height: 24px;
+					}
+				}
+
+				.import-card-info {
+					.import-card-name,
+					.import-card-status {
+						color: $text-subtle;
+					}
+				}
+
+				.badge-dropdown {
+					grid-area: unset;
+					display: none;
+				}
+
+				.badge-danger {
+					grid-area: badge;
+					display: flex;
+				}
+			}
+
+			.btn.btn-icon {
+				&amp;:hover,
+				&amp;:active,
+				&amp;:focus,
+				&amp;:focus-visible,
+				&amp;:focus-within,
+				&amp;:focus-within:hover {
+					background-color: $surface-danger;
+				}
+			}
 		}
 	}
 }</code></pre>
 
     <h2>Reference HTML</h2>
-    <p>Default:</p>
-    <pre class="code-block"><code>&lt;div class="complete-card"&gt;
-	&lt;div class="complete-card-body"&gt;
-		&lt;div class="complete-card-left"&gt;
-			<span class="cmt">&lt;!-- multi-color file icon from the SWOOP file-icon set — static &lt;img&gt;, not a mask icon --&gt;</span>
-			&lt;img class="file-icon" src="..." width="32" height="40" alt=""/&gt;
-			&lt;div class="complete-card-info"&gt;
-				&lt;span class="complete-card-name"&gt;myworkW2.pdf&lt;/span&gt;
-				&lt;span class="complete-card-status"&gt;Ready for import&lt;/span&gt;
-			&lt;/div&gt;
-			&lt;span class="badge badge-primary clickable"&gt;
-				&lt;span class="badge-label"&gt;W-2&lt;/span&gt;
-				&lt;span class="chevron" aria-hidden="true"&gt;&lt;/span&gt;
-				&lt;select class="badge-select" aria-label="Form type"&gt;
-					&lt;option selected&gt;W-2&lt;/option&gt;
-					<span class="cmt">&lt;!-- full SWOOP form-type list --&gt;</span>
-				&lt;/select&gt;
-			&lt;/span&gt;
-		&lt;/div&gt;
-		&lt;button class="complete-card-close" type="button" aria-label="Remove myworkW2.pdf"&gt;
-			&lt;span data-th-icon aria-hidden="true"&gt;&lt;/span&gt;
-		&lt;/button&gt;
-	&lt;/div&gt;
-&lt;/div&gt;</code></pre>
-    <p>Uncategorized — <code>.uncategorized</code> on the root, badge switches to <code>badge-warning</code>, divider and message appended inside the card:</p>
-    <pre class="code-block"><code>&lt;div class="complete-card uncategorized"&gt;
-	&lt;div class="complete-card-body"&gt;
-		<span class="cmt">&lt;!-- same as above, but: --&gt;</span>
-		&lt;span class="badge badge-warning clickable"&gt; ... &lt;/span&gt;
-	&lt;/div&gt;
-	&lt;div class="complete-card-divider"&gt;&lt;/div&gt;
-	&lt;div class="complete-card-message" aria-live="polite" aria-atomic="false"&gt;
-		&lt;span data-th-icon aria-hidden="true"&gt;&lt;/span&gt;
-		&lt;div class="message-content"&gt;
-			&lt;span class="message-title"&gt;Uncategorized Document&lt;/span&gt;
-			&lt;span class="message-text"&gt;Uncategorized files will be saved in &lt;a href="..."&gt;My Tax Files&lt;/a&gt;, but won&amp;rsquo;t be included with your return.&lt;/span&gt;
-		&lt;/div&gt;
-	&lt;/div&gt;
-&lt;/div&gt;</code></pre>
-    <p>Error — <code>.upload-error</code> on the root: generic document icon, no badge, fixed status line, no message block:</p>
-    <pre class="code-block"><code>&lt;div class="complete-card upload-error"&gt;
-	&lt;div class="complete-card-body"&gt;
-		&lt;div class="complete-card-left"&gt;
-			&lt;span class="generic-file-icon" data-th-icon aria-hidden="true"&gt;&lt;/span&gt;
-			&lt;div class="complete-card-info"&gt;
-				&lt;span class="complete-card-name"&gt;w-2-employer2.jpg&lt;/span&gt;
-				&lt;span class="complete-card-status"&gt;Upload failed, please try again&lt;/span&gt;
-			&lt;/div&gt;
-		&lt;/div&gt;
-		&lt;button class="complete-card-close" type="button" aria-label="Remove w-2-employer2.jpg"&gt;
-			&lt;span data-th-icon aria-hidden="true"&gt;&lt;/span&gt;
-		&lt;/button&gt;
-	&lt;/div&gt;
-&lt;/div&gt;</code></pre>
-
+    <p>Verbatim from <code>test/index.html</code> in the SWOOP package. Every state uses this same markup — all parts are always present; the <code>uncategorized</code>, <code>failed</code>, and <code>loading</code> classes on the root show and hide them.</p>
+    <pre class="code-block"><code>    &lt;div class=&quot;import-card&quot;&gt;
+      &lt;div id=&quot;progress-1&quot; class=&quot;card-progress&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;import-card-main&quot;&gt;
+        &lt;div class=&quot;import-card-left&quot;&gt;
+          &lt;img class=&quot;import-card-icon&quot; src=&quot;icons/exceptions/file-type-pdf.svg&quot; width=&quot;32&quot; height=&quot;40&quot; alt=&quot;&quot; /&gt;
+          &lt;span data-th-icon class=&quot;import-card-error-icon&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+          &lt;div class=&quot;import-card-info&quot;&gt;
+            &lt;h3 class=&quot;import-card-name&quot;&gt;W2.pdf&lt;/h3&gt;
+            &lt;p class=&quot;import-card-status&quot;&gt;Ready for import&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;badge clickable badge-dropdown&quot;&gt;
+            &lt;select id=&quot;tmpSelect-1&quot; class=&quot;width-temp-select&quot;&gt;
+              &lt;option id=&quot;tmpOption-1&quot; class=&quot;width-temp-option&quot;&gt;&lt;/option&gt;
+            &lt;/select&gt;
+            &lt;select id=&quot;formType-1&quot; aria-label=&quot;Form type&quot;&gt;
+              &lt;option value=&quot;uncategorized&quot;&gt;Uncategorized&lt;/option&gt;
+              &lt;option value=&quot;w2&quot; selected&gt;W-2&lt;/option&gt;
+              &lt;option value=&quot;1099&quot;&gt;1099&lt;/option&gt;
+            &lt;/select&gt;
+            &lt;span data-th-icon class=&quot;chevron&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;button type=&quot;button&quot; class=&quot;badge badge-danger clickable&quot;&gt;
+            &lt;span data-th-icon class=&quot;pre-icon&quot; style=&quot;--icon-url: url(&#x27;icons/arrows/refresh-ccw-02.svg&#x27;);&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+            Retry upload
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;import-card-loading&quot;&gt;
+          &lt;img class=&quot;spinner-animation&quot; width=&quot;54&quot; height=&quot;54&quot; src=&quot;icons/spinner.gif&quot; alt=&quot;&quot; /&gt;
+        &lt;/div&gt;
+        &lt;button class=&quot;btn btn-icon&quot; aria-label=&quot;Remove W2.pdf&quot;&gt;&lt;span data-th-icon aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;alert warning-message&quot; aria-live=&quot;polite&quot; aria-atomic=&quot;false&quot;&gt;
+        &lt;span data-th-icon class=&quot;icon&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+        &lt;div class=&quot;message-content&quot;&gt;
+          &lt;p class=&quot;message m-0&quot;&gt;&lt;b&gt;Uncategorized Document&lt;/b&gt;&lt;/p&gt;
+          &lt;p class=&quot;message m-0&quot;&gt;Uncategorized files will be saved in My Tax Files, but won’t be included with your return.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;import-card uncategorized&quot;&gt;
+      &lt;div id=&quot;progress-2&quot; class=&quot;card-progress&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;import-card-main&quot;&gt;
+        &lt;div class=&quot;import-card-left&quot;&gt;
+          &lt;img class=&quot;import-card-icon&quot; src=&quot;icons/exceptions/file-type-pdf.svg&quot; width=&quot;32&quot; height=&quot;40&quot; alt=&quot;&quot; /&gt;
+          &lt;span data-th-icon class=&quot;import-card-error-icon&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+          &lt;div class=&quot;import-card-info&quot;&gt;
+            &lt;h3 class=&quot;import-card-name&quot;&gt;1099.pdf&lt;/h3&gt;
+            &lt;p class=&quot;import-card-status&quot;&gt;Ready for import&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;badge clickable badge-dropdown&quot;&gt;
+            &lt;select id=&quot;tmpSelect-2&quot; class=&quot;width-temp-select&quot;&gt;
+              &lt;option id=&quot;tmpOption-2&quot; class=&quot;width-temp-option&quot;&gt;&lt;/option&gt;
+            &lt;/select&gt;
+            &lt;select id=&quot;formType-2&quot; aria-label=&quot;Form type&quot;&gt;
+              &lt;option value=&quot;uncategorized&quot; selected&gt;Uncategorized&lt;/option&gt;
+              &lt;option value=&quot;w2&quot;&gt;W-2&lt;/option&gt;
+              &lt;option value=&quot;1099&quot;&gt;1099&lt;/option&gt;
+            &lt;/select&gt;
+            &lt;span data-th-icon class=&quot;chevron&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;button type=&quot;button&quot; class=&quot;badge badge-danger clickable&quot;&gt;
+            &lt;span data-th-icon class=&quot;pre-icon&quot; style=&quot;--icon-url: url(&#x27;icons/arrows/refresh-ccw-02.svg&#x27;);&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+            Retry upload
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;import-card-loading&quot;&gt;
+          &lt;img class=&quot;spinner-animation&quot; width=&quot;54&quot; height=&quot;54&quot; src=&quot;icons/spinner.gif&quot; alt=&quot;&quot; /&gt;
+        &lt;/div&gt;
+        &lt;button class=&quot;btn btn-icon&quot; aria-label=&quot;Remove 1099.pdf&quot;&gt;&lt;span data-th-icon aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;alert warning-message&quot; aria-live=&quot;polite&quot; aria-atomic=&quot;false&quot;&gt;
+        &lt;span data-th-icon class=&quot;icon&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+        &lt;div class=&quot;message-content&quot;&gt;
+          &lt;p class=&quot;message m-0&quot;&gt;&lt;b&gt;Uncategorized Document&lt;/b&gt;&lt;/p&gt;
+          &lt;p class=&quot;message m-0&quot;&gt;Uncategorized files will be saved in My Tax Files, but won’t be included with your return.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;import-card failed&quot;&gt;
+      &lt;div id=&quot;progress-3&quot; class=&quot;card-progress&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;import-card-main&quot;&gt;
+        &lt;div class=&quot;import-card-left&quot;&gt;
+          &lt;img class=&quot;import-card-icon&quot; src=&quot;icons/exceptions/file-type-pdf.svg&quot; width=&quot;32&quot; height=&quot;40&quot; alt=&quot;&quot; /&gt;
+          &lt;span data-th-icon class=&quot;import-card-error-icon&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+          &lt;div class=&quot;import-card-info&quot;&gt;
+            &lt;h3 class=&quot;import-card-name&quot;&gt;1099.pdf&lt;/h3&gt;
+            &lt;p class=&quot;import-card-status&quot;&gt;Failed to process file&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;badge clickable badge-dropdown&quot;&gt;
+            &lt;select id=&quot;tmpSelect-3&quot; class=&quot;width-temp-select&quot;&gt;
+              &lt;option id=&quot;tmpOption-3&quot; class=&quot;width-temp-option&quot;&gt;&lt;/option&gt;
+            &lt;/select&gt;
+            &lt;select id=&quot;formType-3&quot; aria-label=&quot;Form type&quot;&gt;
+              &lt;option value=&quot;uncategorized&quot;&gt;Uncategorized&lt;/option&gt;
+              &lt;option value=&quot;w2&quot;&gt;W-2&lt;/option&gt;
+              &lt;option value=&quot;1099&quot; selected&gt;1099&lt;/option&gt;
+            &lt;/select&gt;
+            &lt;span data-th-icon class=&quot;chevron&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;button type=&quot;button&quot; class=&quot;badge badge-danger clickable&quot;&gt;
+            &lt;span data-th-icon class=&quot;pre-icon&quot; style=&quot;--icon-url: url(&#x27;icons/arrows/refresh-ccw-02.svg&#x27;);&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+            Retry upload
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;import-card-loading&quot;&gt;
+          &lt;img class=&quot;spinner-animation&quot; width=&quot;54&quot; height=&quot;54&quot; src=&quot;icons/spinner.gif&quot; alt=&quot;&quot; /&gt;
+        &lt;/div&gt;
+        &lt;button class=&quot;btn btn-icon&quot; aria-label=&quot;Remove 1099.pdf&quot;&gt;&lt;span data-th-icon aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;alert warning-message&quot; aria-live=&quot;polite&quot; aria-atomic=&quot;false&quot;&gt;
+        &lt;span data-th-icon class=&quot;icon&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+        &lt;div class=&quot;message-content&quot;&gt;
+          &lt;p class=&quot;message m-0&quot;&gt;&lt;b&gt;Uncategorized Document&lt;/b&gt;&lt;/p&gt;
+          &lt;p class=&quot;message m-0&quot;&gt;Uncategorized files will be saved in My Tax Files, but won’t be included with your return.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;</code></pre>
   </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+    // These two handlers are the real, unmodified listeners from the package — the first is
+    // documented in badge.md, the second lives in src/scripts/index.js — reproduced verbatim
+    // (not a reimplementation) so the examples above behave exactly like the shipped component.
+    $(function () {
+      // Import Card - toggle uncategorized state based on selected form type
+      $('.import-card .badge-dropdown select:not(.width-temp-select)').on('change', function (e) {
+        const isUncategorized = $(this).find('option:selected').val() === 'uncategorized';
+        $(this).closest('.import-card').toggleClass('uncategorized', isUncategorized);
+      });
+
+      // Resizing badge dropdowns - run on page load as well
+      $('.badge-dropdown select:not(.width-temp-select)').on('change', function (e) {
+        $(this).parent().find('select.width-temp-select option.width-temp-option').html($(this).find('option:selected').text());
+        $(this).width($(this).parent().find('select.width-temp-select').width() + 4);
+      });
+
+      // Run both handlers once immediately, so every card matches its pre-selected option
+      // as soon as the page loads instead of only after the first change.
+      $('.badge-dropdown select:not(.width-temp-select)').trigger('change');
+
+      // Remove button - deletes the card from the list, no confirmation. Not part of the
+      // package; added only so this demo page is fully interactive.
+      $('.import-card .btn.btn-icon').on('click', function () {
+        $(this).closest('.import-card').remove();
+      });
+    });
+  </script>
 </body>
 </html>
