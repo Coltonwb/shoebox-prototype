@@ -69,7 +69,7 @@
   <div class="doc">
     <div class="doc-kicker">Component handoff · SWOOP</div>
     <h1>Import Card</h1>
-    <p class="doc-meta">Shipped as <code>.import-card</code> in <code>@taxhawk-swoop/common</code> v3.5.0 (was: Complete Card). Source: Shoebox v11 income upload mock. Colton Bragg (UX) · 2026-08-05, updated 2026-08-14 · Handoff for <code>@taxhawk-swoop/common</code>.</p>
+    <p class="doc-meta">Shipped as <code>.import-card</code> in <code>@taxhawk-swoop/common</code> v3.5.1 (was: Complete Card). Source: Shoebox v11 income upload mock. Colton Bragg (UX) · 2026-08-05, updated 2026-08-14 · Handoff for <code>@taxhawk-swoop/common</code>.</p>
 
     <h2>Purpose</h2>
     <p>One card per uploaded document on the upload page, covering the file&rsquo;s whole lifecycle: <b>loading</b> (upload in progress), <b>ready to import</b> (confirm the detected form type or remove the file), <b>uncategorized</b> (warning treatment with an explanation block), and <b>failed</b> (error treatment). Desktop layout plus a stacked mobile layout below 576px.</p>
@@ -340,8 +340,8 @@
     </ul>
     <h2>Build Notes</h2>
     <ul>
-      <li>Shipped in <code>@taxhawk-swoop/common</code> v3.5.0: <code>src/scss/components/_import_card.scss</code>, markup in <code>test/index.html</code>, listeners in <code>src/scripts/index.js</code>.</li>
-      <li>Three FIXME primitives remain in the shipped SCSS: the uncategorized/failed card surfaces (<code>$warning-25</code> / <code>$danger-25</code> — new <code>$surface-warning-light</code> / <code>$surface-danger-light</code> tokens approved 2026-08-14) and the warning divider (<code>$warning-100</code> — resolved to reuse <code>$border-warning</code>).</li>
+      <li>Shipped in <code>@taxhawk-swoop/common</code> v3.5.1: <code>src/scss/components/_import_card.scss</code>, markup in <code>test/index.html</code>, listeners in <code>src/scripts/index.js</code>.</li>
+      <li>Fully tokenized as of v3.5.1: card surfaces use <code>$surface-warning-light</code> / <code>$surface-danger-light</code> and the warning divider uses <code>$border-warning</code>. No FIXME primitives remain.</li>
       <li>Consumers import the package SCSS and <code>index.js</code>; the jQuery listeners at the bottom of this page are the package&rsquo;s own, reproduced so the examples are live.</li>
     </ul>
     <h2>Do / Don&rsquo;t</h2>
@@ -353,10 +353,9 @@
     <h2>Open Questions</h2>
     <ul>
       <li>Retry badge: wire it to a real retry action, or drop it until the upload-flow rewrite lands? (Earlier UX direction removed retry; the shipped version styles it as planned.)</li>
-      <li>Token follow-ups approved 2026-08-14: add <code>$surface-warning-light</code> / <code>$surface-danger-light</code> and switch the divider to <code>$border-warning</code> — swap out the three FIXMEs when they land.</li>
     </ul>
     <h2>Reference SCSS — <code>_import_card.scss</code> (as shipped)</h2>
-    <p>Verbatim from <code>src/scss/components/_import_card.scss</code> in the SWOOP package (v3.5.0).</p>
+    <p>Verbatim from <code>src/scss/components/_import_card.scss</code> in the SWOOP package (v3.5.1).</p>
     <pre class="code-block"><code>// IMPORT CARD
 //
 // Messages for uploaded files, with an icon, the file name, category and dropdown, status, and remove button. Default, uncategorized, loading, and failed variants.
@@ -532,8 +531,7 @@
 	}
 
 	&amp;.uncategorized {
-		// FIXME: missing token - notify UX
-		background-color: $warning-25;
+		background-color: $surface-warning-light;
 		border: 1px solid $border-warning;
 
 		.import-card-main {
@@ -559,14 +557,12 @@
 			padding: 1rem 0;
 			margin-bottom: 0;
 
-			// FIXME: missing token - notify UX
-			border-top: 1px solid $warning-100;
+			border-top: 1px solid $border-warning;
 		}
 	}
 
 	&amp;.failed {
-		// FIXME: missing token - notify UX
-		background-color: $danger-25;
+		background-color: $surface-danger-light;
 		border: 1px solid $border-danger;
 
 		.import-card-main {
